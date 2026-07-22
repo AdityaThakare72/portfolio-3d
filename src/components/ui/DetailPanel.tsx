@@ -94,9 +94,21 @@ function CategoryContent({ node }: { node: Node }) {
           <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
             Connected Projects
           </h3>
-          <ul className="space-y-1 text-sm text-slate-300">
+          <ul className="space-y-1 text-sm">
             {projects.map((p) => (
-              <li key={p.id}>{p.label}</li>
+              <li key={p.id}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const store = useGraphStore.getState()
+                    store.setSelectedNode(p.id)
+                    store.setCameraTarget(p.position)
+                  }}
+                  className="cursor-pointer text-slate-300 transition-colors hover:text-sky-400"
+                >
+                  {p.label}
+                </button>
+              </li>
             ))}
           </ul>
         </div>
@@ -144,10 +156,10 @@ export default function DetailPanel() {
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 400, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          className="fixed right-0 top-0 z-20 flex h-full w-full items-center sm:w-[380px]"
+          className="pointer-events-none fixed right-0 top-0 z-20 flex h-full w-full items-center sm:w-[380px]"
         >
           <div
-            className="relative max-h-[80vh] w-full overflow-y-auto border-l border-white/[0.08] p-6 backdrop-blur-2xl"
+            className="pointer-events-auto relative max-h-[80vh] w-full overflow-y-auto border-l border-white/[0.08] p-6 backdrop-blur-2xl"
             style={{ backgroundColor: 'rgba(15,23,42,0.9)' }}
           >
             <button

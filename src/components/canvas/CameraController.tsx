@@ -5,14 +5,12 @@ import { Vector3 } from 'three'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { useGraphStore } from '../../hooks/useGraphStore'
 
-// Camera settles offset from the selected node, looking at it from
-// slightly above and to the side
-const FLY_OFFSET = new Vector3(2, 1.5, 3)
 const ORIGIN = new Vector3(0, 0, 0)
 const LERP = 0.04
 
 const dest = new Vector3()
 const look = new Vector3()
+const offset = new Vector3()
 
 export default function CameraController() {
   const controlsRef = useRef<OrbitControlsImpl>(null)
@@ -23,7 +21,7 @@ export default function CameraController() {
     const controls = controlsRef.current
     if (!controls) return
     const store = useGraphStore.getState()
-    const { selectedNode, cameraTarget } = store
+    const { selectedNode, cameraTarget, cameraOffset } = store
 
     // Selection transitions: save overview position on zoom-in from
     // overview, start the return flight on deselect
@@ -41,12 +39,20 @@ export default function CameraController() {
     }
 
     if (cameraTarget) {
+      returning.current = false
       look.set(...cameraTarget)
-      dest.copy(look).add(FLY_OFFSET)
+      offset.set(...cameraOffset)
+      dest.copy(look).add(offset)
       camera.position.lerp(dest, LERP)
       controls.target.lerp(look, LERP)
       controls.autoRotate = false
       controls.minDistance = 3 // allow the close-up; overview clamp is 8
+      // Cluster/overview flights (no selected node) end on arrival so
+      // orbiting and auto-rotate come back
+      if (!selectedNode && camera.position.distanceTo(dest) < 0.2) {
+        store.setCameraTarget(null)
+        controls.minDistance = 8
+      }
     } else if (returning.current) {
       dest.set(...store.overviewPosition)
       camera.position.lerp(dest, LERP)

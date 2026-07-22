@@ -15,6 +15,7 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
   const isProject = node.type === 'project'
 
   const hoveredNode = useGraphStore((s) => s.hoveredNode)
+  const selectedNode = useGraphStore((s) => s.selectedNode)
   const isHovered = hoveredNode === node.id
   const isNeighborOfHovered =
     hoveredNode !== null && (neighbors.get(hoveredNode)?.has(node.id) ?? false)
@@ -101,7 +102,8 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
           </mesh>
         </>
       )}
-      {(node.type !== 'skill' || isHovered) && (
+      {/* Hide labels while zoomed in — the detail panel carries the name */}
+      {!selectedNode && (node.type !== 'skill' || isHovered) && (
         <Billboard position={[0, node.size * (isProject ? 0.8 : 0.65), 0]}>
           <Text
             fontSize={isProject ? 0.34 : node.type === 'category' ? 0.22 : 0.18}

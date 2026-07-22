@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import NetworkGraph from './components/canvas/NetworkGraph'
 import Background from './components/canvas/Background'
@@ -6,12 +6,24 @@ import CameraController from './components/canvas/CameraController'
 import HeroOverlay from './components/ui/HeroOverlay'
 import DetailPanel from './components/ui/DetailPanel'
 import Legend from './components/ui/Legend'
-import { deselect } from './hooks/useGraphStore'
+import Navbar from './components/ui/Navbar'
+import AboutOverlay from './components/ui/AboutOverlay'
+import ContactOverlay from './components/ui/ContactOverlay'
+import Loader from './components/ui/Loader'
+import { useGraphStore, deselect } from './hooks/useGraphStore'
 
 export default function App() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') deselect()
+      if (e.key !== 'Escape') return
+      // Overlays close first; only then does Escape deselect the node
+      const store = useGraphStore.getState()
+      if (store.showAbout || store.showContact) {
+        store.setShowAbout(false)
+        store.setShowContact(false)
+        return
+      }
+      deselect()
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
@@ -27,13 +39,21 @@ export default function App() {
         <ambientLight intensity={0.4} />
         <pointLight position={[10, 10, 10]} intensity={0.6} />
         <pointLight position={[-10, -10, -5]} intensity={0.3} color="#a78bfa" />
-        <Background />
-        <NetworkGraph />
+        {/* Suspense must live inside the Canvas — wrapping the Canvas
+            itself remounts the WebGL context when a child suspends */}
+        <Suspense fallback={null}>
+          <Background />
+          <NetworkGraph />
+        </Suspense>
         <CameraController />
       </Canvas>
+      <Loader />
+      <Navbar />
       <HeroOverlay />
       <DetailPanel />
       <Legend />
+      <AboutOverlay />
+      <ContactOverlay />
     </div>
   )
 }
