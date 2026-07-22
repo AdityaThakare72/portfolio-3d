@@ -8,8 +8,8 @@ export default function NetworkGraph() {
       {edges.map((edge) => (
         <EdgeLine key={`${edge.source}-${edge.target}`} edge={edge} />
       ))}
-      {nodes.map((node) => (
-        <NodeMesh key={node.id} node={node} />
+      {nodes.map((node, index) => (
+        <NodeMesh key={node.id} node={node} index={index} />
       ))}
     </group>
   )
