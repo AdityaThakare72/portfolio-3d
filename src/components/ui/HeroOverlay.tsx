@@ -1,3 +1,6 @@
+import { motion } from 'framer-motion'
+import { useGraphStore } from '../../hooks/useGraphStore'
+
 const socials = [
   { label: 'GitHub', href: 'https://github.com/AdityaThakare72' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/aditya-thakare72/' },
@@ -5,9 +8,18 @@ const socials = [
 ]
 
 export default function HeroOverlay() {
+  const selectedNode = useGraphStore((s) => s.selectedNode)
+
   return (
-    <div className="pointer-events-none fixed inset-0 z-10 flex items-center justify-center">
-      <div className="pointer-events-auto text-center [text-shadow:0_2px_12px_rgba(3,7,18,0.9)]">
+    <motion.div
+      animate={{ opacity: selectedNode ? 0 : 1 }}
+      transition={{ duration: 0.4 }}
+      className="pointer-events-none fixed inset-0 z-10 flex items-center justify-center"
+    >
+      <div
+        className="text-center [text-shadow:0_2px_12px_rgba(3,7,18,0.9)]"
+        style={{ pointerEvents: selectedNode ? 'none' : 'auto' }}
+      >
         <h1 className="text-5xl font-bold tracking-tight text-slate-100">
           Aditya Thakare
         </h1>
@@ -28,6 +40,6 @@ export default function HeroOverlay() {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }

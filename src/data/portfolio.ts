@@ -313,3 +313,12 @@ export const edges: Edge[] = [
   ...projectSkillEdges,
   ...projectCategoryEdges,
 ]
+
+// Adjacency map for hover neighborhood highlighting
+export const neighbors = new Map<string, Set<string>>()
+for (const e of edges) {
+  if (!neighbors.has(e.source)) neighbors.set(e.source, new Set())
+  if (!neighbors.has(e.target)) neighbors.set(e.target, new Set())
+  neighbors.get(e.source)!.add(e.target)
+  neighbors.get(e.target)!.add(e.source)
+}
