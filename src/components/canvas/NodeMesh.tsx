@@ -70,7 +70,11 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
       >
-        <sphereGeometry args={[node.size * 0.3, 32, 32]} />
+        {node.type === 'category' ? (
+          <octahedronGeometry args={[node.size * 0.3, 0]} />
+        ) : (
+          <sphereGeometry args={[node.size * 0.3, 32, 32]} />
+        )}
         <meshStandardMaterial
           ref={materialRef}
           color={node.color}
@@ -81,15 +85,21 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
         />
       </mesh>
       {isProject && (
-        <mesh>
-          <sphereGeometry args={[node.size * 0.4, 16, 16]} />
-          <meshBasicMaterial
-            color={node.color}
-            transparent
-            opacity={0.08}
-            depthWrite={false}
-          />
-        </mesh>
+        <>
+          <mesh>
+            <sphereGeometry args={[node.size * 0.4, 16, 16]} />
+            <meshBasicMaterial
+              color={node.color}
+              transparent
+              opacity={0.08}
+              depthWrite={false}
+            />
+          </mesh>
+          <mesh rotation={[Math.PI / 2, 0, 0]}>
+            <torusGeometry args={[node.size * 0.45, 0.03, 8, 32]} />
+            <meshBasicMaterial color={node.color} transparent opacity={0.3} />
+          </mesh>
+        </>
       )}
       {(node.type !== 'skill' || isHovered) && (
         <Billboard position={[0, node.size * (isProject ? 0.8 : 0.65), 0]}>

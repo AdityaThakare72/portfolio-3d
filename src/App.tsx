@@ -5,6 +5,7 @@ import Background from './components/canvas/Background'
 import CameraController from './components/canvas/CameraController'
 import HeroOverlay from './components/ui/HeroOverlay'
 import DetailPanel from './components/ui/DetailPanel'
+import Legend from './components/ui/Legend'
 import { deselect } from './hooks/useGraphStore'
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
       </Canvas>
       <HeroOverlay />
       <DetailPanel />
+      <Legend />
     </div>
   )
 }
