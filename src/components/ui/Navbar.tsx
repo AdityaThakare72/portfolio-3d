@@ -15,6 +15,8 @@ export default function Navbar() {
   const links = [
     { label: 'Projects', onClick: () => flyToCluster('projects') },
     { label: 'Skills', onClick: () => flyToCluster('skills') },
+    { label: 'Blog', onClick: () => flyToCluster('blogs') },
+    { label: 'Certs', onClick: () => flyToCluster('certs') },
     { label: 'About', onClick: () => openOverlay('about') },
     { label: 'Contact', onClick: () => openOverlay('contact') },
   ]

@@ -143,6 +143,77 @@ function SkillContent({ node }: { node: Node }) {
   )
 }
 
+function BlogContent({ node }: { node: Node }) {
+  return (
+    <>
+      {node.tags && (
+        <div className="mb-3 flex flex-wrap gap-2">
+          {node.tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-full bg-pink-400/10 px-3 py-1 text-xs font-medium text-pink-400"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      )}
+      <h2 className="text-2xl font-bold text-white">{node.label}</h2>
+      <p className="mt-3 text-sm leading-relaxed text-slate-300">
+        {node.description}
+      </p>
+      {node.links?.live && (
+        <a
+          href={node.links.live}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-6 inline-block rounded-lg bg-pink-400 px-4 py-2 text-sm font-semibold text-gray-950 transition-colors hover:bg-pink-300"
+        >
+          Read on Medium
+        </a>
+      )}
+    </>
+  )
+}
+
+function CertContent({ node }: { node: Node }) {
+  return (
+    <>
+      <span className="mb-3 inline-block text-xs font-semibold uppercase tracking-wider text-emerald-400">
+        Certification
+      </span>
+      <h2 className="text-2xl font-bold text-white">{node.label}</h2>
+      <p className="mt-3 text-sm leading-relaxed text-slate-300">
+        {node.description}
+      </p>
+      {node.links?.live && (
+        <a
+          href={node.links.live}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-6 inline-block rounded-lg bg-emerald-400 px-4 py-2 text-sm font-semibold text-gray-950 transition-colors hover:bg-emerald-300"
+        >
+          Verify Certificate
+        </a>
+      )}
+    </>
+  )
+}
+
+function InfoContent({ node }: { node: Node }) {
+  return (
+    <>
+      <span className="mb-3 inline-block text-xs font-semibold uppercase tracking-wider text-amber-400">
+        {node.id === 'experience' ? 'Experience' : 'Education'}
+      </span>
+      <h2 className="text-2xl font-bold text-white">{node.label}</h2>
+      <p className="mt-3 text-sm leading-relaxed text-slate-300">
+        {node.description}
+      </p>
+    </>
+  )
+}
+
 export default function DetailPanel() {
   const selectedNode = useGraphStore((s) => s.selectedNode)
   const node = selectedNode ? nodeById.get(selectedNode) : undefined
@@ -183,6 +254,9 @@ export default function DetailPanel() {
             {node.type === 'project' && <ProjectContent node={node} />}
             {node.type === 'category' && <CategoryContent node={node} />}
             {node.type === 'skill' && <SkillContent node={node} />}
+            {node.type === 'blog' && <BlogContent node={node} />}
+            {node.type === 'cert' && <CertContent node={node} />}
+            {node.type === 'info' && <InfoContent node={node} />}
           </div>
         </motion.div>
       )}

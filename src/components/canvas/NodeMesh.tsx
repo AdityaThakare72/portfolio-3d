@@ -5,8 +5,24 @@ import type { Mesh, MeshStandardMaterial } from 'three'
 import { neighbors, type Node } from '../../data/portfolio'
 import { useGraphStore } from '../../hooks/useGraphStore'
 
-const BASE_EMISSIVE = { project: 0.6, category: 0.3, skill: 0.3 } as const
-const HOVER_EMISSIVE = { project: 1.2, category: 0.8, skill: 0.6 } as const
+const BASE_EMISSIVE = {
+  project: 0.6,
+  category: 0.3,
+  skill: 0.3,
+  blog: 0.3,
+  cert: 0.3,
+  info: 0.3,
+} as const
+const HOVER_EMISSIVE = {
+  project: 1.2,
+  category: 0.8,
+  skill: 0.6,
+  blog: 0.8,
+  cert: 0.8,
+  info: 0.8,
+} as const
+// Labels always visible for these; other types reveal on hover
+const ALWAYS_LABELED: readonly string[] = ['project', 'category', 'info']
 const LERP = 0.15
 
 export default function NodeMesh({ node, index }: { node: Node; index: number }) {
@@ -73,6 +89,14 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
       >
         {node.type === 'category' ? (
           <octahedronGeometry args={[node.size * 0.3, 0]} />
+        ) : node.type === 'blog' ? (
+          <icosahedronGeometry args={[node.size * 0.3, 0]} />
+        ) : node.type === 'cert' ? (
+          <dodecahedronGeometry args={[node.size * 0.3, 0]} />
+        ) : node.type === 'info' ? (
+          <boxGeometry
+            args={[node.size * 0.5, node.size * 0.5, node.size * 0.5]}
+          />
         ) : (
           <sphereGeometry args={[node.size * 0.3, 32, 32]} />
         )}
@@ -103,7 +127,7 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
         </>
       )}
       {/* Hide labels while zoomed in — the detail panel carries the name */}
-      {!selectedNode && (node.type !== 'skill' || isHovered) && (
+      {!selectedNode && (ALWAYS_LABELED.includes(node.type) || isHovered) && (
         <Billboard position={[0, node.size * (isProject ? 0.8 : 0.65), 0]}>
           <Text
             fontSize={isProject ? 0.34 : node.type === 'category' ? 0.22 : 0.18}

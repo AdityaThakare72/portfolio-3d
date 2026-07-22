@@ -23,7 +23,7 @@ interface GraphState {
   setOverviewPosition: (pos: Vec3) => void
   setShowAbout: (show: boolean) => void
   setShowContact: (show: boolean) => void
-  flyToCluster: (type: 'projects' | 'skills') => void
+  flyToCluster: (type: 'projects' | 'skills' | 'blogs' | 'certs') => void
   flyToOverview: () => void
 }
 
@@ -52,12 +52,18 @@ export const useGraphStore = create<GraphState>((set, get) => ({
   setShowAbout: (show) => set({ showAbout: show }),
   setShowContact: (show) => set({ showContact: show }),
   flyToCluster: (type) => {
-    const wanted = type === 'projects' ? ['project'] : ['category', 'skill']
+    const clusters: Record<string, { types: string[]; offset: Vec3 }> = {
+      projects: { types: ['project'], offset: [0, 3, 14] },
+      skills: { types: ['category', 'skill'], offset: [0, 3, 12] },
+      blogs: { types: ['blog'], offset: [0, 3, 16] },
+      certs: { types: ['cert'], offset: [0, 3, 16] },
+    }
+    const { types, offset } = clusters[type]
     const center = centroid(
-      nodes.filter((n) => wanted.includes(n.type)).map((n) => n.position),
+      nodes.filter((n) => types.includes(n.type)).map((n) => n.position),
     )
     set({ selectedNode: null })
-    get().setCameraTarget(center, type === 'projects' ? [0, 3, 14] : [0, 3, 12])
+    get().setCameraTarget(center, offset)
   },
   flyToOverview: () => {
     const { overviewPosition } = get()

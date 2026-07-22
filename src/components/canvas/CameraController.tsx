@@ -75,7 +75,7 @@ export default function CameraController() {
       dampingFactor={0.05}
       autoRotateSpeed={0.4}
       minDistance={8}
-      maxDistance={30}
+      maxDistance={22}
       enablePan={false}
     />
   )

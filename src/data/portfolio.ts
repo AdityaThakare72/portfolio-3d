@@ -1,4 +1,4 @@
-export type NodeType = 'project' | 'category' | 'skill'
+export type NodeType = 'project' | 'category' | 'skill' | 'blog' | 'cert' | 'info'
 
 export interface Node {
   id: string
@@ -278,7 +278,191 @@ const skillNodes: Node[] = categoryDefs.flatMap((c, ci) => {
   })
 })
 
-export const nodes: Node[] = [...projectNodes, ...categoryNodes, ...skillNodes]
+// ---------------------------------------------------------------------------
+// Outer rings — blogs (r=12), certs (r=12.5, interleaved), info (r=11)
+// ---------------------------------------------------------------------------
+
+const BLOG_RADIUS = 12
+
+const blogDefs = [
+  {
+    id: 'blog-graph-rag',
+    label: 'Graph RAG vs Vector RAG',
+    description:
+      'A detailed comparison between Vector RAG and Graph RAG — why graph-based retrieval wins for context and relationship-driven queries.',
+    links: {
+      live: 'https://medium.com/@adityathakare72/graph-rag-vs-vector-rag-why-your-ai-needs-a-brain-not-just-a-library-ca0e896c2907',
+    },
+    tags: ['GraphRAG', 'RAG'],
+  },
+  {
+    id: 'blog-cbow',
+    label: 'CBOW in Word2Vec',
+    description:
+      "An educational look at Word2Vec's CBOW architecture and how it generates vector representations of words based on context.",
+    links: {
+      live: 'https://medium.com/@adityathakare72/understanding-cbow-in-word2vec-the-power-of-contextualized-word-embeddings-61e7446d061d',
+    },
+    tags: ['NLP', 'Deep Learning'],
+  },
+  {
+    id: 'blog-rnn',
+    label: 'Parameter Sharing in RNN',
+    description:
+      'An exploration of Recurrent Neural Networks and the architectural reasons for sharing weights across time steps.',
+    links: {
+      live: 'https://medium.com/@adityathakare72/why-parameter-sharing-in-standard-rnn-03e72679d59b',
+    },
+    tags: ['RNN', 'Deep Learning'],
+  },
+  {
+    id: 'blog-prompts',
+    label: 'Power of Prompts',
+    description:
+      'A foundational guide explaining prompts, how they guide LLMs, and their importance in making AI accessible.',
+    links: {
+      live: 'https://medium.com/@adityathakare72/title-understanding-the-power-of-prompts-in-language-models-cf7323fb2ad9',
+    },
+    tags: ['Prompt Engineering', 'GenAI'],
+  },
+]
+
+// Offset the blog ring 45° from the project ring so they don't stack
+const blogNodes: Node[] = blogDefs.map((b, i) => {
+  const theta = Math.PI / 4 + i * ((2 * Math.PI) / blogDefs.length)
+  return {
+    ...b,
+    type: 'blog',
+    color: '#f472b6',
+    size: 0.6,
+    position: [
+      BLOG_RADIUS * Math.cos(theta),
+      (i - 1.5) * 2.5 + jitter(0.4),
+      BLOG_RADIUS * Math.sin(theta),
+    ],
+  }
+})
+
+const CERT_RADIUS = 12.5
+
+const certDefs = [
+  {
+    id: 'cert-genai-rag',
+    label: 'GenAI, LLM & RAG',
+    description: 'Generative AI, LLM & RAG — GeeksforGeeks (Dec 2025)',
+    links: {
+      live: 'https://media.geeksforgeeks.org/courses/certificates/bffbd6be892280341b8a5f0609072099.pdf',
+    },
+  },
+  {
+    id: 'cert-ml-stanford',
+    label: 'ML: Regression & Classification',
+    description:
+      'Supervised Machine Learning — DeepLearning.AI, Stanford University (Nov 2024)',
+    links: {
+      live: 'https://www.coursera.org/account/accomplishments/verify/8BDBW0E8L3LC',
+    },
+  },
+  {
+    id: 'cert-prompt-eng',
+    label: 'Prompt Engineering',
+    description:
+      'Prompt Engineering for ChatGPT — Vanderbilt University (Mar 2024)',
+    links: {
+      live: 'https://www.coursera.org/account/accomplishments/verify/RPYCF9X32AE6',
+    },
+  },
+  {
+    id: 'cert-genai-everyone',
+    label: 'GenAI for Everyone',
+    description: 'Generative AI for Everyone — Coursera (Nov 2023)',
+    links: {
+      live: 'https://www.coursera.org/account/accomplishments/certificate/XZ5QG5NBFQRA',
+    },
+  },
+  {
+    id: 'cert-sql',
+    label: 'SQL for Data Science',
+    description:
+      'Databases and SQL for Data Science with Python — Coursera (May 2023)',
+    links: {
+      live: 'https://www.coursera.org/account/accomplishments/certificate/KY99XLFNJFWS',
+    },
+  },
+  {
+    id: 'cert-docker',
+    label: 'Docker Training',
+    description: 'Docker Training Course — KodeKloud (Mar 2023)',
+    links: {
+      live: 'https://learn.kodekloud.com/certificate/2D064B1166E9-2D06450CDFED-2D063F735021',
+    },
+  },
+]
+
+// 30° offset interleaves the cert ring between blog positions
+const certNodes: Node[] = certDefs.map((c, i) => {
+  const theta = Math.PI / 6 + i * ((2 * Math.PI) / certDefs.length)
+  return {
+    ...c,
+    type: 'cert',
+    color: '#34d399',
+    size: 0.5,
+    position: [
+      CERT_RADIUS * Math.cos(theta),
+      (i - 2.5) * 1.8 + jitter(0.4),
+      CERT_RADIUS * Math.sin(theta),
+    ],
+  }
+})
+
+const INFO_RADIUS = 11
+
+const infoDefs = [
+  {
+    id: 'experience',
+    label: 'MITU Skillologies',
+    description:
+      'Data Scientist (2023–Present). Deep learning research on Brahmi script recognition, RAG pipeline development, and technical training across 10+ industry engagements reaching 2,000+ professionals.',
+    size: 0.7,
+  },
+  {
+    id: 'edu-cdac',
+    label: 'CDAC ACTS',
+    description: 'PG Diploma in Artificial Intelligence (2023)',
+    size: 0.5,
+  },
+  {
+    id: 'edu-sppu',
+    label: 'SPPU',
+    description: 'B.Tech — Civil Engineering, CGPA: 7.78 (2021)',
+    size: 0.5,
+  },
+]
+
+const infoNodes: Node[] = infoDefs.map((d, i) => {
+  const y = (i - 1) * 4
+  const ringRadius = Math.sqrt(INFO_RADIUS ** 2 - y ** 2)
+  const theta = 1 + i * ((2 * Math.PI) / infoDefs.length)
+  return {
+    ...d,
+    type: 'info',
+    color: '#fbbf24',
+    position: [
+      ringRadius * Math.cos(theta),
+      y + jitter(0.4),
+      ringRadius * Math.sin(theta),
+    ],
+  }
+})
+
+export const nodes: Node[] = [
+  ...projectNodes,
+  ...categoryNodes,
+  ...skillNodes,
+  ...blogNodes,
+  ...certNodes,
+  ...infoNodes,
+]
 
 export const nodeById = new Map(nodes.map((n) => [n.id, n]))
 
@@ -308,10 +492,39 @@ const projectCategoryEdges: Edge[] = [
   (targets as string[]).map((target) => ({ source: source as string, target })),
 )
 
+const blogSkillEdges: Edge[] = [
+  { source: 'blog-graph-rag', target: 'rag' },
+  { source: 'blog-cbow', target: 'nlp' },
+  { source: 'blog-rnn', target: 'nlp' },
+  { source: 'blog-prompts', target: 'prompt-eng' },
+]
+
+const certSkillEdges: Edge[] = [
+  { source: 'cert-genai-rag', target: 'rag' },
+  { source: 'cert-genai-rag', target: 'llm' },
+  { source: 'cert-genai-rag', target: 'langchain' },
+  { source: 'cert-ml-stanford', target: 'sklearn' },
+  { source: 'cert-prompt-eng', target: 'prompt-eng' },
+  { source: 'cert-genai-everyone', target: 'llm' },
+  { source: 'cert-sql', target: 'sql' },
+  { source: 'cert-docker', target: 'docker' },
+]
+
+const infoEdges: Edge[] = [
+  { source: 'experience', target: 'cat-genai' },
+  { source: 'experience', target: 'cat-mldl' },
+  { source: 'experience', target: 'cat-mlops' },
+  { source: 'edu-cdac', target: 'experience' },
+  { source: 'edu-sppu', target: 'experience' },
+]
+
 export const edges: Edge[] = [
   ...categorySkillEdges,
   ...projectSkillEdges,
   ...projectCategoryEdges,
+  ...blogSkillEdges,
+  ...certSkillEdges,
+  ...infoEdges,
 ]
 
 // Adjacency map for hover neighborhood highlighting

@@ -31,6 +31,36 @@ export default function Legend() {
           </span>
           Individual Skill
         </li>
+        <li className="flex items-center gap-2.5">
+          <span className="flex h-4 w-4 items-center justify-center">
+            <span
+              className="h-3 w-3 bg-pink-400"
+              style={{
+                clipPath:
+                  'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+              }}
+            />
+          </span>
+          Blog Post
+        </li>
+        <li className="flex items-center gap-2.5">
+          <span className="flex h-4 w-4 items-center justify-center">
+            <span
+              className="h-3 w-3 bg-emerald-400"
+              style={{
+                clipPath:
+                  'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)',
+              }}
+            />
+          </span>
+          Certification
+        </li>
+        <li className="flex items-center gap-2.5">
+          <span className="flex h-4 w-4 items-center justify-center">
+            <span className="h-2.5 w-2.5 rounded-[2px] bg-amber-400" />
+          </span>
+          Experience / Education
+        </li>
       </ul>
     </motion.div>
   )
