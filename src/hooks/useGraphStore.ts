@@ -17,12 +17,14 @@ interface GraphState {
   overviewPosition: Vec3
   showAbout: boolean
   showContact: boolean
+  showOverview: boolean
   setSelectedNode: (id: string | null) => void
   setHoveredNode: (id: string | null) => void
   setCameraTarget: (pos: Vec3 | null, offset?: Vec3) => void
   setOverviewPosition: (pos: Vec3) => void
   setShowAbout: (show: boolean) => void
   setShowContact: (show: boolean) => void
+  setShowOverview: (show: boolean) => void
   flyToCluster: (type: 'projects' | 'skills' | 'blogs' | 'certs') => void
   flyToOverview: () => void
 }
@@ -44,6 +46,7 @@ export const useGraphStore = create<GraphState>((set, get) => ({
   overviewPosition: [0, 0, 18],
   showAbout: false,
   showContact: false,
+  showOverview: false,
   setSelectedNode: (id) => set({ selectedNode: id }),
   setHoveredNode: (id) => set({ hoveredNode: id }),
   setCameraTarget: (pos, offset = NODE_OFFSET) =>
@@ -51,6 +54,7 @@ export const useGraphStore = create<GraphState>((set, get) => ({
   setOverviewPosition: (pos) => set({ overviewPosition: pos }),
   setShowAbout: (show) => set({ showAbout: show }),
   setShowContact: (show) => set({ showContact: show }),
+  setShowOverview: (show) => set({ showOverview: show }),
   flyToCluster: (type) => {
     const clusters: Record<string, { types: string[]; offset: Vec3 }> = {
       projects: { types: ['project'], offset: [0, 3, 14] },

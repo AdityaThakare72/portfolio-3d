@@ -9,6 +9,7 @@ import Legend from './components/ui/Legend'
 import Navbar from './components/ui/Navbar'
 import AboutOverlay from './components/ui/AboutOverlay'
 import ContactOverlay from './components/ui/ContactOverlay'
+import OverviewPanel from './components/ui/OverviewPanel'
 import Loader from './components/ui/Loader'
 import { useGraphStore, deselect } from './hooks/useGraphStore'
 
@@ -18,9 +19,10 @@ export default function App() {
       if (e.key !== 'Escape') return
       // Overlays close first; only then does Escape deselect the node
       const store = useGraphStore.getState()
-      if (store.showAbout || store.showContact) {
+      if (store.showAbout || store.showContact || store.showOverview) {
         store.setShowAbout(false)
         store.setShowContact(false)
+        store.setShowOverview(false)
         return
       }
       deselect()
@@ -54,6 +56,7 @@ export default function App() {
       <Legend />
       <AboutOverlay />
       <ContactOverlay />
+      <OverviewPanel />
     </div>
   )
 }

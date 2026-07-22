@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { useFrame, type ThreeEvent } from '@react-three/fiber'
 import { Billboard, Text } from '@react-three/drei'
-import type { Mesh, MeshStandardMaterial } from 'three'
+import { Vector3, type Mesh, type MeshStandardMaterial } from 'three'
 import { neighbors, type Node } from '../../data/portfolio'
 import { useGraphStore } from '../../hooks/useGraphStore'
 
@@ -25,6 +25,19 @@ const HOVER_EMISSIVE = {
 const ALWAYS_LABELED: readonly string[] = ['project', 'category', 'info']
 const LERP = 0.15
 
+// Touch devices have no hover — surface blog/cert labels permanently there
+const IS_TOUCH =
+  typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
+
+// Screen-center exclusion zone (NDC units) where labels fade out so they
+// never sit on top of the hero text
+const HERO_X = 0.42
+const HERO_Y = 0.5
+// Labels of nodes closer than this to the camera render oversized and can
+// bleed across the viewport — fade them too
+const NEAR_FADE = 9
+const ndc = new Vector3()
+
 export default function NodeMesh({ node, index }: { node: Node; index: number }) {
   const meshRef = useRef<Mesh>(null)
   const materialRef = useRef<MeshStandardMaterial>(null)
@@ -38,7 +51,22 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
   const dimmed = hoveredNode !== null && !isHovered && !isNeighborOfHovered
   const baseOpacity = node.type === 'skill' ? 0.7 : 0.9
 
-  useFrame(({ clock }) => {
+  // troika fillOpacity updates are uniform-only (no relayout), safe per-frame
+  const textRef = useRef<{ fillOpacity: number } | null>(null)
+  const labelOpacity = useRef(1)
+
+  useFrame(({ clock, camera }) => {
+    const text = textRef.current
+    if (text) {
+      ndc.set(...node.position)
+      const tooClose = camera.position.distanceTo(ndc) < NEAR_FADE
+      ndc.project(camera)
+      const overHero =
+        ndc.z < 1 && Math.abs(ndc.x) < HERO_X && Math.abs(ndc.y) < HERO_Y
+      const target = overHero || tooClose ? 0 : 1
+      labelOpacity.current += (target - labelOpacity.current) * 0.12
+      text.fillOpacity = labelOpacity.current
+    }
     const mesh = meshRef.current
     const material = materialRef.current
     if (!mesh || !material) return
@@ -127,18 +155,22 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
         </>
       )}
       {/* Hide labels while zoomed in — the detail panel carries the name */}
-      {!selectedNode && (ALWAYS_LABELED.includes(node.type) || isHovered) && (
-        <Billboard position={[0, node.size * (isProject ? 0.8 : 0.65), 0]}>
-          <Text
-            fontSize={isProject ? 0.34 : node.type === 'category' ? 0.22 : 0.18}
-            color="#cbd5e1"
-            anchorX="center"
-            anchorY="bottom"
-          >
-            {node.label}
-          </Text>
-        </Billboard>
-      )}
+      {!selectedNode &&
+        (ALWAYS_LABELED.includes(node.type) ||
+          isHovered ||
+          (IS_TOUCH && (node.type === 'blog' || node.type === 'cert'))) && (
+          <Billboard position={[0, node.size * (isProject ? 0.8 : 0.65), 0]}>
+            <Text
+              ref={textRef}
+              fontSize={isProject ? 0.34 : node.type === 'category' ? 0.22 : 0.18}
+              color="#cbd5e1"
+              anchorX="center"
+              anchorY="bottom"
+            >
+              {node.label}
+            </Text>
+          </Billboard>
+        )}
     </group>
   )
 }

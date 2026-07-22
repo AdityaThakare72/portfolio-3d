@@ -20,13 +20,13 @@ export default function HeroOverlay() {
         className="text-center [text-shadow:0_2px_12px_rgba(3,7,18,0.9)]"
         style={{ pointerEvents: selectedNode ? 'none' : 'auto' }}
       >
-        <h1 className="text-5xl font-bold tracking-tight text-slate-100">
+        <h1 className="text-3xl font-bold tracking-tight text-slate-100 sm:text-4xl md:text-5xl">
           Aditya Thakare
         </h1>
-        <p className="mt-2 text-lg tracking-wider text-sky-400">
+        <p className="mt-2 text-base tracking-wider text-sky-400 md:text-lg">
           AI Engineer · Data Scientist · MLOps
         </p>
-        <div className="mt-6 flex justify-center gap-4">
+        <div className="mt-6 flex flex-wrap justify-center gap-3 px-4 sm:gap-4">
           {socials.map((s) => (
             <a
               key={s.label}
