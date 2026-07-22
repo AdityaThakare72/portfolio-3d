@@ -69,7 +69,7 @@ export default function OverviewPanel() {
             {/* Header */}
             <div className="flex items-center gap-5">
               <img
-                src="/avatar.png"
+                src="/avatar.jpg"
                 alt="Aditya Thakare"
                 className="h-16 w-16 rounded-full border border-white/10 object-cover sm:h-20 sm:w-20"
               />

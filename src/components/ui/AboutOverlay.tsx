@@ -9,7 +9,7 @@ export default function AboutOverlay() {
     <Modal open={showAbout} onClose={() => setShowAbout(false)}>
       <div className="flex items-center gap-4">
         <img
-          src="/avatar.png"
+          src="/avatar.jpg"
           alt="Aditya Thakare"
           className="h-20 w-20 rounded-full border border-white/10 object-cover"
         />
