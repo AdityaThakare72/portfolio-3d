@@ -7,7 +7,7 @@ const socials = [
 export default function HeroOverlay() {
   return (
     <div className="pointer-events-none fixed inset-0 z-10 flex items-center justify-center">
-      <div className="pointer-events-auto text-center">
+      <div className="pointer-events-auto text-center [text-shadow:0_2px_12px_rgba(3,7,18,0.9)]">
         <h1 className="text-5xl font-bold tracking-tight text-slate-100">
           Aditya Thakare
         </h1>

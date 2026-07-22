@@ -55,7 +55,9 @@ function dim(hex: string, factor = 0.62): string {
 // Tier 1 — projects on a sphere of radius 8, spread vertically
 // ---------------------------------------------------------------------------
 
-const PROJECT_RADIUS = 8
+// Layout radii — keep everything outside a radius-3 dead zone at the origin,
+// where the hero text overlay lives
+const PROJECT_RADIUS = 10
 
 interface ProjectDef {
   id: string
@@ -115,7 +117,7 @@ const projectNodes: Node[] = projectDefs.map((p, i) => {
     ...p,
     type: 'project',
     color: COLORS.project,
-    size: 1.4,
+    size: 0.8,
     position: [
       PROJECT_RADIUS * Math.cos(theta),
       (i - 1.5) * 2,
@@ -128,7 +130,7 @@ const projectNodes: Node[] = projectDefs.map((p, i) => {
 // Tier 2 — categories on a fibonacci sphere of radius 5
 // ---------------------------------------------------------------------------
 
-const CATEGORY_RADIUS = 5
+const CATEGORY_RADIUS = 6.5
 
 interface CategoryDef {
   id: string
@@ -234,7 +236,8 @@ const categoryDefs: CategoryDef[] = [
 const GOLDEN_ANGLE = Math.PI * (1 + Math.sqrt(5))
 
 const categoryNodes: Node[] = categoryDefs.map((c, i) => {
-  const phi = Math.acos(1 - (2 * (i + 0.5)) / categoryDefs.length)
+  // i/(n-1) spreads cos(phi) across the full [-1, 1] range, pole to pole
+  const phi = Math.acos(1 - (2 * i) / (categoryDefs.length - 1))
   const theta = GOLDEN_ANGLE * i
   return {
     id: c.id,

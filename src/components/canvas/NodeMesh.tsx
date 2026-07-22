@@ -28,7 +28,7 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
       </mesh>
       {isProject && (
         <mesh>
-          <sphereGeometry args={[node.size * 0.6, 16, 16]} />
+          <sphereGeometry args={[node.size * 0.4, 16, 16]} />
           <meshBasicMaterial
             color={node.color}
             transparent
@@ -38,9 +38,9 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
         </mesh>
       )}
       {node.type !== 'skill' && (
-        <Billboard position={[0, node.size * 0.5, 0]}>
+        <Billboard position={[0, node.size * (isProject ? 0.8 : 0.65), 0]}>
           <Text
-            fontSize={isProject ? 0.34 : 0.26}
+            fontSize={isProject ? 0.34 : 0.22}
             color="#cbd5e1"
             anchorX="center"
             anchorY="bottom"
