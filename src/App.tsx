@@ -10,6 +10,7 @@ import Navbar from './components/ui/Navbar'
 import AboutOverlay from './components/ui/AboutOverlay'
 import ContactOverlay from './components/ui/ContactOverlay'
 import OverviewPanel from './components/ui/OverviewPanel'
+import ResetViewButton from './components/ui/ResetViewButton'
 import Loader from './components/ui/Loader'
 import { useGraphStore, deselect } from './hooks/useGraphStore'
 
@@ -54,6 +55,7 @@ export default function App() {
       <HeroOverlay />
       <DetailPanel />
       <Legend />
+      <ResetViewButton />
       <AboutOverlay />
       <ContactOverlay />
       <OverviewPanel />

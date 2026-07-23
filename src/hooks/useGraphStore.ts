@@ -18,6 +18,9 @@ interface GraphState {
   showAbout: boolean
   showContact: boolean
   showOverview: boolean
+  // First node selection ever — used to retire the onboarding hint
+  hasInteracted: boolean
+  autoRotate: boolean
   setSelectedNode: (id: string | null) => void
   setHoveredNode: (id: string | null) => void
   setCameraTarget: (pos: Vec3 | null, offset?: Vec3) => void
@@ -25,6 +28,7 @@ interface GraphState {
   setShowAbout: (show: boolean) => void
   setShowContact: (show: boolean) => void
   setShowOverview: (show: boolean) => void
+  setAutoRotate: (v: boolean) => void
   flyToCluster: (type: 'projects' | 'skills' | 'blogs' | 'certs') => void
   flyToOverview: () => void
 }
@@ -47,7 +51,16 @@ export const useGraphStore = create<GraphState>((set, get) => ({
   showAbout: false,
   showContact: false,
   showOverview: false,
-  setSelectedNode: (id) => set({ selectedNode: id }),
+  hasInteracted: false,
+  autoRotate: true,
+  setSelectedNode: (id) =>
+    set(
+      // Selecting a node counts as the first interaction and pauses
+      // auto-rotation until "Reset view"
+      id
+        ? { selectedNode: id, hasInteracted: true, autoRotate: false }
+        : { selectedNode: id },
+    ),
   setHoveredNode: (id) => set({ hoveredNode: id }),
   setCameraTarget: (pos, offset = NODE_OFFSET) =>
     set({ cameraTarget: pos, cameraOffset: offset }),
@@ -55,6 +68,7 @@ export const useGraphStore = create<GraphState>((set, get) => ({
   setShowAbout: (show) => set({ showAbout: show }),
   setShowContact: (show) => set({ showContact: show }),
   setShowOverview: (show) => set({ showOverview: show }),
+  setAutoRotate: (v) => set({ autoRotate: v }),
   flyToCluster: (type) => {
     const clusters: Record<string, { types: string[]; offset: Vec3 }> = {
       projects: { types: ['project'], offset: [0, 3, 14] },

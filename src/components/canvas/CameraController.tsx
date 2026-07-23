@@ -63,7 +63,7 @@ export default function CameraController() {
         controls.minDistance = 8
       }
     } else {
-      controls.autoRotate = true
+      controls.autoRotate = store.autoRotate
     }
     controls.update()
   })
@@ -71,6 +71,8 @@ export default function CameraController() {
   return (
     <OrbitControls
       ref={controlsRef}
+      // Any grab/scroll pauses auto-rotation until "Reset view"
+      onStart={() => useGraphStore.getState().setAutoRotate(false)}
       enableDamping
       dampingFactor={0.05}
       autoRotateSpeed={0.4}

@@ -9,6 +9,7 @@ const socials = [
 
 export default function HeroOverlay() {
   const selectedNode = useGraphStore((s) => s.selectedNode)
+  const hasInteracted = useGraphStore((s) => s.hasInteracted)
 
   return (
     <motion.div
@@ -26,6 +27,9 @@ export default function HeroOverlay() {
         <p className="mt-2 text-base tracking-wider text-sky-400 md:text-lg">
           AI Engineer · Data Scientist · MLOps
         </p>
+        <p className="mt-3 px-4 text-sm tracking-wide text-slate-400">
+          2+ years · 4 production GenAI systems · 2,000+ professionals trained
+        </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3 px-4 sm:gap-4">
           {socials.map((s) => (
             <a
@@ -39,6 +43,11 @@ export default function HeroOverlay() {
             </a>
           ))}
         </div>
+        {!hasInteracted && (
+          <p className="mt-6 animate-pulse text-sm text-slate-500">
+            Click any node to explore
+          </p>
+        )}
       </div>
     </motion.div>
   )
