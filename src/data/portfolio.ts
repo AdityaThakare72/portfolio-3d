@@ -72,7 +72,7 @@ const projectDefs: ProjectDef[] = [
     id: 'legal-agent',
     label: 'Legal Agent',
     description:
-      'End-to-end conversational RAG agent specialized in Indian law. Full data pipeline — web scraping, preprocessing, semantic chunking — with persistent ChromaDB storage and Gemini embeddings. Deployed via Streamlit + Nginx on DigitalOcean.',
+      'End-to-end conversational RAG agent specialized in Indian law. Full data pipeline — web scraping, preprocessing, semantic chunking — with persistent ChromaDB storage and Gemini embeddings. Originally self-hosted on DigitalOcean with Nginx and systemd; since migrated to Streamlit Community Cloud.',
     links: {
       live: 'https://legal-agent-i.streamlit.app/',
       source: 'https://github.com/AdityaThakare72/Legal_Agent1',
