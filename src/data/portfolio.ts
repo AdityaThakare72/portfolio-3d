@@ -74,7 +74,7 @@ const projectDefs: ProjectDef[] = [
     description:
       'End-to-end conversational RAG agent specialized in Indian law. Full data pipeline — web scraping, preprocessing, semantic chunking — with persistent ChromaDB storage and Gemini embeddings. Deployed via Streamlit + Nginx on DigitalOcean.',
     links: {
-      live: 'https://lagent.adityathakare.app',
+      live: 'https://legal-agent-i.streamlit.app/',
       source: 'https://github.com/AdityaThakare72/Legal_Agent1',
     },
     tags: ['RAG', 'LangChain', 'ChromaDB', 'Gemini API', 'Streamlit', 'Nginx'],
@@ -85,7 +85,7 @@ const projectDefs: ProjectDef[] = [
     description:
       'Self-refining multi-agent research system built with LangGraph — Researcher (Tavily + Gemini), Writer, and Critic agents with iterative revision loops. TypedDict state schema and conditional edges for quality-gated output.',
     links: {
-      live: 'https://research-agent.adityathakare.app',
+      live: 'https://research-agent-blog.streamlit.app/',
       source: 'https://github.com/AdityaThakare72/Research-Agent',
     },
     tags: ['Agentic AI', 'LangGraph', 'LangChain', 'Gemini API', 'Tavily', 'Docker'],
@@ -94,12 +94,12 @@ const projectDefs: ProjectDef[] = [
     id: 'equipment-maintenance',
     label: 'Equipment Maintenance',
     description:
-      'Sensor-driven predictive maintenance classifier using XGBoost. Fully decoupled microservices: FastAPI inference, Streamlit visualization, MLflow experiment tracking, and DVC data lineage.',
+      'Sensor-driven predictive maintenance classifier using XGBoost with a reproducible DVC pipeline and MLflow tracking. FastAPI inference on Render, Streamlit dashboard on Streamlit Cloud, and GitHub Actions CI/CD. 98.3% accuracy, 91.2% F1.',
     links: {
-      live: 'https://equipment-maintenance.adityathakare.app',
+      live: 'https://industrial-equipment-maintenance.streamlit.app/',
       source: 'https://github.com/AdityaThakare72/Industrial_Equipment_Maintenance',
     },
-    tags: ['XGBoost', 'FastAPI', 'MLflow', 'DVC', 'Docker', 'Nginx'],
+    tags: ['XGBoost', 'FastAPI', 'MLflow', 'DVC', 'Docker', 'GitHub Actions'],
   },
   {
     id: 'ceo-dashboard',
@@ -477,7 +477,7 @@ const categorySkillEdges: Edge[] = categoryDefs.flatMap((c) =>
 const projectSkillEdges: Edge[] = [
   ['legal-agent', ['rag', 'langchain', 'chromadb', 'gemini-api', 'streamlit', 'nginx']],
   ['research-agent', ['agentic-ai', 'langgraph', 'langchain', 'gemini-api', 'docker']],
-  ['equipment-maintenance', ['xgboost', 'fastapi', 'mlflow', 'dvc', 'docker', 'nginx', 'streamlit']],
+  ['equipment-maintenance', ['xgboost', 'fastapi', 'mlflow', 'dvc', 'docker', 'streamlit']],
   ['ceo-dashboard', ['langgraph', 'fastapi', 'pydantic']],
 ].flatMap(([source, targets]) =>
   (targets as string[]).map((target) => ({ source: source as string, target })),
