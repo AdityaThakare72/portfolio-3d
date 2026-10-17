@@ -216,6 +216,13 @@ function InfoContent({ node }: { node: Node }) {
       <p className="mt-3 text-sm leading-relaxed text-slate-300">
         {node.description}
       </p>
+      {node.highlights && (
+        <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-300">
+          {node.highlights.map((h) => (
+            <li key={h}>{h}</li>
+          ))}
+        </ul>
+      )}
     </>
   )
 }

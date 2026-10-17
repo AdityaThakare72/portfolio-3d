@@ -181,6 +181,13 @@ export default function OverviewPanel() {
                   <p className="mt-1 text-sm leading-relaxed text-slate-300">
                     {experience.description}
                   </p>
+                  {experience.highlights && (
+                    <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-slate-300">
+                      {experience.highlights.map((h) => (
+                        <li key={h}>{h}</li>
+                      ))}
+                    </ul>
+                  )}
                 </>
               )}
             </Section>

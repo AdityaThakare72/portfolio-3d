@@ -12,6 +12,8 @@ export interface Node {
   tags?: string[]
   // Projects still being built — shows an "In progress" badge
   status?: 'in-progress'
+  // Bullet points for experience nodes
+  highlights?: string[]
 }
 
 export interface Edge {
@@ -457,8 +459,13 @@ const infoDefs = [
   {
     id: 'experience',
     label: 'MITU Skillologies',
-    description:
-      'Data Scientist (2023–Present). Deep learning research on Brahmi script recognition, RAG pipeline development, and technical training across 10+ industry engagements reaching 2,000+ professionals.',
+    description: 'Data Scientist · Pune · Sep 2023 – Present',
+    highlights: [
+      'Deep learning research support on Brahmi script recognition: compared Custom CNN, InceptionNet, ResNet-50 and XceptionNet on a 7,880-image, 56-class dataset; ResNet-50 gave the best accuracy.',
+      'Research and implementation support for student progression prediction and crop disease classification.',
+      'Built end-to-end AI systems (RAG pipelines, neural networks, MLOps workflows) as primary technical SME across 10+ industry engagements and faculty development programs reaching 2,000+ professionals.',
+      'Designed a 140-session AI curriculum, Python through Generative AI and LangGraph.',
+    ],
     size: 0.7,
   },
   {
