@@ -23,8 +23,8 @@ view updates automatically.
 ## 1. Adding a new project
 
 **File:** `src/data/portfolio.ts` — find `const projectDefs` (around
-line 70). It's a list of 4 project blocks. Copy one, paste it before
-the closing `]`, and edit:
+line 77). It's a list of 7 project blocks, in display order. Copy one,
+paste it before the closing `]`, and edit:
 
 ```ts
   {
@@ -44,7 +44,11 @@ For a client project with no public links, delete the whole `links: { ... },`
 block — the panel will automatically show a "Client Project" badge instead
 of buttons.
 
-**Connect it to skills.** Find `const projectSkillEdges` (around line 477).
+**Work in progress?** Add `status: 'in-progress',` to the block. The panel
+and Overview then show an "In progress" badge. Delete that one line when
+the project is done.
+
+**Connect it to skills.** Find `const projectSkillEdges` (around line 534).
 Each row is `['project-id', ['skill-id', 'skill-id', ...]]`. Add a row:
 
 ```ts
@@ -55,7 +59,7 @@ The skill IDs must already exist (see section 3 for the full list of
 skill IDs — or search the file for the skill's label).
 
 **Connect it to categories.** Find `const projectCategoryEdges` (around
-line 486) and add:
+line 546) and add:
 
 ```ts
   ['my-new-project', ['cat-genai', 'cat-backend']],
@@ -65,8 +69,9 @@ Category IDs: `cat-languages`, `cat-genai`, `cat-vectorstores`,
 `cat-mldl`, `cat-backend`, `cat-mlops`, `cat-dataviz`.
 
 **Layout:** positions are computed automatically — projects spread
-evenly around a ring, so a 5th project just works. If the graph ever
-feels crowded, increase `const PROJECT_RADIUS = 10` (line ~60) to `11`
+evenly around a ring and the vertical spread stays centered, so another
+project just works. If the graph ever
+feels crowded, increase `const PROJECT_RADIUS = 10` (line ~66) to `11`
 or `12`.
 
 Done. The project appears in the graph, the detail panel, and the
@@ -91,7 +96,7 @@ edge is silently skipped — but keep the file clean anyway.
 ## 3. Adding a new skill
 
 **File:** `src/data/portfolio.ts` — find `const categoryDefs` (around
-line 142). Each category has a `skills:` list. Add yours to the right
+line 183). Each category has a `skills:` list. Add yours to the right
 category:
 
 Before:
@@ -133,7 +138,7 @@ listing all happen automatically.
 ## 4. Adding a new blog post
 
 **File:** `src/data/portfolio.ts` — find `const blogDefs` (around line
-287). Copy a block, paste before the closing `]`:
+327). Copy a block, paste before the closing `]`:
 
 ```ts
   {
@@ -149,7 +154,7 @@ listing all happen automatically.
 ```
 
 Optionally connect it to a related skill in `const blogSkillEdges`
-(around line 495):
+(around line 558):
 
 ```ts
   { source: 'blog-my-topic', target: 'llm' },
@@ -160,22 +165,24 @@ Optionally connect it to a related skill in `const blogSkillEdges`
 ## 5. Adding a new certification
 
 **File:** `src/data/portfolio.ts` — find `const certDefs` (around line
-348). Copy a block:
+388). All certification data lives in that list. Copy a block:
 
 ```ts
   {
     id: 'cert-aws-ml',
     label: 'AWS ML Specialty',                  // short — shown in the graph
-    description: 'AWS Certified Machine Learning — Amazon (Jan 2027)',
+    description: 'AWS Certified Machine Learning — Amazon · Jan 2027',
+    credentialId: 'ABC123',                     // delete if there is none
     links: {
-      live: 'https://your-verification-url',
+      live: 'https://your-verification-url',    // delete links if there is none
     },
   },
 ```
 
-The `description` follows the pattern `Course Name — Issuer (Month Year)`
-and is what shows in the panel and Overview. Optionally connect it to a
-skill in `const certSkillEdges` (around line 502):
+The `description` follows the pattern `Course Name — Issuer · Month Year`
+and is what shows in the panel and Overview. `credentialId` shows under
+it, and `links.live` becomes the "View" button. Optionally connect it to a
+skill in `const certSkillEdges` (around line 565):
 
 ```ts
   { source: 'cert-aws-ml', target: 'sklearn' },
@@ -186,15 +193,19 @@ skill in `const certSkillEdges` (around line 502):
 ## 6. Updating experience / education
 
 **File:** `src/data/portfolio.ts` — find `const infoDefs` (around line
-420). Three blocks: `experience`, `edu-cdac`, `edu-sppu`. Just edit the
-`description` text:
+471). Three blocks: `experience`, `edu-cdac`, `edu-sppu`. Edit the
+`description` text; the experience block also has a `highlights` list,
+one string per bullet:
 
 ```ts
   {
     id: 'experience',
     label: 'MITU Skillologies',
-    description:
-      'Data Scientist (2023–Present). <-- change this text -->',
+    description: 'Data Scientist · Pune · Sep 2023 – Present',
+    highlights: [
+      'One bullet point.',
+      'Another bullet point.',
+    ],
     size: 0.7,
   },
 ```
@@ -212,10 +223,11 @@ between the `>` and `<` or inside the quotes):
 
 | What | File | What to look for |
 |---|---|---|
-| Big name + subtitle on landing | `src/components/ui/HeroOverlay.tsx` | `Aditya Thakare` / `AI Engineer · Data Scientist · MLOps` |
-| Stat line on landing | `src/components/ui/HeroOverlay.tsx` | `2+ years · 4 production GenAI systems · ...` |
-| Bio paragraph in About modal | `src/components/ui/AboutOverlay.tsx` | `Data Scientist with 2+ years of experience...` |
-| Stat line + header in Overview page | `src/components/ui/OverviewPanel.tsx` | `2+ years experience · 4 production GenAI/ML systems · ...` |
+| Big name + subtitle on landing | `src/components/ui/HeroOverlay.tsx` | `Aditya Thakare` / `Data Scientist \| GenAI &amp; Agentic AI \| MLOps` |
+| Stat line on landing | `src/components/ui/HeroOverlay.tsx` | `3+ years · 4 deployed AI systems · ...` |
+| Bio paragraph in About modal | `src/components/ui/AboutOverlay.tsx` | `Data Scientist with 3+ years of experience...` |
+| Stat line + header in Overview page | `src/components/ui/OverviewPanel.tsx` | `3+ years experience · 4 deployed GenAI/ML systems · ...` |
+| Page title, description, social share tags | `index.html` | `<title>`, `og:*`, `twitter:*` (site URL is `https://adityathakare.app`) |
 
 ---
 
