@@ -511,19 +511,25 @@ const categorySkillEdges: Edge[] = categoryDefs.flatMap((c) =>
 )
 
 const projectSkillEdges: Edge[] = [
-  ['legal-agent', ['rag', 'langchain', 'chromadb', 'gemini-api', 'streamlit', 'nginx']],
-  ['research-agent', ['agentic-ai', 'langgraph', 'langchain', 'gemini-api', 'docker']],
-  ['equipment-maintenance', ['xgboost', 'fastapi', 'mlflow', 'dvc', 'docker', 'streamlit']],
-  ['ceo-dashboard', ['langgraph', 'fastapi', 'pydantic']],
+  ['research-agent', ['agentic-ai', 'langgraph', 'langchain', 'gemini-api', 'streamlit', 'docker']],
+  ['legal-agent', ['rag', 'langchain', 'chromadb', 'gemini-api', 'gemini-embed', 'semantic-chunk', 'streamlit', 'nginx', 'systemd', 'ssl-https']],
+  ['equipment-maintenance', ['xgboost', 'fastapi', 'mlflow', 'dvc', 'docker', 'github-actions', 'cicd', 'streamlit']],
+  ['ceo-dashboard', ['langgraph', 'agentic-ai', 'fastapi', 'pydantic', 'openai-api']],
+  ['react-from-scratch', ['python', 'agentic-ai', 'llm']],
+  ['typed-decision-models', ['nlp']],
+  ['agent-harness-demo', ['agentic-ai', 'python', 'gemini-api']],
 ].flatMap(([source, targets]) =>
   (targets as string[]).map((target) => ({ source: source as string, target })),
 )
 
 const projectCategoryEdges: Edge[] = [
-  ['legal-agent', ['cat-genai', 'cat-vectorstores', 'cat-backend']],
   ['research-agent', ['cat-genai', 'cat-backend', 'cat-mlops']],
+  ['legal-agent', ['cat-genai', 'cat-vectorstores', 'cat-backend', 'cat-mlops']],
   ['equipment-maintenance', ['cat-mldl', 'cat-backend', 'cat-mlops']],
   ['ceo-dashboard', ['cat-genai', 'cat-backend']],
+  ['react-from-scratch', ['cat-genai', 'cat-languages']],
+  ['typed-decision-models', ['cat-mldl']],
+  ['agent-harness-demo', ['cat-genai', 'cat-languages']],
 ].flatMap(([source, targets]) =>
   (targets as string[]).map((target) => ({ source: source as string, target })),
 )
