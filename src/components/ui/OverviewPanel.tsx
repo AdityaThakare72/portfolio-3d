@@ -78,12 +78,12 @@ export default function OverviewPanel() {
                   Aditya Thakare
                 </h2>
                 <p className="text-sm text-sky-400 sm:text-base">
-                  AI Engineer · Data Scientist · MLOps — Pune, Maharashtra
+                  Data Scientist | GenAI &amp; Agentic AI | MLOps — Pune, Maharashtra
                 </p>
               </div>
             </div>
             <p className="mt-4 text-sm font-medium text-slate-200">
-              2+ years experience · 4 production GenAI/ML systems · 2,000+
+              3+ years experience · 4 deployed GenAI/ML systems · 2,000+
               professionals trained across 10+ industry engagements
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
