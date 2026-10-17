@@ -69,10 +69,21 @@ interface ProjectDef {
 
 const projectDefs: ProjectDef[] = [
   {
-    id: 'legal-agent',
-    label: 'Legal Agent',
+    id: 'research-agent',
+    label: 'Agentic Research System',
     description:
-      'End-to-end conversational RAG agent specialized in Indian law. Full data pipeline — web scraping, preprocessing, semantic chunking — with persistent ChromaDB storage and Gemini embeddings. Originally self-hosted on DigitalOcean with Nginx and systemd; since migrated to Streamlit Community Cloud.',
+      "LangGraph multi-agent research system: Researcher (Tavily + Gemini), Writer and Critic agents sharing a TypedDict state. Conditional edges loop back through the Writer until the Critic's score clears a threshold. Deployed on Streamlit.",
+    links: {
+      live: 'https://research-agent-blog.streamlit.app/',
+      source: 'https://github.com/AdityaThakare72/Research-Agent',
+    },
+    tags: ['LangGraph', 'LangChain', 'Gemini API', 'Tavily', 'Streamlit', 'Docker'],
+  },
+  {
+    id: 'legal-agent',
+    label: 'Conversational Legal Agent',
+    description:
+      'Conversational RAG agent for Indian law. Scraping, preprocessing and semantic chunking of legal data; ChromaDB for persistent retrieval; Gemini embeddings. First self-hosted on DigitalOcean with Nginx, SSL and systemd, now deployed on Streamlit Community Cloud.',
     links: {
       live: 'https://legal-agent-i.streamlit.app/',
       source: 'https://github.com/AdityaThakare72/Legal_Agent1',
@@ -80,34 +91,23 @@ const projectDefs: ProjectDef[] = [
     tags: ['RAG', 'LangChain', 'ChromaDB', 'Gemini API', 'Streamlit', 'Nginx'],
   },
   {
-    id: 'research-agent',
-    label: 'Research Agent',
-    description:
-      'Self-refining multi-agent research system built with LangGraph — Researcher (Tavily + Gemini), Writer, and Critic agents with iterative revision loops. TypedDict state schema and conditional edges for quality-gated output.',
-    links: {
-      live: 'https://research-agent-blog.streamlit.app/',
-      source: 'https://github.com/AdityaThakare72/Research-Agent',
-    },
-    tags: ['Agentic AI', 'LangGraph', 'LangChain', 'Gemini API', 'Tavily', 'Docker'],
-  },
-  {
     id: 'equipment-maintenance',
-    label: 'Equipment Maintenance',
+    label: 'Industrial Equipment Maintenance',
     description:
-      'Sensor-driven predictive maintenance classifier using XGBoost with a reproducible DVC pipeline and MLflow tracking. FastAPI inference on Render, Streamlit dashboard on Streamlit Cloud, and GitHub Actions CI/CD. 98.3% accuracy, 91.2% F1.',
+      'XGBoost predictive maintenance classifier, 98.3% accuracy and 91.2% F1 on imbalanced sensor data (scale_pos_weight). DVC pipeline, MLflow tracking, FastAPI inference API in Docker on Render, Streamlit dashboard, GitHub Actions CI (ruff + pytest).',
     links: {
       live: 'https://industrial-equipment-maintenance.streamlit.app/',
       source: 'https://github.com/AdityaThakare72/Industrial_Equipment_Maintenance',
     },
-    tags: ['XGBoost', 'FastAPI', 'MLflow', 'DVC', 'Docker', 'GitHub Actions'],
+    tags: ['XGBoost', 'FastAPI', 'MLflow', 'DVC', 'Docker', 'GitHub Actions', 'Render', 'Streamlit'],
   },
   {
     id: 'ceo-dashboard',
-    label: 'CEO Dashboard',
+    label: 'CEO Financial Dashboard',
     description:
-      'Production-grade financial analytics dashboard with natural-language query capabilities for C-suite executives. Agentic backend using LangGraph orchestration with FastAPI, DuckDB/Parquet, and MongoDB.',
+      'Client project, in production. LangGraph orchestration behind a FastAPI layer; DuckDB/Parquet for analytical queries, MongoDB for metadata; Pydantic structured outputs with GPT-4o-mini for schema-validated answers to financial questions.',
     // client project — no public links
-    tags: ['LangGraph', 'FastAPI', 'DuckDB', 'Parquet', 'MongoDB', 'Pydantic'],
+    tags: ['LangGraph', 'FastAPI', 'DuckDB', 'Parquet', 'MongoDB', 'Pydantic', 'GPT-4o-mini'],
   },
 ]
 
