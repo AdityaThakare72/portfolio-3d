@@ -192,6 +192,11 @@ function CertContent({ node }: { node: Node }) {
       <p className="mt-3 text-sm leading-relaxed text-slate-300">
         {node.description}
       </p>
+      {node.credentialId && (
+        <p className="mt-2 break-all text-xs text-slate-400">
+          Credential ID: {node.credentialId}
+        </p>
+      )}
       {node.links?.live && (
         <a
           href={node.links.live}
@@ -199,7 +204,7 @@ function CertContent({ node }: { node: Node }) {
           rel="noreferrer"
           className="mt-6 inline-block rounded-lg bg-emerald-400 px-4 py-2 text-sm font-semibold text-gray-950 transition-colors hover:bg-emerald-300"
         >
-          Verify Certificate
+          View
         </a>
       )}
     </>

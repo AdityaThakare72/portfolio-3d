@@ -211,17 +211,26 @@ export default function OverviewPanel() {
               <ul className="space-y-2">
                 {certs.map((c) => (
                   <li key={c.id} className="text-sm text-slate-300">
-                    {c.links?.live ? (
-                      <a
-                        href={c.links.live}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="hover:text-sky-400"
-                      >
-                        {c.description}
-                      </a>
-                    ) : (
-                      c.description
+                    {c.description}
+                    {c.credentialId && (
+                      <span className="break-all text-slate-500">
+                        {' '}
+                        · ID {c.credentialId}
+                      </span>
+                    )}
+                    {c.links?.live && (
+                      <>
+                        {' '}
+                        ·{' '}
+                        <a
+                          href={c.links.live}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-sky-400 hover:underline"
+                        >
+                          View
+                        </a>
+                      </>
                     )}
                   </li>
                 ))}

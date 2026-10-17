@@ -14,6 +14,8 @@ export interface Node {
   status?: 'in-progress'
   // Bullet points for experience nodes
   highlights?: string[]
+  // Certificate credential ID, shown in the cert panel
+  credentialId?: string
 }
 
 export interface Edge {
@@ -385,9 +387,18 @@ const CERT_RADIUS = 12.5
 
 const certDefs = [
   {
+    id: 'cert-iimb-genai',
+    label: 'GenAI & LLMs',
+    description:
+      'Generative AI and Large Language Models — IIM Bangalore (SWAYAM) · Jul – Nov 2024',
+    links: {
+      live: 'https://onlinecourses.swayam2.ac.in/imb24_mg116/certificate?q=aZPMs7O/ZaHSTGa3paC5N3K18lOXUib4z%2BfTysE4W7UEtfEd/ZxsfiLrPwechPHb',
+    },
+  },
+  {
     id: 'cert-genai-rag',
     label: 'GenAI, LLM & RAG',
-    description: 'Generative AI, LLM & RAG — GeeksforGeeks (Dec 2025)',
+    description: 'Generative AI, LLM & RAG - Skill Up — GeeksforGeeks · Dec 2025',
     links: {
       live: 'https://media.geeksforgeeks.org/courses/certificates/bffbd6be892280341b8a5f0609072099.pdf',
     },
@@ -396,33 +407,35 @@ const certDefs = [
     id: 'cert-ml-stanford',
     label: 'ML: Regression & Classification',
     description:
-      'Supervised Machine Learning — DeepLearning.AI, Stanford University (Nov 2024)',
+      'Supervised Machine Learning: Regression and Classification — DeepLearning.AI, Stanford University · Nov 2024',
+    credentialId: '8BDBW0E8L3LC',
     links: {
-      live: 'https://www.coursera.org/account/accomplishments/verify/8BDBW0E8L3LC',
+      live: 'https://www.coursera.org/account/accomplishments/records/8BDBW0E8L3LC',
     },
   },
   {
     id: 'cert-prompt-eng',
     label: 'Prompt Engineering',
-    description:
-      'Prompt Engineering for ChatGPT — Vanderbilt University (Mar 2024)',
+    description: 'Prompt Engineering for ChatGPT — Vanderbilt University · Mar 2024',
+    credentialId: 'RPYCF9X32AE6',
     links: {
-      live: 'https://www.coursera.org/account/accomplishments/verify/RPYCF9X32AE6',
+      live: 'https://www.coursera.org/account/accomplishments/records/RPYCF9X32AE6',
     },
   },
   {
-    id: 'cert-genai-everyone',
-    label: 'GenAI for Everyone',
-    description: 'Generative AI for Everyone — Coursera (Nov 2023)',
+    id: 'cert-python',
+    label: 'Python Skill Up',
+    description: 'Python Skill Up — GeeksforGeeks · Dec 2025',
     links: {
-      live: 'https://www.coursera.org/account/accomplishments/certificate/XZ5QG5NBFQRA',
+      live: 'https://media.geeksforgeeks.org/courses/certificates/9e43a4eff794f8bdcc292fe22aec3966.pdf',
     },
   },
   {
     id: 'cert-sql',
     label: 'SQL for Data Science',
     description:
-      'Databases and SQL for Data Science with Python — Coursera (May 2023)',
+      'Databases and SQL for Data Science with Python — Coursera · May 2023',
+    credentialId: 'KY99XLFNJFWS',
     links: {
       live: 'https://www.coursera.org/account/accomplishments/certificate/KY99XLFNJFWS',
     },
@@ -430,10 +443,10 @@ const certDefs = [
   {
     id: 'cert-docker',
     label: 'Docker Training',
-    description: 'Docker Training Course — KodeKloud (Mar 2023)',
-    links: {
-      live: 'https://learn.kodekloud.com/certificate/2D064B1166E9-2D06450CDFED-2D063F735021',
-    },
+    description:
+      'Docker Training Course for the Absolute Beginner — KodeKloud · Mar 2023',
+    // no public link — credential ID only
+    credentialId: '2D064B1166E9-2D06450CDFED-2D063F735021',
   },
 ]
 
@@ -550,12 +563,13 @@ const blogSkillEdges: Edge[] = [
 ]
 
 const certSkillEdges: Edge[] = [
+  { source: 'cert-iimb-genai', target: 'llm' },
   { source: 'cert-genai-rag', target: 'rag' },
   { source: 'cert-genai-rag', target: 'llm' },
   { source: 'cert-genai-rag', target: 'langchain' },
   { source: 'cert-ml-stanford', target: 'sklearn' },
   { source: 'cert-prompt-eng', target: 'prompt-eng' },
-  { source: 'cert-genai-everyone', target: 'llm' },
+  { source: 'cert-python', target: 'python' },
   { source: 'cert-sql', target: 'sql' },
   { source: 'cert-docker', target: 'docker' },
 ]
