@@ -109,6 +109,38 @@ const projectDefs: ProjectDef[] = [
     // client project — no public links
     tags: ['LangGraph', 'FastAPI', 'DuckDB', 'Parquet', 'MongoDB', 'Pydantic', 'GPT-4o-mini'],
   },
+  {
+    id: 'react-from-scratch',
+    label: 'react-from-scratch',
+    description:
+      'ReAct (Yao et al., ICLR 2023) reimplemented in plain Python, no LangChain: tool registry, output parser, and a ReAct vs Act-only vs CoT evaluation.',
+    links: {
+      source: 'https://github.com/AdityaThakare72/react-from-scratch',
+    },
+    // TODO: confirm tags against the repo once its README is written
+    tags: ['Python', 'Agentic AI', 'LLMs'],
+  },
+  {
+    id: 'typed-decision-models',
+    label: 'typed-decision-models',
+    description:
+      'Comparing typed decision models (Laya, Jev) with a fine-tuned BERT baseline on accuracy and latency.',
+    links: {
+      source: 'https://github.com/AdityaThakare72/typed-decision-models',
+    },
+    // TODO: confirm tags against the repo once its README is written
+    tags: ['NLP', 'BERT'],
+  },
+  {
+    id: 'agent-harness-demo',
+    label: 'agent-harness-demo',
+    description:
+      'Minimal agent harness built in stages (v0 to v4) with a Gemini adapter.',
+    links: {
+      source: 'https://github.com/AdityaThakare72/agent-harness-demo',
+    },
+    tags: ['Agentic AI', 'Python', 'Gemini API'],
+  },
 ]
 
 const projectNodes: Node[] = projectDefs.map((p, i) => {
