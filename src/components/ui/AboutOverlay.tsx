@@ -51,8 +51,8 @@ export default function AboutOverlay() {
           <span className="text-slate-400">(2023)</span>
         </li>
         <li>
-          B.Tech — Civil Engineering, SPPU{' '}
-          <span className="text-slate-400">(2021)</span>
+          B.Tech, Civil Engineering — Savitribai Phule Pune University, CGPA
+          7.78 <span className="text-slate-400">(2021)</span>
         </li>
       </ul>
     </Modal>

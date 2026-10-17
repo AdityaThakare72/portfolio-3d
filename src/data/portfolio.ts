@@ -470,14 +470,15 @@ const infoDefs = [
   },
   {
     id: 'edu-cdac',
-    label: 'CDAC ACTS',
+    label: 'CDAC ACTS, Pune',
     description: 'PG Diploma in Artificial Intelligence (2023)',
     size: 0.5,
   },
   {
     id: 'edu-sppu',
     label: 'SPPU',
-    description: 'B.Tech — Civil Engineering, CGPA: 7.78 (2021)',
+    description:
+      'B.Tech, Civil Engineering — Savitribai Phule Pune University · CGPA 7.78 (2021)',
     size: 0.5,
   },
 ]
