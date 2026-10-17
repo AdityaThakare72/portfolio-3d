@@ -13,10 +13,16 @@ function Pill({ children }: { children: React.ReactNode }) {
 function ProjectContent({ node }: { node: Node }) {
   return (
     <>
-      {node.tags?.[0] && (
-        <span className="mb-3 inline-block rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium text-sky-400">
-          {node.tags[0]}
+      {node.status === 'in-progress' ? (
+        <span className="mb-3 inline-block rounded-full bg-amber-400/10 px-3 py-1 text-xs font-medium text-amber-300">
+          In progress
         </span>
+      ) : (
+        node.tags?.[0] && (
+          <span className="mb-3 inline-block rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium text-sky-400">
+            {node.tags[0]}
+          </span>
+        )
       )}
       <h2 className="text-2xl font-bold text-white">{node.label}</h2>
       <p className="mt-3 text-sm leading-relaxed text-slate-300">

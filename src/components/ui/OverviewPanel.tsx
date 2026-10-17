@@ -131,6 +131,9 @@ export default function OverviewPanel() {
                         {p.label}
                       </h4>
                       <div className="flex gap-3 text-sm">
+                        {p.status === 'in-progress' && (
+                          <span className="text-amber-300">In progress</span>
+                        )}
                         {p.links?.live && (
                           <a
                             href={p.links.live}

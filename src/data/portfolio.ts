@@ -10,6 +10,8 @@ export interface Node {
   position: [number, number, number]
   links?: { live?: string; source?: string }
   tags?: string[]
+  // Projects still being built — shows an "In progress" badge
+  status?: 'in-progress'
 }
 
 export interface Edge {
@@ -65,6 +67,7 @@ interface ProjectDef {
   description: string
   links?: { live?: string; source?: string }
   tags: string[]
+  status?: 'in-progress'
 }
 
 const projectDefs: ProjectDef[] = [
@@ -117,6 +120,7 @@ const projectDefs: ProjectDef[] = [
     links: {
       source: 'https://github.com/AdityaThakare72/react-from-scratch',
     },
+    status: 'in-progress',
     // TODO: confirm tags against the repo once its README is written
     tags: ['Python', 'Agentic AI', 'LLMs'],
   },
@@ -128,6 +132,7 @@ const projectDefs: ProjectDef[] = [
     links: {
       source: 'https://github.com/AdityaThakare72/typed-decision-models',
     },
+    status: 'in-progress',
     // TODO: confirm tags against the repo once its README is written
     tags: ['NLP', 'BERT'],
   },
