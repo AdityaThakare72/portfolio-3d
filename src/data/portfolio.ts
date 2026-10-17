@@ -460,7 +460,7 @@ const certNodes: Node[] = certDefs.map((c, i) => {
     size: 0.5,
     position: [
       CERT_RADIUS * Math.cos(theta),
-      (i - 2.5) * 1.8 + jitter(0.4),
+      (i - (certDefs.length - 1) / 2) * 1.8 + jitter(0.4),
       CERT_RADIUS * Math.sin(theta),
     ],
   }
