@@ -157,7 +157,7 @@ const projectNodes: Node[] = projectDefs.map((p, i) => {
     size: 0.8,
     position: [
       PROJECT_RADIUS * Math.cos(theta),
-      (i - 1.5) * 2,
+      (i - (projectDefs.length - 1) / 2) * 2,
       PROJECT_RADIUS * Math.sin(theta),
     ],
   }
