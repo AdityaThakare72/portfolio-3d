@@ -1,7 +1,12 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useFrame, type ThreeEvent } from '@react-three/fiber'
 import { Billboard, Text } from '@react-three/drei'
-import { Vector3, type Mesh, type MeshStandardMaterial } from 'three'
+import {
+  Vector3,
+  type Mesh,
+  type MeshStandardMaterial,
+  type PerspectiveCamera,
+} from 'three'
 import { neighbors, type Node } from '../../data/portfolio'
 import { useGraphStore } from '../../hooks/useGraphStore'
 import { useActiveFocus } from '../../hooks/focus'
@@ -39,6 +44,27 @@ const HERO_Y = 0.5
 const NEAR_FADE = 9
 const ndc = new Vector3()
 
+// Screen-space boxes of the labels drawn last frame. When two overlap, the
+// lower-priority one fades out: hovered > project > category/info > rest,
+// ties going to the label closer to the camera.
+interface LabelBox {
+  x: number
+  y: number
+  w: number
+  h: number
+  prio: number
+  scale: number
+  shown: boolean
+}
+const labelBoxes = new Map<string, LabelBox>()
+const TYPE_PRIO: Record<string, number> = { project: 3, category: 2, info: 2 }
+
+function beats(a: LabelBox, aId: string, b: LabelBox, bId: string) {
+  if (a.prio !== b.prio) return a.prio > b.prio
+  if (a.scale !== b.scale) return a.scale > b.scale
+  return aId < bId
+}
+
 export default function NodeMesh({ node, index }: { node: Node; index: number }) {
   const meshRef = useRef<Mesh>(null)
   const materialRef = useRef<MeshStandardMaterial>(null)
@@ -60,13 +86,49 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
   // troika fillOpacity updates are uniform-only (no relayout), safe per-frame
   const textRef = useRef<{ fillOpacity: number } | null>(null)
   const labelOpacity = useRef(1)
+  const labelText = node.shortLabel ?? node.label
+  const fontSize = isProject ? 0.34 : node.type === 'category' ? 0.22 : 0.18
+  const labelLift = node.size * (isProject ? 0.8 : 0.65)
 
-  useFrame(({ clock, camera }) => {
+  useEffect(() => () => void labelBoxes.delete(node.id), [node.id])
+
+  useFrame(({ clock, camera, size }) => {
     const text = textRef.current
+    if (!text) labelBoxes.delete(node.id)
     if (text) {
       ndc.set(...node.position)
-      const tooClose = camera.position.distanceTo(ndc) < NEAR_FADE
+      const dist = camera.position.distanceTo(ndc)
+      const tooClose = dist < NEAR_FADE
       ndc.project(camera)
+      // World units -> NDC units at this distance
+      const fov = (camera as PerspectiveCamera).fov ?? 50
+      const scale = 1 / (dist * Math.tan(((fov / 2) * Math.PI) / 180))
+      const aspect = size.width / size.height
+      const h = fontSize * 1.3 * scale
+      const me: LabelBox = {
+        x: ndc.x,
+        y: ndc.y + labelLift * scale + h / 2,
+        w: (labelText.length * fontSize * 0.55 * scale) / aspect,
+        h,
+        prio: isHovered ? 100 : (TYPE_PRIO[node.type] ?? 1) + (inFocus ? 10 : 0),
+        scale,
+        shown: false,
+      }
+      let blocked = false
+      if (ndc.z < 1) {
+        for (const [id, other] of labelBoxes) {
+          if (
+            id !== node.id &&
+            other.shown &&
+            beats(other, id, me, node.id) &&
+            Math.abs(other.x - me.x) < (other.w + me.w) / 2 &&
+            Math.abs(other.y - me.y) < (other.h + me.h) / 2
+          ) {
+            blocked = true
+            break
+          }
+        }
+      }
       // The hero text is hidden while a legend filter is locked
       const heroShown = useGraphStore.getState().filter === null
       const overHero =
@@ -74,7 +136,9 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
         ndc.z < 1 &&
         Math.abs(ndc.x) < HERO_X &&
         Math.abs(ndc.y) < HERO_Y
-      const target = overHero || tooClose ? 0 : 1
+      const target = overHero || tooClose || blocked ? 0 : 1
+      me.shown = target === 1 && ndc.z < 1
+      labelBoxes.set(node.id, me)
       labelOpacity.current += (target - labelOpacity.current) * 0.12
       text.fillOpacity = labelOpacity.current
     }
@@ -172,15 +236,15 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
           isHovered ||
           inFocus ||
           (IS_TOUCH && (node.type === 'blog' || node.type === 'cert'))) && (
-          <Billboard position={[0, node.size * (isProject ? 0.8 : 0.65), 0]}>
+          <Billboard position={[0, labelLift, 0]}>
             <Text
               ref={textRef}
-              fontSize={isProject ? 0.34 : node.type === 'category' ? 0.22 : 0.18}
+              fontSize={fontSize}
               color="#cbd5e1"
               anchorX="center"
               anchorY="bottom"
             >
-              {node.label}
+              {labelText}
             </Text>
           </Billboard>
         )}
