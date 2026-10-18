@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { AVAILABILITY } from '../../data/portfolio'
+import { AVAILABILITY, HEADLINE, projectStats } from '../../data/portfolio'
 import { useGraphStore } from '../../hooks/useGraphStore'
 
 const socials = [
@@ -9,27 +9,29 @@ const socials = [
 ]
 
 export default function HeroOverlay() {
-  const selectedNode = useGraphStore((s) => s.selectedNode)
   const hasInteracted = useGraphStore((s) => s.hasInteracted)
+  // Step aside while a node or a legend filter is being explored
+  const hidden = useGraphStore((s) => s.selectedNode !== null || s.filter !== null)
 
   return (
     <motion.div
-      animate={{ opacity: selectedNode ? 0 : 1 }}
+      animate={{ opacity: hidden ? 0 : 1 }}
       transition={{ duration: 0.4 }}
       className="pointer-events-none fixed inset-0 z-10 flex items-center justify-center"
     >
       <div
         className="text-center [text-shadow:0_2px_12px_rgba(3,7,18,0.9)]"
-        style={{ pointerEvents: selectedNode ? 'none' : 'auto' }}
+        style={{ pointerEvents: hidden ? 'none' : 'auto' }}
       >
         <h1 className="text-3xl font-bold tracking-tight text-slate-100 sm:text-4xl md:text-5xl">
           Aditya Thakare
         </h1>
         <p className="mt-2 text-base tracking-wider text-sky-400 md:text-lg">
-          Data Scientist | GenAI &amp; Agentic AI | MLOps
+          {HEADLINE}
         </p>
         <p className="mt-3 px-4 text-sm tracking-wide text-slate-400">
-          3+ years · 4 deployed AI systems · 2,000+ students &amp; faculty trained
+          3+ years · {projectStats.deployed} deployed AI systems · 2,000+ students &amp;
+          faculty trained
         </p>
         <p className="mt-2 px-4 text-sm font-medium tracking-wide text-amber-300">
           {AVAILABILITY}

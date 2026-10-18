@@ -1,5 +1,4 @@
-import { AVAILABILITY } from '../../data/portfolio'
-import { teachingStats } from '../../data/workshops'
+import { AVAILABILITY, HEADLINE, SUMMARY } from '../../data/portfolio'
 import { useGraphStore } from '../../hooks/useGraphStore'
 import Modal from './Modal'
 
@@ -18,7 +17,7 @@ export default function AboutOverlay() {
         <div>
           <h2 className="text-2xl font-bold text-white">Aditya Thakare</h2>
           <p className="text-sm text-sky-400">
-            Data Scientist | GenAI &amp; Agentic AI | MLOps
+            {HEADLINE}
           </p>
           <p className="text-sm text-slate-400">Pune, Maharashtra</p>
           <p className="mt-1 text-xs font-medium text-amber-300">{AVAILABILITY}</p>
@@ -28,12 +27,7 @@ export default function AboutOverlay() {
       <hr className="my-6 border-white/[0.08]" />
 
       <p className="text-sm leading-relaxed text-slate-300">
-        Data Scientist with 3+ years of experience (since Sep 2023) building
-        and deploying Generative AI systems: RAG pipelines, multi-agent
-        LangGraph orchestration and end-to-end MLOps workflows. Delivered
-        technical training to 2,000+ students and faculty across{' '}
-        {teachingStats.workshops} workshops and faculty development programs
-        at {teachingStats.institutions} institutions.
+        {SUMMARY}
       </p>
 
       <hr className="my-6 border-white/[0.08]" />

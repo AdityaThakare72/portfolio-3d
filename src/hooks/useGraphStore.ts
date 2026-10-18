@@ -1,7 +1,16 @@
 import { create } from 'zustand'
-import { nodes } from '../data/portfolio'
+import { nodeById, nodes, type NodeType } from '../data/portfolio'
 
 type Vec3 = [number, number, number]
+
+// Legend filter: one node type, one skill category (with its skills and
+// the projects connected to it), or an explicit set of nodes (job match)
+export type Filter =
+  | { kind: 'type'; types: NodeType[] }
+  | { kind: 'category'; id: string }
+  | { kind: 'ids'; ids: string[]; label: string }
+
+export type Cluster = 'projects' | 'skills' | 'blogs' | 'certs' | 'info'
 
 // Camera position = cameraTarget + cameraOffset; the camera looks at
 // cameraTarget. Node selection uses a close-up offset, cluster/overview
@@ -17,19 +26,22 @@ interface GraphState {
   overviewPosition: Vec3
   showAbout: boolean
   showContact: boolean
-  showOverview: boolean
   // First node selection ever — used to retire the onboarding hint
   hasInteracted: boolean
   autoRotate: boolean
+  // Locked legend filter (click) and temporary preview (legend hover)
+  filter: Filter | null
+  previewFilter: Filter | null
   setSelectedNode: (id: string | null) => void
   setHoveredNode: (id: string | null) => void
   setCameraTarget: (pos: Vec3 | null, offset?: Vec3) => void
   setOverviewPosition: (pos: Vec3) => void
   setShowAbout: (show: boolean) => void
   setShowContact: (show: boolean) => void
-  setShowOverview: (show: boolean) => void
   setAutoRotate: (v: boolean) => void
-  flyToCluster: (type: 'projects' | 'skills' | 'blogs' | 'certs') => void
+  setFilter: (f: Filter | null) => void
+  setPreviewFilter: (f: Filter | null) => void
+  flyToCluster: (type: Cluster) => void
   flyToOverview: () => void
 }
 
@@ -50,9 +62,10 @@ export const useGraphStore = create<GraphState>((set, get) => ({
   overviewPosition: [0, 0, 18],
   showAbout: false,
   showContact: false,
-  showOverview: false,
   hasInteracted: false,
   autoRotate: true,
+  filter: null,
+  previewFilter: null,
   setSelectedNode: (id) =>
     set(
       // Selecting a node counts as the first interaction and pauses
@@ -67,14 +80,16 @@ export const useGraphStore = create<GraphState>((set, get) => ({
   setOverviewPosition: (pos) => set({ overviewPosition: pos }),
   setShowAbout: (show) => set({ showAbout: show }),
   setShowContact: (show) => set({ showContact: show }),
-  setShowOverview: (show) => set({ showOverview: show }),
   setAutoRotate: (v) => set({ autoRotate: v }),
+  setFilter: (f) => set({ filter: f }),
+  setPreviewFilter: (f) => set({ previewFilter: f }),
   flyToCluster: (type) => {
     const clusters: Record<string, { types: string[]; offset: Vec3 }> = {
       projects: { types: ['project'], offset: [0, 3, 14] },
       skills: { types: ['category', 'skill'], offset: [0, 3, 12] },
       blogs: { types: ['blog'], offset: [0, 3, 16] },
       certs: { types: ['cert'], offset: [0, 3, 16] },
+      info: { types: ['info'], offset: [0, 3, 16] },
     }
     const { types, offset } = clusters[type]
     const center = centroid(
@@ -90,6 +105,15 @@ export const useGraphStore = create<GraphState>((set, get) => ({
     get().setCameraTarget([0, 0, 0], overviewPosition)
   },
 }))
+
+// Open a node's panel and fly the camera to it
+export function selectNode(id: string) {
+  const node = nodeById.get(id)
+  if (!node) return
+  const store = useGraphStore.getState()
+  store.setSelectedNode(id)
+  store.setCameraTarget(node.position)
+}
 
 export function deselect() {
   const store = useGraphStore.getState()

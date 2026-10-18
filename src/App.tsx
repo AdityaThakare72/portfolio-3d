@@ -1,64 +1,32 @@
-import { Suspense, useEffect } from 'react'
-import { Canvas } from '@react-three/fiber'
-import NetworkGraph from './components/canvas/NetworkGraph'
-import Background from './components/canvas/Background'
-import CameraController from './components/canvas/CameraController'
-import HeroOverlay from './components/ui/HeroOverlay'
-import DetailPanel from './components/ui/DetailPanel'
-import Legend from './components/ui/Legend'
-import Navbar from './components/ui/Navbar'
-import AboutOverlay from './components/ui/AboutOverlay'
-import ContactOverlay from './components/ui/ContactOverlay'
-import OverviewPanel from './components/ui/OverviewPanel'
-import ResetViewButton from './components/ui/ResetViewButton'
-import Loader from './components/ui/Loader'
-import { useGraphStore, deselect } from './hooks/useGraphStore'
+import { lazy, Suspense, useEffect } from 'react'
+import ReadablePage from './components/page/ReadablePage'
+import { useView } from './hooks/useView'
+
+const GraphView = lazy(() => import('./GraphView'))
+
+function GraphLoading() {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-[#030712]">
+      <div className="bg-gradient-to-r from-sky-400 to-violet-400 bg-clip-text text-2xl font-extrabold text-transparent">
+        AT.
+      </div>
+    </div>
+  )
+}
 
 export default function App() {
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key !== 'Escape') return
-      // Overlays close first; only then does Escape deselect the node
-      const store = useGraphStore.getState()
-      if (store.showAbout || store.showContact || store.showOverview) {
-        store.setShowAbout(false)
-        store.setShowContact(false)
-        store.setShowOverview(false)
-        return
-      }
-      deselect()
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  const view = useView((s) => s.view)
 
-  return (
-    <div className="relative h-full w-full">
-      <Canvas
-        camera={{ position: [0, 0, 18], fov: 50, near: 0.1, far: 100 }}
-        onPointerMissed={deselect}
-      >
-        <color attach="background" args={['#030712']} />
-        <ambientLight intensity={0.4} />
-        <pointLight position={[10, 10, 10]} intensity={0.6} />
-        <pointLight position={[-10, -10, -5]} intensity={0.3} color="#a78bfa" />
-        {/* Suspense must live inside the Canvas — wrapping the Canvas
-            itself remounts the WebGL context when a child suspends */}
-        <Suspense fallback={null}>
-          <Background />
-          <NetworkGraph />
-        </Suspense>
-        <CameraController />
-      </Canvas>
-      <Loader />
-      <Navbar />
-      <HeroOverlay />
-      <DetailPanel />
-      <Legend />
-      <ResetViewButton />
-      <AboutOverlay />
-      <ContactOverlay />
-      <OverviewPanel />
-    </div>
+  // The graph is a fixed full-screen canvas; the page scrolls normally
+  useEffect(() => {
+    document.documentElement.classList.toggle('graph-mode', view === 'graph')
+  }, [view])
+
+  return view === 'graph' ? (
+    <Suspense fallback={<GraphLoading />}>
+      <GraphView />
+    </Suspense>
+  ) : (
+    <ReadablePage />
   )
 }

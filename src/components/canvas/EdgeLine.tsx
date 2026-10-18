@@ -1,9 +1,11 @@
 import { Line } from '@react-three/drei'
 import { nodeById, type Edge } from '../../data/portfolio'
 import { useGraphStore } from '../../hooks/useGraphStore'
+import { useActiveFocus } from '../../hooks/focus'
 
 export default function EdgeLine({ edge }: { edge: Edge }) {
   const hoveredNode = useGraphStore((s) => s.hoveredNode)
+  const focus = useActiveFocus()
   const source = nodeById.get(edge.source)
   const target = nodeById.get(edge.target)
   if (!source || !target) return null
@@ -20,7 +22,15 @@ export default function EdgeLine({ edge }: { edge: Edge }) {
       color={hoveredColor}
       lineWidth={highlighted ? 1.0 : 0.5}
       transparent
-      opacity={highlighted ? 0.4 : 0.12}
+      opacity={
+        highlighted
+          ? 0.4
+          : focus
+            ? focus.has(edge.source) && focus.has(edge.target)
+              ? 0.25
+              : 0.03
+            : 0.12
+      }
     />
   )
 }

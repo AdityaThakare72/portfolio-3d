@@ -6,6 +6,9 @@ export interface Node {
   id: string
   type: NodeType
   label: string
+  // Shorter text for the 3D label when the full name is long; panels and
+  // the readable page always use the full label
+  shortLabel?: string
   description: string
   color: string
   size: number
@@ -35,7 +38,12 @@ export interface Edge {
   target: string
 }
 
-// Shown on the landing page, Overview and About
+// Intro copy shared by the readable page, the 3D hero and the About modal
+export const HEADLINE = 'Data Scientist | GenAI & Agentic AI | MLOps'
+
+export const SUMMARY = `Data Scientist with 3+ years of experience (since Sep 2023) building and deploying Generative AI systems: RAG pipelines, multi-agent LangGraph orchestration and end-to-end MLOps workflows. Delivered technical training to 2,000+ students and faculty across ${teachingStats.workshops} workshops and faculty development programs at ${teachingStats.institutions} institutions.`
+
+// Shown on the readable page, the 3D hero and About
 export const AVAILABILITY =
   'Open to Data Scientist / AI Engineer roles · Pune, remote, or relocation'
 
@@ -89,13 +97,14 @@ const PROJECT_RADIUS = 10
 interface ProjectDef {
   id: string
   label: string
+  shortLabel?: string
   description: string
   links?: { live?: string; source?: string }
   tags: string[]
   status?: 'in-progress'
   story?: ProjectStory
-  // TODO: record a 20–40s demo GIF/MP4 per shipped project, put it in
-  // public/media/ and set media: '/media/<file>' on the project below
+  // TODO: record a 20–40s demo GIF/MP4 per shipped project, upload it to
+  // public/ and set media: '/<file>' on the project (see EDITING_GUIDE.md)
   media?: string
 }
 
@@ -103,6 +112,7 @@ const projectDefs: ProjectDef[] = [
   {
     id: 'research-agent',
     label: 'Agentic Research System',
+    shortLabel: 'Research Agent',
     description:
       "LangGraph multi-agent research system: Researcher (Tavily + Gemini), Writer and Critic agents sharing a TypedDict state. Conditional edges loop back through the Writer until the Critic's score clears a threshold. Deployed on Streamlit.",
     links: {
@@ -119,6 +129,7 @@ const projectDefs: ProjectDef[] = [
   {
     id: 'legal-agent',
     label: 'Conversational Legal Agent',
+    shortLabel: 'Legal Agent',
     description:
       'Conversational RAG agent for Indian law. Scraping, preprocessing and semantic chunking of legal data; ChromaDB for persistent retrieval; Gemini embeddings. First self-hosted on DigitalOcean with Nginx, SSL and systemd, now deployed on Streamlit Community Cloud.',
     links: {
@@ -135,6 +146,7 @@ const projectDefs: ProjectDef[] = [
   {
     id: 'equipment-maintenance',
     label: 'Industrial Equipment Maintenance',
+    shortLabel: 'Equipment Maintenance',
     description:
       'XGBoost predictive maintenance classifier, 98.3% accuracy and 91.2% F1 on imbalanced sensor data (scale_pos_weight). DVC pipeline, MLflow tracking, FastAPI inference API in Docker on Render, Streamlit dashboard, GitHub Actions CI (ruff + pytest).',
     links: {
@@ -151,6 +163,7 @@ const projectDefs: ProjectDef[] = [
   {
     id: 'ceo-dashboard',
     label: 'CEO Financial Dashboard',
+    shortLabel: 'CEO Dashboard',
     description:
       'Client project, in production. LangGraph orchestration behind a FastAPI layer; DuckDB/Parquet for analytical queries, MongoDB for metadata; Pydantic structured outputs with GPT-4o-mini for schema-validated answers to financial questions.',
     // client project — no public links
@@ -211,6 +224,18 @@ const projectNodes: Node[] = projectDefs.map((p, i) => {
     ],
   }
 })
+
+// Counted from the data, so the stat grows as projects ship: a project is
+// deployed when it has a live demo, or is a client project (no public links)
+// running in production. In-progress work never counts.
+const isDeployed = (p: ProjectDef) =>
+  p.status !== 'in-progress' && (!!p.links?.live || !p.links)
+
+export const projectStats = {
+  deployed: projectDefs.filter(isDeployed).length,
+  // Other projects with public code, built or still in progress
+  onGithub: projectDefs.filter((p) => !isDeployed(p) && p.links?.source).length,
+}
 
 // ---------------------------------------------------------------------------
 // Tier 2 — categories on a fibonacci sphere of radius 5
