@@ -1,12 +1,14 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { edges, nodeById, nodes, type Node } from '../../data/portfolio'
-import { teachingStats } from '../../data/workshops'
+import { teachingStats, workshops } from '../../data/workshops'
 import { useGraphStore } from '../../hooks/useGraphStore'
 
 const projects = nodes.filter((n) => n.type === 'project')
 const certs = nodes.filter((n) => n.type === 'cert')
 const blogs = nodes.filter((n) => n.type === 'blog')
 const experience = nodeById.get('experience')
+const teaching = nodeById.get('teaching')
+const workshopYears = [...new Set(workshops.map((w) => w.year))].sort((a, b) => b - a)
 const education = [nodeById.get('edu-cdac'), nodeById.get('edu-sppu')].filter(
   (n): n is Node => !!n,
 )
@@ -192,6 +194,36 @@ export default function OverviewPanel() {
                   )}
                 </>
               )}
+            </Section>
+
+            <Section title="Teaching">
+              {teaching && (
+                <p className="text-sm leading-relaxed text-slate-300">
+                  {teaching.description}
+                </p>
+              )}
+              <div className="mt-3 space-y-2">
+                {workshopYears.map((year) => {
+                  const rows = workshops.filter((w) => w.year === year)
+                  return (
+                    <details key={year} className="text-sm">
+                      <summary className="cursor-pointer font-semibold text-slate-200 hover:text-sky-400">
+                        {year} · {rows.length} workshops
+                      </summary>
+                      <ul className="mt-2 space-y-1 pl-4 text-slate-300">
+                        {rows.map((w) => (
+                          <li key={`${w.dates}-${w.venue}`}>
+                            {w.topic}{' '}
+                            <span className="text-slate-500">
+                              · {w.venue} · {w.dates}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  )
+                })}
+              </div>
             </Section>
 
             <Section title="Skills">

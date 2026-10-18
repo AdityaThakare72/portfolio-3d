@@ -484,6 +484,12 @@ const infoDefs = [
     size: 0.7,
   },
   {
+    id: 'teaching',
+    label: 'Teaching',
+    description: `${teachingStats.workshops} workshops and faculty development programs for students and faculty at ${teachingStats.institutions} institutions (${teachingStats.from}–${teachingStats.to}), reaching 2,000+ people.`,
+    size: 0.6,
+  },
+  {
     id: 'edu-cdac',
     label: 'CDAC ACTS, Pune',
     description: 'PG Diploma in Artificial Intelligence (2023)',
@@ -499,7 +505,7 @@ const infoDefs = [
 ]
 
 const infoNodes: Node[] = infoDefs.map((d, i) => {
-  const y = (i - 1) * 4
+  const y = (i - (infoDefs.length - 1) / 2) * 4
   const ringRadius = Math.sqrt(INFO_RADIUS ** 2 - y ** 2)
   const theta = 1 + i * ((2 * Math.PI) / infoDefs.length)
   return {
@@ -580,6 +586,7 @@ const infoEdges: Edge[] = [
   { source: 'experience', target: 'cat-genai' },
   { source: 'experience', target: 'cat-mldl' },
   { source: 'experience', target: 'cat-mlops' },
+  { source: 'teaching', target: 'experience' },
   { source: 'edu-cdac', target: 'experience' },
   { source: 'edu-sppu', target: 'experience' },
 ]
