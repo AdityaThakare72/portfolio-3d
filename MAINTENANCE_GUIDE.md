@@ -3,9 +3,14 @@
 How to update this portfolio without knowing React or Three.js.
 
 Almost everything you'll ever change lives in **one file**:
-`src/data/portfolio.ts`. The 3D graph, the detail panels, and the
-Overview page are all generated from it — edit the data once and every
-view updates automatically.
+`src/data/portfolio.ts`. The readable page (what visitors see first),
+the 3D graph and its detail panels are all generated from it — edit the
+data once and every view updates automatically.
+
+**Two views:** `https://adityathakare.app` opens the readable page
+(`src/components/page/`). The 3D neural-network graph opens from its
+"Explore in 3D" buttons, or directly at `https://adityathakare.app/#explore`.
+The 3D code only downloads when someone opens it, so the page loads fast.
 
 **Golden rules:**
 
@@ -29,7 +34,7 @@ paste it before the closing `]`, and edit:
 ```ts
   {
     id: 'my-new-project',                      // unique, lowercase-with-dashes
-    label: 'My New Project',                   // full name (panel + Overview)
+    label: 'My New Project',                   // full name (panel + readable page)
     shortLabel: 'New Project',                 // optional — shorter 3D label
     description:
       'One or two sentences about what it does and how it was built.',
@@ -48,7 +53,7 @@ paste it before the closing `]`, and edit:
 ```
 
 `story` shows as **Problem / Key decision / Outcome** in the panel and
-on the Overview card. Only write numbers you've actually measured.
+on the readable page's project card. Only write numbers you've actually measured.
 
 **Demo GIF/video:** record 20–40 seconds of the app, save it as a `.gif`
 or `.mp4` in `public/media/` (create the folder), and set
@@ -57,7 +62,7 @@ Streamlit demo links automatically get a "may take ~30s to wake up"
 note.
 
 Use `shortLabel` when the full name is long: the graph label stays short so
-it doesn't collide with its neighbours, while the panel and Overview still
+it doesn't collide with its neighbours, while the panel and the readable page still
 show the full `label`. Overlapping labels also hide themselves
 automatically (projects win over skills, the hovered node always wins).
 
@@ -66,7 +71,7 @@ block — the panel will automatically show a "Client Project" badge instead
 of buttons.
 
 **Work in progress?** Add `status: 'in-progress',` to the block. The panel
-and Overview then show an "In progress" badge. Delete that one line when
+and the readable page then show an "In progress" badge. Delete that one line when
 the project is done.
 
 **Connect it to skills.** Find `const projectSkillEdges` (around line 577).
@@ -96,7 +101,8 @@ feels crowded, increase `const PROJECT_RADIUS = 10` (line ~87) to `11`
 or `12`.
 
 Done. The project appears in the graph, the detail panel, and the
-Overview page.
+readable page. Projects with a `story` get a full card there; the rest
+are listed under "Also building".
 
 ---
 
@@ -144,7 +150,7 @@ After (added Flask):
 ```
 
 That's it — the category→skill edge, the position (clustered around its
-category), the color (all skills share the category violet), and the Overview
+category), the color (all skills share the category violet), and the readable page
 listing all happen automatically.
 
 **If a project uses the new skill,** add its id to that project's row in
@@ -201,7 +207,7 @@ Optionally connect it to a related skill in `const blogSkillEdges`
 ```
 
 The `description` follows the pattern `Course Name — Issuer · Month Year`
-and is what shows in the panel and Overview. `credentialId` shows under
+and is what shows in the panel and on the readable page. `credentialId` shows under
 it, and `links.live` becomes the "View" button. Optionally connect it to a
 skill in `const certSkillEdges` (around line 608):
 
@@ -246,7 +252,7 @@ Add a line at the bottom of the list:
   { year: 2026, dates: '12 Jan – 14 Jan', topic: 'Generative AI', venue: 'COEP, Pune' },
 ```
 
-The Teaching panel, the Overview "Teaching" section and every
+The Teaching panel, the readable page's "Teaching" section and every
 "60+ workshops / 30+ institutions" line on the site are calculated from
 this list automatically. The numbers are rounded down to the nearest
 ten with a "+", so they never overstate.
@@ -260,12 +266,12 @@ between the `>` and `<` or inside the quotes):
 
 | What | File | What to look for |
 |---|---|---|
-| Big name + subtitle on landing | `src/components/ui/HeroOverlay.tsx` | `Aditya Thakare` / `Data Scientist \| GenAI &amp; Agentic AI \| MLOps` |
-| Stat line on landing | `src/components/ui/HeroOverlay.tsx` | `3+ years · 4 deployed AI systems · ...` |
-| Bio paragraph in About modal | `src/components/ui/AboutOverlay.tsx` | `Data Scientist with 3+ years of experience...` |
-| Stat line + header in Overview page | `src/components/ui/OverviewPanel.tsx` | `3+ years experience · 4 deployed GenAI/ML systems · ...` |
+| Headline (everywhere) | `src/data/portfolio.ts` | `export const HEADLINE` near the top |
+| Summary paragraph (readable page + About modal) | `src/data/portfolio.ts` | `export const SUMMARY` |
+| "Open to … roles" availability line (everywhere) | `src/data/portfolio.ts` | `export const AVAILABILITY` |
+| Stat tiles on the readable page | `src/components/page/ReadablePage.tsx` | `const stats = [` |
+| Stat line on the 3D landing | `src/components/ui/HeroOverlay.tsx` | `3+ years · 4 deployed AI systems · ...` |
 | Page title, description, social share tags | `index.html` | `<title>`, `og:*`, `twitter:*` (site URL is `https://adityathakare.app`) |
-| "Open to … roles" availability line (landing, Overview, About) | `src/data/portfolio.ts` | `export const AVAILABILITY` near the top |
 
 The "2,000+ students & faculty" figure is typed in the files above; the
 workshop and institution counts next to it come from
@@ -277,7 +283,11 @@ workshop and institution counts next to it come from
 
 Two places define GitHub / LinkedIn / Email:
 
-**Landing buttons:** `src/components/ui/HeroOverlay.tsx`, top of file:
+**Readable page:** `src/components/page/ReadablePage.tsx`, the
+`const socials = [` list near the top, plus the "Get in touch" section at
+the bottom (search for `mailto:`).
+
+**3D landing buttons:** `src/components/ui/HeroOverlay.tsx`, top of file:
 
 ```ts
 const socials = [
@@ -291,9 +301,6 @@ const socials = [
 `const items = [` list at the top — same idea, edit the `href` and
 `label` values.
 
-The Overview page (`src/components/ui/OverviewPanel.tsx`) also has
-GitHub/LinkedIn/Email buttons in its header — search for `github.com`
-in that file and update the same way.
 
 ---
 
@@ -356,6 +363,34 @@ for a bigger find-and-replace.
 - **Auto-rotate:** pauses while the pointer moves or hovers, resumes
   after 3 s idle, and never runs for visitors who set "reduce motion" in
   their OS.
+
+---
+
+## 10c. Light / dark theme (nothing to edit)
+
+The readable page follows the visitor's OS setting; the sun/moon button
+in its header overrides it and is remembered. The 3D graph is always
+dark. When adding something to the page, give each color a light and a
+`dark:` version — the shared styles in `src/components/page/ui.tsx`
+already do this, so reuse them.
+
+## 10d. Job description matcher
+
+On the readable page (Skills section), a visitor can paste a job
+description and see which of your skills it mentions, plus the projects
+using them. It's plain keyword matching in the browser — nothing is sent
+anywhere.
+
+It matches each skill's label automatically. To teach it a synonym (e.g.
+"vector database" → ChromaDB), add it in `src/data/skillAliases.ts`:
+
+```ts
+  chromadb: ['chroma', 'vector database', 'vector store'],
+```
+
+Only add true synonyms — a match should never claim a skill you don't
+have. Broader terms for a whole category ("machine learning") go in
+`categoryAliases` in the same file.
 
 ---
 

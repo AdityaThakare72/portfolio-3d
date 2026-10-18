@@ -1,12 +1,15 @@
 # portfolio-3d
 
-Interactive 3D portfolio for Aditya Thakare — the whole portfolio rendered as a
-neural network graph with React Three Fiber. Projects, skill categories, and
-skills are glowing nodes connected by edges; clicking a node flies the camera
-in and opens a detail panel.
+Portfolio for Aditya Thakare. Visitors land on a fast, readable page (light or
+dark, following their OS) with projects, experience, teaching, skills and
+certifications, plus a job-description matcher. The same content can be
+explored as an interactive 3D neural network built with React Three Fiber:
+projects, skill categories and skills are glowing nodes connected by edges,
+and clicking a node flies the camera in and opens a detail panel. The 3D view
+lives at `#explore` and is only downloaded when opened.
 
 All content (projects, skills, experience, certifications, blog posts) lives in
-`src/data/portfolio.ts`. See [MAINTENANCE_GUIDE.md](MAINTENANCE_GUIDE.md) for
+`src/data/` (mainly `portfolio.ts`). See [MAINTENANCE_GUIDE.md](MAINTENANCE_GUIDE.md) for
 how to update it.
 
 ## Stack
