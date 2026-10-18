@@ -5,7 +5,9 @@ neural network graph with React Three Fiber. Projects, skill categories, and
 skills are glowing nodes connected by edges; clicking a node flies the camera
 in and opens a detail panel.
 
-See [CLAUDE.md](CLAUDE.md) for the full architecture spec.
+All content (projects, skills, experience, certifications, blog posts) lives in
+`src/data/portfolio.ts`. See [MAINTENANCE_GUIDE.md](MAINTENANCE_GUIDE.md) for
+how to update it.
 
 ## Stack
 

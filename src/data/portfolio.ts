@@ -10,6 +10,12 @@ export interface Node {
   position: [number, number, number]
   links?: { live?: string; source?: string }
   tags?: string[]
+  // Projects still being built — shows an "In progress" badge
+  status?: 'in-progress'
+  // Bullet points for experience nodes
+  highlights?: string[]
+  // Certificate credential ID, shown in the cert panel
+  credentialId?: string
 }
 
 export interface Edge {
@@ -65,14 +71,26 @@ interface ProjectDef {
   description: string
   links?: { live?: string; source?: string }
   tags: string[]
+  status?: 'in-progress'
 }
 
 const projectDefs: ProjectDef[] = [
   {
-    id: 'legal-agent',
-    label: 'Legal Agent',
+    id: 'research-agent',
+    label: 'Agentic Research System',
     description:
-      'End-to-end conversational RAG agent specialized in Indian law. Full data pipeline — web scraping, preprocessing, semantic chunking — with persistent ChromaDB storage and Gemini embeddings. Originally self-hosted on DigitalOcean with Nginx and systemd; since migrated to Streamlit Community Cloud.',
+      "LangGraph multi-agent research system: Researcher (Tavily + Gemini), Writer and Critic agents sharing a TypedDict state. Conditional edges loop back through the Writer until the Critic's score clears a threshold. Deployed on Streamlit.",
+    links: {
+      live: 'https://research-agent-blog.streamlit.app/',
+      source: 'https://github.com/AdityaThakare72/Research-Agent',
+    },
+    tags: ['LangGraph', 'LangChain', 'Gemini API', 'Tavily', 'Streamlit', 'Docker'],
+  },
+  {
+    id: 'legal-agent',
+    label: 'Conversational Legal Agent',
+    description:
+      'Conversational RAG agent for Indian law. Scraping, preprocessing and semantic chunking of legal data; ChromaDB for persistent retrieval; Gemini embeddings. First self-hosted on DigitalOcean with Nginx, SSL and systemd, now deployed on Streamlit Community Cloud.',
     links: {
       live: 'https://legal-agent-i.streamlit.app/',
       source: 'https://github.com/AdityaThakare72/Legal_Agent1',
@@ -80,34 +98,57 @@ const projectDefs: ProjectDef[] = [
     tags: ['RAG', 'LangChain', 'ChromaDB', 'Gemini API', 'Streamlit', 'Nginx'],
   },
   {
-    id: 'research-agent',
-    label: 'Research Agent',
-    description:
-      'Self-refining multi-agent research system built with LangGraph — Researcher (Tavily + Gemini), Writer, and Critic agents with iterative revision loops. TypedDict state schema and conditional edges for quality-gated output.',
-    links: {
-      live: 'https://research-agent-blog.streamlit.app/',
-      source: 'https://github.com/AdityaThakare72/Research-Agent',
-    },
-    tags: ['Agentic AI', 'LangGraph', 'LangChain', 'Gemini API', 'Tavily', 'Docker'],
-  },
-  {
     id: 'equipment-maintenance',
-    label: 'Equipment Maintenance',
+    label: 'Industrial Equipment Maintenance',
     description:
-      'Sensor-driven predictive maintenance classifier using XGBoost with a reproducible DVC pipeline and MLflow tracking. FastAPI inference on Render, Streamlit dashboard on Streamlit Cloud, and GitHub Actions CI/CD. 98.3% accuracy, 91.2% F1.',
+      'XGBoost predictive maintenance classifier, 98.3% accuracy and 91.2% F1 on imbalanced sensor data (scale_pos_weight). DVC pipeline, MLflow tracking, FastAPI inference API in Docker on Render, Streamlit dashboard, GitHub Actions CI (ruff + pytest).',
     links: {
       live: 'https://industrial-equipment-maintenance.streamlit.app/',
       source: 'https://github.com/AdityaThakare72/Industrial_Equipment_Maintenance',
     },
-    tags: ['XGBoost', 'FastAPI', 'MLflow', 'DVC', 'Docker', 'GitHub Actions'],
+    tags: ['XGBoost', 'FastAPI', 'MLflow', 'DVC', 'Docker', 'GitHub Actions', 'Render', 'Streamlit'],
   },
   {
     id: 'ceo-dashboard',
-    label: 'CEO Dashboard',
+    label: 'CEO Financial Dashboard',
     description:
-      'Production-grade financial analytics dashboard with natural-language query capabilities for C-suite executives. Agentic backend using LangGraph orchestration with FastAPI, DuckDB/Parquet, and MongoDB.',
+      'Client project, in production. LangGraph orchestration behind a FastAPI layer; DuckDB/Parquet for analytical queries, MongoDB for metadata; Pydantic structured outputs with GPT-4o-mini for schema-validated answers to financial questions.',
     // client project — no public links
-    tags: ['LangGraph', 'FastAPI', 'DuckDB', 'Parquet', 'MongoDB', 'Pydantic'],
+    tags: ['LangGraph', 'FastAPI', 'DuckDB', 'Parquet', 'MongoDB', 'Pydantic', 'GPT-4o-mini'],
+  },
+  {
+    id: 'react-from-scratch',
+    label: 'react-from-scratch',
+    description:
+      'ReAct (Yao et al., ICLR 2023) reimplemented in plain Python, no LangChain: tool registry, output parser, and a ReAct vs Act-only vs CoT evaluation.',
+    links: {
+      source: 'https://github.com/AdityaThakare72/react-from-scratch',
+    },
+    status: 'in-progress',
+    // TODO: confirm tags against the repo once its README is written
+    tags: ['Python', 'Agentic AI', 'LLMs'],
+  },
+  {
+    id: 'typed-decision-models',
+    label: 'typed-decision-models',
+    description:
+      'Comparing typed decision models (Laya, Jev) with a fine-tuned BERT baseline on accuracy and latency.',
+    links: {
+      source: 'https://github.com/AdityaThakare72/typed-decision-models',
+    },
+    status: 'in-progress',
+    // TODO: confirm tags against the repo once its README is written
+    tags: ['NLP', 'BERT'],
+  },
+  {
+    id: 'agent-harness-demo',
+    label: 'agent-harness-demo',
+    description:
+      'Minimal agent harness built in stages (v0 to v4) with a Gemini adapter.',
+    links: {
+      source: 'https://github.com/AdityaThakare72/agent-harness-demo',
+    },
+    tags: ['Agentic AI', 'Python', 'Gemini API'],
   },
 ]
 
@@ -120,7 +161,7 @@ const projectNodes: Node[] = projectDefs.map((p, i) => {
     size: 0.8,
     position: [
       PROJECT_RADIUS * Math.cos(theta),
-      (i - 1.5) * 2,
+      (i - (projectDefs.length - 1) / 2) * 2,
       PROJECT_RADIUS * Math.sin(theta),
     ],
   }
@@ -156,23 +197,22 @@ const categoryDefs: CategoryDef[] = [
     skills: [
       { id: 'rag', label: 'RAG' },
       { id: 'agentic-ai', label: 'Agentic AI' },
-      { id: 'llm', label: 'LLM' },
+      { id: 'llm', label: 'LLMs' },
       { id: 'langgraph', label: 'LangGraph' },
       { id: 'langchain', label: 'LangChain' },
       { id: 'gemini-api', label: 'Gemini API' },
       { id: 'openai-api', label: 'OpenAI API' },
       { id: 'prompt-eng', label: 'Prompt Engineering' },
-      { id: 'vector-db', label: 'Vector Databases' },
     ],
   },
   {
     id: 'cat-vectorstores',
-    label: 'Vector Stores',
+    label: 'Vector Stores & Embeddings',
     color: '#818cf8',
     skills: [
       { id: 'chromadb', label: 'ChromaDB' },
       { id: 'pinecone', label: 'Pinecone' },
-      { id: 'huggingface', label: 'HuggingFace' },
+      { id: 'huggingface', label: 'Hugging Face' },
       { id: 'gemini-embed', label: 'Gemini Embeddings' },
       { id: 'semantic-chunk', label: 'Semantic Chunking' },
     ],
@@ -187,7 +227,7 @@ const categoryDefs: CategoryDef[] = [
       { id: 'pytorch', label: 'PyTorch' },
       { id: 'tensorflow', label: 'TensorFlow' },
       { id: 'keras', label: 'Keras' },
-      { id: 'cnn', label: 'CNN' },
+      { id: 'cnn', label: 'CNNs' },
       { id: 'nlp', label: 'NLP' },
       { id: 'transfer-learning', label: 'Transfer Learning' },
     ],
@@ -214,13 +254,13 @@ const categoryDefs: CategoryDef[] = [
       { id: 'cicd', label: 'CI/CD' },
       { id: 'mlflow', label: 'MLflow' },
       { id: 'dvc', label: 'DVC' },
-      { id: 'systemd', label: 'SystemD' },
+      { id: 'systemd', label: 'systemd' },
       { id: 'ssl-https', label: 'SSL/HTTPS' },
     ],
   },
   {
     id: 'cat-dataviz',
-    label: 'Data & Viz',
+    label: 'Data & Visualization',
     color: '#f472b6',
     skills: [
       { id: 'pandas', label: 'Pandas' },
@@ -347,9 +387,18 @@ const CERT_RADIUS = 12.5
 
 const certDefs = [
   {
+    id: 'cert-iimb-genai',
+    label: 'GenAI & LLMs',
+    description:
+      'Generative AI and Large Language Models — IIM Bangalore (SWAYAM) · Jul – Nov 2024',
+    links: {
+      live: 'https://onlinecourses.swayam2.ac.in/imb24_mg116/certificate?q=aZPMs7O/ZaHSTGa3paC5N3K18lOXUib4z%2BfTysE4W7UEtfEd/ZxsfiLrPwechPHb',
+    },
+  },
+  {
     id: 'cert-genai-rag',
     label: 'GenAI, LLM & RAG',
-    description: 'Generative AI, LLM & RAG — GeeksforGeeks (Dec 2025)',
+    description: 'Generative AI, LLM & RAG - Skill Up — GeeksforGeeks · Dec 2025',
     links: {
       live: 'https://media.geeksforgeeks.org/courses/certificates/bffbd6be892280341b8a5f0609072099.pdf',
     },
@@ -358,33 +407,35 @@ const certDefs = [
     id: 'cert-ml-stanford',
     label: 'ML: Regression & Classification',
     description:
-      'Supervised Machine Learning — DeepLearning.AI, Stanford University (Nov 2024)',
+      'Supervised Machine Learning: Regression and Classification — DeepLearning.AI, Stanford University · Nov 2024',
+    credentialId: '8BDBW0E8L3LC',
     links: {
-      live: 'https://www.coursera.org/account/accomplishments/verify/8BDBW0E8L3LC',
+      live: 'https://www.coursera.org/account/accomplishments/records/8BDBW0E8L3LC',
     },
   },
   {
     id: 'cert-prompt-eng',
     label: 'Prompt Engineering',
-    description:
-      'Prompt Engineering for ChatGPT — Vanderbilt University (Mar 2024)',
+    description: 'Prompt Engineering for ChatGPT — Vanderbilt University · Mar 2024',
+    credentialId: 'RPYCF9X32AE6',
     links: {
-      live: 'https://www.coursera.org/account/accomplishments/verify/RPYCF9X32AE6',
+      live: 'https://www.coursera.org/account/accomplishments/records/RPYCF9X32AE6',
     },
   },
   {
-    id: 'cert-genai-everyone',
-    label: 'GenAI for Everyone',
-    description: 'Generative AI for Everyone — Coursera (Nov 2023)',
+    id: 'cert-python',
+    label: 'Python Skill Up',
+    description: 'Python Skill Up — GeeksforGeeks · Dec 2025',
     links: {
-      live: 'https://www.coursera.org/account/accomplishments/certificate/XZ5QG5NBFQRA',
+      live: 'https://media.geeksforgeeks.org/courses/certificates/9e43a4eff794f8bdcc292fe22aec3966.pdf',
     },
   },
   {
     id: 'cert-sql',
     label: 'SQL for Data Science',
     description:
-      'Databases and SQL for Data Science with Python — Coursera (May 2023)',
+      'Databases and SQL for Data Science with Python — Coursera · May 2023',
+    credentialId: 'KY99XLFNJFWS',
     links: {
       live: 'https://www.coursera.org/account/accomplishments/certificate/KY99XLFNJFWS',
     },
@@ -392,10 +443,10 @@ const certDefs = [
   {
     id: 'cert-docker',
     label: 'Docker Training',
-    description: 'Docker Training Course — KodeKloud (Mar 2023)',
-    links: {
-      live: 'https://learn.kodekloud.com/certificate/2D064B1166E9-2D06450CDFED-2D063F735021',
-    },
+    description:
+      'Docker Training Course for the Absolute Beginner — KodeKloud · Mar 2023',
+    // no public link — credential ID only
+    credentialId: '2D064B1166E9-2D06450CDFED-2D063F735021',
   },
 ]
 
@@ -409,7 +460,7 @@ const certNodes: Node[] = certDefs.map((c, i) => {
     size: 0.5,
     position: [
       CERT_RADIUS * Math.cos(theta),
-      (i - 2.5) * 1.8 + jitter(0.4),
+      (i - (certDefs.length - 1) / 2) * 1.8 + jitter(0.4),
       CERT_RADIUS * Math.sin(theta),
     ],
   }
@@ -421,20 +472,26 @@ const infoDefs = [
   {
     id: 'experience',
     label: 'MITU Skillologies',
-    description:
-      'Data Scientist (2023–Present). Deep learning research on Brahmi script recognition, RAG pipeline development, and technical training across 10+ industry engagements reaching 2,000+ professionals.',
+    description: 'Data Scientist · Pune · Sep 2023 – Present',
+    highlights: [
+      'Deep learning research support on Brahmi script recognition: compared Custom CNN, InceptionNet, ResNet-50 and XceptionNet on a 7,880-image, 56-class dataset; ResNet-50 gave the best accuracy.',
+      'Research and implementation support for student progression prediction and crop disease classification.',
+      'Built end-to-end AI systems (RAG pipelines, neural networks, MLOps workflows) as primary technical SME across 10+ industry engagements and faculty development programs reaching 2,000+ professionals.',
+      'Designed a 140-session AI curriculum, Python through Generative AI and LangGraph.',
+    ],
     size: 0.7,
   },
   {
     id: 'edu-cdac',
-    label: 'CDAC ACTS',
+    label: 'CDAC ACTS, Pune',
     description: 'PG Diploma in Artificial Intelligence (2023)',
     size: 0.5,
   },
   {
     id: 'edu-sppu',
     label: 'SPPU',
-    description: 'B.Tech — Civil Engineering, CGPA: 7.78 (2021)',
+    description:
+      'B.Tech, Civil Engineering — Savitribai Phule Pune University · CGPA 7.78 (2021)',
     size: 0.5,
   },
 ]
@@ -475,19 +532,25 @@ const categorySkillEdges: Edge[] = categoryDefs.flatMap((c) =>
 )
 
 const projectSkillEdges: Edge[] = [
-  ['legal-agent', ['rag', 'langchain', 'chromadb', 'gemini-api', 'streamlit', 'nginx']],
-  ['research-agent', ['agentic-ai', 'langgraph', 'langchain', 'gemini-api', 'docker']],
-  ['equipment-maintenance', ['xgboost', 'fastapi', 'mlflow', 'dvc', 'docker', 'streamlit']],
-  ['ceo-dashboard', ['langgraph', 'fastapi', 'pydantic']],
+  ['research-agent', ['agentic-ai', 'langgraph', 'langchain', 'gemini-api', 'streamlit', 'docker']],
+  ['legal-agent', ['rag', 'langchain', 'chromadb', 'gemini-api', 'gemini-embed', 'semantic-chunk', 'streamlit', 'nginx', 'systemd', 'ssl-https']],
+  ['equipment-maintenance', ['xgboost', 'fastapi', 'mlflow', 'dvc', 'docker', 'github-actions', 'cicd', 'streamlit']],
+  ['ceo-dashboard', ['langgraph', 'agentic-ai', 'fastapi', 'pydantic', 'openai-api']],
+  ['react-from-scratch', ['python', 'agentic-ai', 'llm']],
+  ['typed-decision-models', ['nlp']],
+  ['agent-harness-demo', ['agentic-ai', 'python', 'gemini-api']],
 ].flatMap(([source, targets]) =>
   (targets as string[]).map((target) => ({ source: source as string, target })),
 )
 
 const projectCategoryEdges: Edge[] = [
-  ['legal-agent', ['cat-genai', 'cat-vectorstores', 'cat-backend']],
   ['research-agent', ['cat-genai', 'cat-backend', 'cat-mlops']],
+  ['legal-agent', ['cat-genai', 'cat-vectorstores', 'cat-backend', 'cat-mlops']],
   ['equipment-maintenance', ['cat-mldl', 'cat-backend', 'cat-mlops']],
   ['ceo-dashboard', ['cat-genai', 'cat-backend']],
+  ['react-from-scratch', ['cat-genai', 'cat-languages']],
+  ['typed-decision-models', ['cat-mldl']],
+  ['agent-harness-demo', ['cat-genai', 'cat-languages']],
 ].flatMap(([source, targets]) =>
   (targets as string[]).map((target) => ({ source: source as string, target })),
 )
@@ -500,12 +563,13 @@ const blogSkillEdges: Edge[] = [
 ]
 
 const certSkillEdges: Edge[] = [
+  { source: 'cert-iimb-genai', target: 'llm' },
   { source: 'cert-genai-rag', target: 'rag' },
   { source: 'cert-genai-rag', target: 'llm' },
   { source: 'cert-genai-rag', target: 'langchain' },
   { source: 'cert-ml-stanford', target: 'sklearn' },
   { source: 'cert-prompt-eng', target: 'prompt-eng' },
-  { source: 'cert-genai-everyone', target: 'llm' },
+  { source: 'cert-python', target: 'python' },
   { source: 'cert-sql', target: 'sql' },
   { source: 'cert-docker', target: 'docker' },
 ]

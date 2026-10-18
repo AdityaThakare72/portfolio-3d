@@ -16,7 +16,7 @@ export default function AboutOverlay() {
         <div>
           <h2 className="text-2xl font-bold text-white">Aditya Thakare</h2>
           <p className="text-sm text-sky-400">
-            AI Engineer · Data Scientist · MLOps
+            Data Scientist | GenAI &amp; Agentic AI | MLOps
           </p>
           <p className="text-sm text-slate-400">Pune, Maharashtra</p>
         </div>
@@ -25,9 +25,9 @@ export default function AboutOverlay() {
       <hr className="my-6 border-white/[0.08]" />
 
       <p className="text-sm leading-relaxed text-slate-300">
-        Data Scientist with 2+ years of experience designing and deploying
-        production-grade Generative AI systems — RAG pipelines, multi-agent
-        LangGraph orchestration, and end-to-end MLOps workflows. Delivered
+        Data Scientist with 3+ years of experience (since Sep 2023) building
+        and deploying Generative AI systems: RAG pipelines, multi-agent
+        LangGraph orchestration and end-to-end MLOps workflows. Delivered
         technical training to 2,000+ professionals across 10+ industry
         engagements.
       </p>
@@ -39,7 +39,7 @@ export default function AboutOverlay() {
       </h3>
       <p className="mt-2 text-sm text-slate-200">
         Data Scientist — MITU Skillologies, Pune{' '}
-        <span className="text-slate-400">(2023 – Present)</span>
+        <span className="text-slate-400">(Sep 2023 – Present)</span>
       </p>
 
       <h3 className="mt-6 text-xs font-semibold uppercase tracking-wider text-slate-400">
@@ -51,8 +51,8 @@ export default function AboutOverlay() {
           <span className="text-slate-400">(2023)</span>
         </li>
         <li>
-          B.Tech — Civil Engineering, SPPU{' '}
-          <span className="text-slate-400">(2021)</span>
+          B.Tech, Civil Engineering — Savitribai Phule Pune University, CGPA
+          7.78 <span className="text-slate-400">(2021)</span>
         </li>
       </ul>
     </Modal>

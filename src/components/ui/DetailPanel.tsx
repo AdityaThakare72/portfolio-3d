@@ -13,10 +13,16 @@ function Pill({ children }: { children: React.ReactNode }) {
 function ProjectContent({ node }: { node: Node }) {
   return (
     <>
-      {node.tags?.[0] && (
-        <span className="mb-3 inline-block rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium text-sky-400">
-          {node.tags[0]}
+      {node.status === 'in-progress' ? (
+        <span className="mb-3 inline-block rounded-full bg-amber-400/10 px-3 py-1 text-xs font-medium text-amber-300">
+          In progress
         </span>
+      ) : (
+        node.tags?.[0] && (
+          <span className="mb-3 inline-block rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium text-sky-400">
+            {node.tags[0]}
+          </span>
+        )
       )}
       <h2 className="text-2xl font-bold text-white">{node.label}</h2>
       <p className="mt-3 text-sm leading-relaxed text-slate-300">
@@ -186,6 +192,11 @@ function CertContent({ node }: { node: Node }) {
       <p className="mt-3 text-sm leading-relaxed text-slate-300">
         {node.description}
       </p>
+      {node.credentialId && (
+        <p className="mt-2 break-all text-xs text-slate-400">
+          Credential ID: {node.credentialId}
+        </p>
+      )}
       {node.links?.live && (
         <a
           href={node.links.live}
@@ -193,7 +204,7 @@ function CertContent({ node }: { node: Node }) {
           rel="noreferrer"
           className="mt-6 inline-block rounded-lg bg-emerald-400 px-4 py-2 text-sm font-semibold text-gray-950 transition-colors hover:bg-emerald-300"
         >
-          Verify Certificate
+          View
         </a>
       )}
     </>
@@ -210,6 +221,13 @@ function InfoContent({ node }: { node: Node }) {
       <p className="mt-3 text-sm leading-relaxed text-slate-300">
         {node.description}
       </p>
+      {node.highlights && (
+        <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-300">
+          {node.highlights.map((h) => (
+            <li key={h}>{h}</li>
+          ))}
+        </ul>
+      )}
     </>
   )
 }

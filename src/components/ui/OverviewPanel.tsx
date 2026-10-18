@@ -78,12 +78,12 @@ export default function OverviewPanel() {
                   Aditya Thakare
                 </h2>
                 <p className="text-sm text-sky-400 sm:text-base">
-                  AI Engineer · Data Scientist · MLOps — Pune, Maharashtra
+                  Data Scientist | GenAI &amp; Agentic AI | MLOps — Pune, Maharashtra
                 </p>
               </div>
             </div>
             <p className="mt-4 text-sm font-medium text-slate-200">
-              2+ years experience · 4 production GenAI/ML systems · 2,000+
+              3+ years experience · 4 deployed GenAI/ML systems · 2,000+
               professionals trained across 10+ industry engagements
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
@@ -131,6 +131,9 @@ export default function OverviewPanel() {
                         {p.label}
                       </h4>
                       <div className="flex gap-3 text-sm">
+                        {p.status === 'in-progress' && (
+                          <span className="text-amber-300">In progress</span>
+                        )}
                         {p.links?.live && (
                           <a
                             href={p.links.live}
@@ -178,6 +181,13 @@ export default function OverviewPanel() {
                   <p className="mt-1 text-sm leading-relaxed text-slate-300">
                     {experience.description}
                   </p>
+                  {experience.highlights && (
+                    <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-slate-300">
+                      {experience.highlights.map((h) => (
+                        <li key={h}>{h}</li>
+                      ))}
+                    </ul>
+                  )}
                 </>
               )}
             </Section>
@@ -201,17 +211,26 @@ export default function OverviewPanel() {
               <ul className="space-y-2">
                 {certs.map((c) => (
                   <li key={c.id} className="text-sm text-slate-300">
-                    {c.links?.live ? (
-                      <a
-                        href={c.links.live}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="hover:text-sky-400"
-                      >
-                        {c.description}
-                      </a>
-                    ) : (
-                      c.description
+                    {c.description}
+                    {c.credentialId && (
+                      <span className="break-all text-slate-500">
+                        {' '}
+                        · ID {c.credentialId}
+                      </span>
+                    )}
+                    {c.links?.live && (
+                      <>
+                        {' '}
+                        ·{' '}
+                        <a
+                          href={c.links.live}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-sky-400 hover:underline"
+                        >
+                          View
+                        </a>
+                      </>
                     )}
                   </li>
                 ))}
