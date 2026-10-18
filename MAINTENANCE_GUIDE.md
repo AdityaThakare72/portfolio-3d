@@ -29,7 +29,8 @@ paste it before the closing `]`, and edit:
 ```ts
   {
     id: 'my-new-project',                      // unique, lowercase-with-dashes
-    label: 'My New Project',                   // name shown in the graph
+    label: 'My New Project',                   // full name (panel + Overview)
+    shortLabel: 'New Project',                 // optional — shorter 3D label
     description:
       'One or two sentences about what it does and how it was built.',
     links: {
@@ -54,6 +55,11 @@ or `.mp4` in `public/media/` (create the folder), and set
 `media: '/media/<file name>'`. It shows at the top of the panel.
 Streamlit demo links automatically get a "may take ~30s to wake up"
 note.
+
+Use `shortLabel` when the full name is long: the graph label stays short so
+it doesn't collide with its neighbours, while the panel and Overview still
+show the full `label`. Overlapping labels also hide themselves
+automatically (projects win over skills, the hovered node always wins).
 
 For a client project with no public links, delete the whole `links: { ... },`
 block — the panel will automatically show a "Client Project" badge instead
@@ -335,6 +341,21 @@ Heads-up: the 2D buttons and pills use Tailwind classes like `bg-sky-400`
 spread across `src/components/ui/` — changing the whole site's accent
 means touching those too. Keep the accent sky-blue unless you're ready
 for a bigger find-and-replace.
+
+---
+
+## 10b. How the graph behaves (nothing to edit)
+
+- **Legend:** hover a row to preview that group, click to lock it as a
+  filter and fly there. Skill category chips filter one category plus the
+  projects using it. Esc or the "Showing: … ✕" chip clears it. Counts
+  update from the data automatically.
+- **Panels:** "Used in", "Certifications" and "Writing" links open the
+  linked node. Previous / Next (or ← → keys) step through projects,
+  certs, blogs, the skills of one category, etc.
+- **Auto-rotate:** pauses while the pointer moves or hovers, resumes
+  after 3 s idle, and never runs for visitors who set "reduce motion" in
+  their OS.
 
 ---
 
