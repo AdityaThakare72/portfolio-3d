@@ -1,3 +1,5 @@
+import { teachingStats } from './workshops'
+
 export type NodeType = 'project' | 'category' | 'skill' | 'blog' | 'cert' | 'info'
 
 export interface Node {
@@ -476,7 +478,7 @@ const infoDefs = [
     highlights: [
       'Deep learning research support on Brahmi script recognition: compared Custom CNN, InceptionNet, ResNet-50 and XceptionNet on a 7,880-image, 56-class dataset; ResNet-50 gave the best accuracy.',
       'Research and implementation support for student progression prediction and crop disease classification.',
-      'Built end-to-end AI systems (RAG pipelines, neural networks, MLOps workflows) as primary technical SME across 10+ industry engagements and faculty development programs reaching 2,000+ professionals.',
+      `Built end-to-end AI systems (RAG pipelines, neural networks, MLOps workflows) as primary technical SME across ${teachingStats.workshops} workshops and faculty development programs, reaching 2,000+ students and faculty.`,
       'Designed a 140-session AI curriculum, Python through Generative AI and LangGraph.',
     ],
     size: 0.7,

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { edges, nodeById, nodes, type Node } from '../../data/portfolio'
+import { teachingStats } from '../../data/workshops'
 import { useGraphStore } from '../../hooks/useGraphStore'
 
 const projects = nodes.filter((n) => n.type === 'project')
@@ -84,7 +85,8 @@ export default function OverviewPanel() {
             </div>
             <p className="mt-4 text-sm font-medium text-slate-200">
               3+ years experience · 4 deployed GenAI/ML systems · 2,000+
-              professionals trained across 10+ industry engagements
+              students and faculty trained across {teachingStats.workshops}{' '}
+              workshops at {teachingStats.institutions} institutions
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
               <a
