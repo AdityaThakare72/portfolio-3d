@@ -4,6 +4,7 @@ import { Billboard, Text } from '@react-three/drei'
 import { Vector3, type Mesh, type MeshStandardMaterial } from 'three'
 import { neighbors, type Node } from '../../data/portfolio'
 import { useGraphStore } from '../../hooks/useGraphStore'
+import { useActiveFocus } from '../../hooks/focus'
 
 const BASE_EMISSIVE = {
   project: 0.6,
@@ -48,7 +49,12 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
   const isHovered = hoveredNode === node.id
   const isNeighborOfHovered =
     hoveredNode !== null && (neighbors.get(hoveredNode)?.has(node.id) ?? false)
-  const dimmed = hoveredNode !== null && !isHovered && !isNeighborOfHovered
+  // Legend filter: nodes outside it fade further than hover dimming
+  const focus = useActiveFocus()
+  const outOfFocus = focus !== null && !focus.has(node.id) && !isHovered
+  const inFocus = focus !== null && focus.has(node.id)
+  const dimmed =
+    outOfFocus || (hoveredNode !== null && !isHovered && !isNeighborOfHovered)
   const baseOpacity = node.type === 'skill' ? 0.7 : 0.9
 
   // troika fillOpacity updates are uniform-only (no relayout), safe per-frame
@@ -80,7 +86,7 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
       : BASE_EMISSIVE[node.type]
     material.emissiveIntensity +=
       (targetEmissive - material.emissiveIntensity) * LERP
-    const targetOpacity = dimmed ? 0.3 : baseOpacity
+    const targetOpacity = outOfFocus ? 0.1 : dimmed ? 0.3 : baseOpacity
     material.opacity += (targetOpacity - material.opacity) * LERP
   })
 
@@ -156,8 +162,10 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
       )}
       {/* Hide labels while zoomed in — the detail panel carries the name */}
       {!selectedNode &&
+        !outOfFocus &&
         (ALWAYS_LABELED.includes(node.type) ||
           isHovered ||
+          inFocus ||
           (IS_TOUCH && (node.type === 'blog' || node.type === 'cert'))) && (
           <Billboard position={[0, node.size * (isProject ? 0.8 : 0.65), 0]}>
             <Text
