@@ -67,8 +67,13 @@ export default function NodeMesh({ node, index }: { node: Node; index: number })
       ndc.set(...node.position)
       const tooClose = camera.position.distanceTo(ndc) < NEAR_FADE
       ndc.project(camera)
+      // The hero text is hidden while a legend filter is locked
+      const heroShown = useGraphStore.getState().filter === null
       const overHero =
-        ndc.z < 1 && Math.abs(ndc.x) < HERO_X && Math.abs(ndc.y) < HERO_Y
+        heroShown &&
+        ndc.z < 1 &&
+        Math.abs(ndc.x) < HERO_X &&
+        Math.abs(ndc.y) < HERO_Y
       const target = overHero || tooClose ? 0 : 1
       labelOpacity.current += (target - labelOpacity.current) * 0.12
       text.fillOpacity = labelOpacity.current

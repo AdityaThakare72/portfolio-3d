@@ -26,7 +26,9 @@ export default function App() {
         store.setShowOverview(false)
         return
       }
-      deselect()
+      // Then the open panel, then a locked legend filter
+      if (store.selectedNode) deselect()
+      else store.setFilter(null)
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
