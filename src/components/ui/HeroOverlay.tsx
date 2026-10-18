@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { AVAILABILITY, HEADLINE } from '../../data/portfolio'
+import { AVAILABILITY, HEADLINE, projectStats } from '../../data/portfolio'
 import { useGraphStore } from '../../hooks/useGraphStore'
 
 const socials = [
@@ -30,7 +30,8 @@ export default function HeroOverlay() {
           {HEADLINE}
         </p>
         <p className="mt-3 px-4 text-sm tracking-wide text-slate-400">
-          3+ years · 4 deployed AI systems · 2,000+ students &amp; faculty trained
+          3+ years · {projectStats.deployed} deployed AI systems · 2,000+ students &amp;
+          faculty trained
         </p>
         <p className="mt-2 px-4 text-sm font-medium tracking-wide text-amber-300">
           {AVAILABILITY}

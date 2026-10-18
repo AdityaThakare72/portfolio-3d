@@ -225,6 +225,18 @@ const projectNodes: Node[] = projectDefs.map((p, i) => {
   }
 })
 
+// Counted from the data, so the stat grows as projects ship: a project is
+// deployed when it has a live demo, or is a client project (no public links)
+// running in production. In-progress work never counts.
+const isDeployed = (p: ProjectDef) =>
+  p.status !== 'in-progress' && (!!p.links?.live || !p.links)
+
+export const projectStats = {
+  deployed: projectDefs.filter(isDeployed).length,
+  // Other projects with public code, built or still in progress
+  onGithub: projectDefs.filter((p) => !isDeployed(p) && p.links?.source).length,
+}
+
 // ---------------------------------------------------------------------------
 // Tier 2 — categories on a fibonacci sphere of radius 5
 // ---------------------------------------------------------------------------

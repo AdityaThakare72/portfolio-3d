@@ -270,8 +270,13 @@ between the `>` and `<` or inside the quotes):
 | Summary paragraph (readable page + About modal) | `src/data/portfolio.ts` | `export const SUMMARY` |
 | "Open to … roles" availability line (everywhere) | `src/data/portfolio.ts` | `export const AVAILABILITY` |
 | Stat tiles on the readable page | `src/components/page/ReadablePage.tsx` | `const stats = [` |
-| Stat line on the 3D landing | `src/components/ui/HeroOverlay.tsx` | `3+ years · 4 deployed AI systems · ...` |
+| Stat line on the 3D landing | `src/components/ui/HeroOverlay.tsx` | `3+ years · … deployed AI systems · ...` |
 | Page title, description, social share tags | `index.html` | `<title>`, `og:*`, `twitter:*` (site URL is `https://adityathakare.app`) |
+
+The "deployed AI systems" number counts itself from `projectDefs`: a
+project counts once it has a `live` demo link, or is a client project
+(no links). Projects marked `status: 'in-progress'` never count. Add a
+live link to a new project and the number goes up everywhere.
 
 The "2,000+ students & faculty" figure is typed in the files above; the
 workshop and institution counts next to it come from

@@ -5,6 +5,7 @@ import {
   SUMMARY,
   edges,
   nodeById,
+  projectStats,
   nodes,
   type Node,
 } from '../../data/portfolio'
@@ -56,7 +57,11 @@ const topTopics = [
 
 const stats = [
   { value: '3+ years', label: 'as a Data Scientist' },
-  { value: '4', label: 'deployed AI systems' },
+  {
+    value: `${projectStats.deployed}`,
+    label: 'deployed AI systems',
+    note: projectStats.onGithub ? `+${projectStats.onGithub} more on GitHub` : undefined,
+  },
   { value: '2,000+', label: 'students & faculty trained' },
   {
     value: teachingStats.workshops,
@@ -219,6 +224,9 @@ function Hero() {
           <div key={s.label} className={`${card} !p-4`}>
             <dt className={`text-xs ${muted}`}>{s.label}</dt>
             <dd className={`order-first text-2xl font-bold ${strong}`}>{s.value}</dd>
+            {'note' in s && s.note && (
+              <dd className="mt-0.5 text-xs font-medium text-sky-700 dark:text-sky-400">{s.note}</dd>
+            )}
           </div>
         ))}
       </dl>
