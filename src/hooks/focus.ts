@@ -6,7 +6,9 @@ import { useGraphStore, type Filter } from './useGraphStore'
 const cache = new Map<string, Set<string>>()
 
 function filterKey(f: Filter) {
-  return f.kind === 'type' ? `type:${f.types.join(',')}` : `cat:${f.id}`
+  if (f.kind === 'type') return `type:${f.types.join(',')}`
+  if (f.kind === 'ids') return `ids:${f.ids.join(',')}`
+  return `cat:${f.id}`
 }
 
 export function focusSet(f: Filter): Set<string> {
@@ -16,6 +18,8 @@ export function focusSet(f: Filter): Set<string> {
   let ids: Set<string>
   if (f.kind === 'type') {
     ids = new Set(nodes.filter((n) => f.types.includes(n.type)).map((n) => n.id))
+  } else if (f.kind === 'ids') {
+    ids = new Set(f.ids)
   } else {
     // The category, its skills, and every project linked to either
     ids = new Set([f.id])

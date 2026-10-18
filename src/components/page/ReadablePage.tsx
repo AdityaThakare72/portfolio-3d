@@ -11,6 +11,7 @@ import {
 import { teachingStats, workshops } from '../../data/workshops'
 import { useTheme } from '../../hooks/useTheme'
 import { useView } from '../../hooks/useView'
+import JobMatch from './JobMatch'
 import { ProjectCard, ProjectRow } from './ProjectCard'
 import {
   Section,
@@ -239,6 +240,9 @@ function Hero() {
           </a>
         ))}
       </div>
+      <a href="#match" className={`mt-4 inline-block text-sm ${textLink}`}>
+        Hiring? Check a job description against my skills →
+      </a>
     </section>
   )
 }
@@ -328,7 +332,8 @@ export default function ReadablePage() {
         </Section>
 
         <Section id="skills" title="Skills">
-          <div className={`${card} space-y-4`}>
+          <JobMatch />
+          <div className={`${card} mt-6 space-y-4`}>
             {skillGroups.map(({ category, skills }) => (
               <div key={category.id} className="sm:flex sm:gap-4">
                 <h3 className={`mb-2 text-sm font-semibold sm:mb-0 sm:w-56 sm:shrink-0 ${strong}`}>

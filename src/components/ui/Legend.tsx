@@ -96,6 +96,7 @@ const rows: Row[] = [
 ]
 
 function filterLabel(f: Filter) {
+  if (f.kind === 'ids') return f.label
   if (f.kind === 'category') {
     return categories.find((c) => c.id === f.id)?.label ?? ''
   }

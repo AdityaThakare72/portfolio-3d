@@ -3,11 +3,12 @@ import { nodeById, nodes, type NodeType } from '../data/portfolio'
 
 type Vec3 = [number, number, number]
 
-// Legend filter: one node type, or one skill category (with its skills
-// and the projects connected to it)
+// Legend filter: one node type, one skill category (with its skills and
+// the projects connected to it), or an explicit set of nodes (job match)
 export type Filter =
   | { kind: 'type'; types: NodeType[] }
   | { kind: 'category'; id: string }
+  | { kind: 'ids'; ids: string[]; label: string }
 
 export type Cluster = 'projects' | 'skills' | 'blogs' | 'certs' | 'info'
 
