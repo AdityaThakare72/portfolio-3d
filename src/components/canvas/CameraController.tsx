@@ -1,5 +1,5 @@
-import { useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
+import { useEffect, useRef } from 'react'
+import { useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { Vector3 } from 'three'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
@@ -7,6 +7,14 @@ import { useGraphStore } from '../../hooks/useGraphStore'
 
 const ORIGIN = new Vector3(0, 0, 0)
 const LERP = 0.04
+const ROTATE_SPEED = 0.4
+// Auto-rotation eases out while the pointer moves and back in after this
+// long idle, so targets hold still while someone is aiming at them
+const IDLE_MS = 3000
+
+const REDUCED_MOTION =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 const dest = new Vector3()
 const look = new Vector3()
@@ -16,6 +24,17 @@ export default function CameraController() {
   const controlsRef = useRef<OrbitControlsImpl>(null)
   const returning = useRef(false)
   const prevSelected = useRef<string | null>(null)
+  const lastPointerMove = useRef(-Infinity)
+  const gl = useThree((s) => s.gl)
+
+  useEffect(() => {
+    const el = gl.domElement
+    const onMove = () => {
+      lastPointerMove.current = performance.now()
+    }
+    el.addEventListener('pointermove', onMove)
+    return () => el.removeEventListener('pointermove', onMove)
+  }, [gl])
 
   useFrame(({ camera }) => {
     const controls = controlsRef.current
@@ -63,7 +82,13 @@ export default function CameraController() {
         controls.minDistance = 8
       }
     } else {
-      controls.autoRotate = store.autoRotate
+      const idle =
+        performance.now() - lastPointerMove.current > IDLE_MS &&
+        store.hoveredNode === null
+      const spin = store.autoRotate && !REDUCED_MOTION && idle
+      controls.autoRotate = store.autoRotate && !REDUCED_MOTION
+      controls.autoRotateSpeed +=
+        ((spin ? ROTATE_SPEED : 0) - controls.autoRotateSpeed) * 0.05
     }
     controls.update()
   })
@@ -75,7 +100,7 @@ export default function CameraController() {
       onStart={() => useGraphStore.getState().setAutoRotate(false)}
       enableDamping
       dampingFactor={0.05}
-      autoRotateSpeed={0.4}
+      autoRotateSpeed={ROTATE_SPEED}
       minDistance={8}
       maxDistance={22}
       enablePan={false}
