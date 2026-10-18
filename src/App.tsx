@@ -13,10 +13,19 @@ import OverviewPanel from './components/ui/OverviewPanel'
 import ResetViewButton from './components/ui/ResetViewButton'
 import Loader from './components/ui/Loader'
 import { useGraphStore, deselect } from './hooks/useGraphStore'
+import { stepSelection } from './hooks/navigation'
 
 export default function App() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Arrow keys browse siblings while a panel is open
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        const s = useGraphStore.getState()
+        if (s.selectedNode && !s.showAbout && !s.showContact && !s.showOverview) {
+          stepSelection(e.key === 'ArrowLeft' ? -1 : 1)
+        }
+        return
+      }
       if (e.key !== 'Escape') return
       // Overlays close first; only then does Escape deselect the node
       const store = useGraphStore.getState()

@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { edges, nodeById, type Node } from '../../data/portfolio'
 import { workshops } from '../../data/workshops'
-import { useGraphStore, deselect } from '../../hooks/useGraphStore'
+import { useGraphStore, deselect, selectNode } from '../../hooks/useGraphStore'
+import { siblings, stepSelection } from '../../hooks/navigation'
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -10,6 +11,38 @@ function Pill({ children }: { children: React.ReactNode }) {
     </span>
   )
 }
+
+// A titled list of nodes that open their own panel when clicked
+function NodeLinks({ title, items }: { title: string; items: Node[] }) {
+  if (items.length === 0) return null
+  return (
+    <div className="mt-6">
+      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+        {title}
+      </h3>
+      <ul className="space-y-1 text-sm">
+        {items.map((n) => (
+          <li key={n.id}>
+            <button
+              type="button"
+              onClick={() => selectNode(n.id)}
+              className="cursor-pointer text-left text-slate-300 transition-colors hover:text-sky-400"
+            >
+              {n.label} <span aria-hidden>→</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+// Linked nodes of one type pointing at this node (e.g. projects using a skill)
+const linkedFrom = (id: string, type: Node['type']) =>
+  edges
+    .filter((e) => e.target === id)
+    .map((e) => nodeById.get(e.source))
+    .filter((n): n is Node => n?.type === type)
 
 function ProjectContent({ node }: { node: Node }) {
   return (
@@ -138,30 +171,7 @@ function CategoryContent({ node }: { node: Node }) {
           <Pill key={s.id}>{s.label}</Pill>
         ))}
       </div>
-      {projects.length > 0 && (
-        <div className="mt-6">
-          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Connected Projects
-          </h3>
-          <ul className="space-y-1 text-sm">
-            {projects.map((p) => (
-              <li key={p.id}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const store = useGraphStore.getState()
-                    store.setSelectedNode(p.id)
-                    store.setCameraTarget(p.position)
-                  }}
-                  className="cursor-pointer text-slate-300 transition-colors hover:text-sky-400"
-                >
-                  {p.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <NodeLinks title="Connected Projects" items={projects} />
     </>
   )
 }
@@ -170,10 +180,9 @@ function SkillContent({ node }: { node: Node }) {
   const category = edges
     .map((e) => (e.target === node.id ? nodeById.get(e.source) : undefined))
     .find((n) => n?.type === 'category')
-  const projects = edges
-    .filter((e) => e.target === node.id)
-    .map((e) => nodeById.get(e.source))
-    .filter((n): n is Node => n?.type === 'project')
+  const projects = linkedFrom(node.id, 'project')
+  const certs = linkedFrom(node.id, 'cert')
+  const blogs = linkedFrom(node.id, 'blog')
 
   return (
     <>
@@ -183,11 +192,9 @@ function SkillContent({ node }: { node: Node }) {
           Part of <span className="text-slate-200">{category.label}</span>
         </p>
       )}
-      {projects.length > 0 && (
-        <p className="mt-3 text-sm text-slate-300">
-          Used in: {projects.map((p) => p.label).join(', ')}
-        </p>
-      )}
+      <NodeLinks title="Used in" items={projects} />
+      <NodeLinks title="Certifications" items={certs} />
+      <NodeLinks title="Writing" items={blogs} />
     </>
   )
 }
@@ -303,6 +310,29 @@ function TeachingDetails() {
   )
 }
 
+function PanelNav({ node }: { node: Node }) {
+  const list = siblings(node)
+  if (list.length < 2) return null
+  const i = list.findIndex((n) => n.id === node.id)
+  const prev = list[(i - 1 + list.length) % list.length]
+  const next = list[(i + 1) % list.length]
+  const btn =
+    'cursor-pointer rounded-md px-2 py-1 text-xs font-medium text-slate-300 transition hover:bg-white/5 hover:text-white'
+  return (
+    <div className="mt-8 flex items-center justify-between border-t border-white/[0.08] pt-4">
+      <button type="button" onClick={() => stepSelection(-1)} title={prev.label} className={btn}>
+        ← Previous
+      </button>
+      <span className="text-xs tabular-nums text-slate-500">
+        {i + 1} / {list.length}
+      </span>
+      <button type="button" onClick={() => stepSelection(1)} title={next.label} className={btn}>
+        Next →
+      </button>
+    </div>
+  )
+}
+
 function InfoContent({ node }: { node: Node }) {
   const badge =
     node.id === 'experience' ? 'Experience' : node.id === 'teaching' ? 'Teaching' : 'Education'
@@ -370,6 +400,7 @@ export default function DetailPanel() {
             {node.type === 'blog' && <BlogContent node={node} />}
             {node.type === 'cert' && <CertContent node={node} />}
             {node.type === 'info' && <InfoContent node={node} />}
+            <PanelNav node={node} />
           </div>
         </motion.div>
       )}
