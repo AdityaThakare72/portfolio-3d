@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { AVAILABILITY } from '../../data/portfolio'
 import { useGraphStore } from '../../hooks/useGraphStore'
 
 const socials = [
@@ -28,7 +29,10 @@ export default function HeroOverlay() {
           Data Scientist | GenAI &amp; Agentic AI | MLOps
         </p>
         <p className="mt-3 px-4 text-sm tracking-wide text-slate-400">
-          3+ years · 4 deployed AI systems · 2,000+ professionals trained
+          3+ years · 4 deployed AI systems · 2,000+ students &amp; faculty trained
+        </p>
+        <p className="mt-2 px-4 text-sm font-medium tracking-wide text-amber-300">
+          {AVAILABILITY}
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3 px-4 sm:gap-4">
           {socials.map((s) => (

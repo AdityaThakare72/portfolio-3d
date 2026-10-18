@@ -1,3 +1,5 @@
+import { AVAILABILITY } from '../../data/portfolio'
+import { teachingStats } from '../../data/workshops'
 import { useGraphStore } from '../../hooks/useGraphStore'
 import Modal from './Modal'
 
@@ -19,6 +21,7 @@ export default function AboutOverlay() {
             Data Scientist | GenAI &amp; Agentic AI | MLOps
           </p>
           <p className="text-sm text-slate-400">Pune, Maharashtra</p>
+          <p className="mt-1 text-xs font-medium text-amber-300">{AVAILABILITY}</p>
         </div>
       </div>
 
@@ -28,8 +31,9 @@ export default function AboutOverlay() {
         Data Scientist with 3+ years of experience (since Sep 2023) building
         and deploying Generative AI systems: RAG pipelines, multi-agent
         LangGraph orchestration and end-to-end MLOps workflows. Delivered
-        technical training to 2,000+ professionals across 10+ industry
-        engagements.
+        technical training to 2,000+ students and faculty across{' '}
+        {teachingStats.workshops} workshops and faculty development programs
+        at {teachingStats.institutions} institutions.
       </p>
 
       <hr className="my-6 border-white/[0.08]" />

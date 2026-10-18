@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { edges, nodeById, type Node } from '../../data/portfolio'
+import { workshops } from '../../data/workshops'
 import { useGraphStore, deselect } from '../../hooks/useGraphStore'
 
 function Pill({ children }: { children: React.ReactNode }) {
@@ -25,9 +26,45 @@ function ProjectContent({ node }: { node: Node }) {
         )
       )}
       <h2 className="text-2xl font-bold text-white">{node.label}</h2>
+      {node.media &&
+        (node.media.endsWith('.mp4') ? (
+          <video
+            src={node.media}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="mt-4 w-full rounded-lg border border-white/[0.08]"
+          />
+        ) : (
+          <img
+            src={node.media}
+            alt={`${node.label} demo`}
+            loading="lazy"
+            className="mt-4 w-full rounded-lg border border-white/[0.08]"
+          />
+        ))}
       <p className="mt-3 text-sm leading-relaxed text-slate-300">
         {node.description}
       </p>
+      {node.story && (
+        <dl className="mt-5 space-y-3 text-sm leading-relaxed">
+          {(
+            [
+              ['Problem', node.story.problem],
+              ['Key decision', node.story.decision],
+              ['Outcome', node.story.outcome],
+            ] as const
+          ).map(([term, text]) => (
+            <div key={term}>
+              <dt className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                {term}
+              </dt>
+              <dd className="mt-0.5 text-slate-300">{text}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
       {node.tags && (
         <div className="mt-5">
           <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
@@ -70,6 +107,12 @@ function ProjectContent({ node }: { node: Node }) {
           </span>
         )}
       </div>
+      {/* Streamlit Community Cloud apps sleep when idle */}
+      {node.links?.live?.includes('streamlit.app') && (
+        <p className="mt-2 text-xs text-slate-400">
+          The demo may take ~30s to wake up on first visit.
+        </p>
+      )}
     </>
   )
 }
@@ -211,11 +254,62 @@ function CertContent({ node }: { node: Node }) {
   )
 }
 
+// Most frequent workshop topics, for the Teaching panel
+const topTopics = [
+  ...workshops
+    .reduce((m, w) => m.set(w.topic, (m.get(w.topic) ?? 0) + 1), new Map<string, number>())
+    .entries(),
+]
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 6)
+  .map(([topic]) => topic)
+
+function TeachingDetails() {
+  return (
+    <>
+      <div className="mt-5">
+        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+          Most taught
+        </h3>
+        <div className="flex flex-wrap gap-2">
+          {topTopics.map((t) => (
+            <Pill key={t}>{t}</Pill>
+          ))}
+        </div>
+      </div>
+      <div className="mt-5">
+        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+          Most recent
+        </h3>
+        <ul className="space-y-1.5 text-sm text-slate-300">
+          {workshops
+            .slice(-5)
+            .reverse()
+            .map((w) => (
+              <li key={`${w.year}-${w.dates}-${w.venue}`}>
+                {w.topic} <span className="text-slate-500">· {w.venue} · {w.dates} {w.year}</span>
+              </li>
+            ))}
+        </ul>
+      </div>
+      <button
+        type="button"
+        onClick={() => useGraphStore.getState().setShowOverview(true)}
+        className="mt-6 inline-block cursor-pointer rounded-lg border border-slate-600 px-4 py-2 text-sm font-semibold text-slate-200 transition-colors hover:border-amber-400 hover:text-amber-300"
+      >
+        See all {workshops.length} workshops
+      </button>
+    </>
+  )
+}
+
 function InfoContent({ node }: { node: Node }) {
+  const badge =
+    node.id === 'experience' ? 'Experience' : node.id === 'teaching' ? 'Teaching' : 'Education'
   return (
     <>
       <span className="mb-3 inline-block text-xs font-semibold uppercase tracking-wider text-amber-400">
-        {node.id === 'experience' ? 'Experience' : 'Education'}
+        {badge}
       </span>
       <h2 className="text-2xl font-bold text-white">{node.label}</h2>
       <p className="mt-3 text-sm leading-relaxed text-slate-300">
@@ -228,6 +322,7 @@ function InfoContent({ node }: { node: Node }) {
           ))}
         </ul>
       )}
+      {node.id === 'teaching' && <TeachingDetails />}
     </>
   )
 }

@@ -1,11 +1,14 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { edges, nodeById, nodes, type Node } from '../../data/portfolio'
+import { AVAILABILITY, edges, nodeById, nodes, type Node } from '../../data/portfolio'
+import { teachingStats, workshops } from '../../data/workshops'
 import { useGraphStore } from '../../hooks/useGraphStore'
 
 const projects = nodes.filter((n) => n.type === 'project')
 const certs = nodes.filter((n) => n.type === 'cert')
 const blogs = nodes.filter((n) => n.type === 'blog')
 const experience = nodeById.get('experience')
+const teaching = nodeById.get('teaching')
+const workshopYears = [...new Set(workshops.map((w) => w.year))].sort((a, b) => b - a)
 const education = [nodeById.get('edu-cdac'), nodeById.get('edu-sppu')].filter(
   (n): n is Node => !!n,
 )
@@ -84,8 +87,10 @@ export default function OverviewPanel() {
             </div>
             <p className="mt-4 text-sm font-medium text-slate-200">
               3+ years experience · 4 deployed GenAI/ML systems · 2,000+
-              professionals trained across 10+ industry engagements
+              students and faculty trained across {teachingStats.workshops}{' '}
+              workshops at {teachingStats.institutions} institutions
             </p>
+            <p className="mt-2 text-sm font-medium text-amber-300">{AVAILABILITY}</p>
             <div className="mt-4 flex flex-wrap gap-3">
               <a
                 href="/Aditya_Thakare_Resume.pdf"
@@ -162,6 +167,14 @@ export default function OverviewPanel() {
                     <p className="mt-2 text-sm leading-relaxed text-slate-300">
                       {p.description}
                     </p>
+                    {p.story && (
+                      <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                        <span className="font-semibold text-slate-200">Key decision:</span>{' '}
+                        {p.story.decision}{' '}
+                        <span className="font-semibold text-slate-200">Outcome:</span>{' '}
+                        {p.story.outcome}
+                      </p>
+                    )}
                     {p.tags && (
                       <p className="mt-2 text-xs text-slate-400">
                         {p.tags.join(' · ')}
@@ -190,6 +203,36 @@ export default function OverviewPanel() {
                   )}
                 </>
               )}
+            </Section>
+
+            <Section title="Teaching">
+              {teaching && (
+                <p className="text-sm leading-relaxed text-slate-300">
+                  {teaching.description}
+                </p>
+              )}
+              <div className="mt-3 space-y-2">
+                {workshopYears.map((year) => {
+                  const rows = workshops.filter((w) => w.year === year)
+                  return (
+                    <details key={year} className="text-sm">
+                      <summary className="cursor-pointer font-semibold text-slate-200 hover:text-sky-400">
+                        {year} · {rows.length} workshops
+                      </summary>
+                      <ul className="mt-2 space-y-1 pl-4 text-slate-300">
+                        {rows.map((w) => (
+                          <li key={`${w.dates}-${w.venue}`}>
+                            {w.topic}{' '}
+                            <span className="text-slate-500">
+                              · {w.venue} · {w.dates}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  )
+                })}
+              </div>
             </Section>
 
             <Section title="Skills">

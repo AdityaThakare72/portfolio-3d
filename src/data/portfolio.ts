@@ -1,3 +1,5 @@
+import { teachingStats } from './workshops'
+
 export type NodeType = 'project' | 'category' | 'skill' | 'blog' | 'cert' | 'info'
 
 export interface Node {
@@ -16,6 +18,16 @@ export interface Node {
   highlights?: string[]
   // Certificate credential ID, shown in the cert panel
   credentialId?: string
+  // Project write-up shown in the panel: problem -> key decision -> outcome
+  story?: ProjectStory
+  // Path to a demo GIF / MP4 in public/, e.g. '/media/research-agent.gif'
+  media?: string
+}
+
+export interface ProjectStory {
+  problem: string
+  decision: string
+  outcome: string
 }
 
 export interface Edge {
@@ -23,11 +35,20 @@ export interface Edge {
   target: string
 }
 
+// Shown on the landing page, Overview and About
+export const AVAILABILITY =
+  'Open to Data Scientist / AI Engineer roles · Pune, remote, or relocation'
+
+// One hue per node type, so every color has a single meaning:
+// sky = projects, violet = skills, pink = blogs, emerald = certs,
+// amber = the person (experience, teaching, education)
 export const COLORS = {
   background: '#030712',
   project: '#38bdf8',
   category: '#a78bfa',
-  skill: '#94a3b8',
+  blog: '#f472b6',
+  cert: '#34d399',
+  info: '#fbbf24',
   edge: 'rgba(148,163,184,0.1)',
   text: '#f1f5f9',
   accent: '#38bdf8',
@@ -47,9 +68,9 @@ function mulberry32(seed: number) {
 const rand = mulberry32(72)
 const jitter = (amount: number) => (rand() * 2 - 1) * amount
 
-// Dim a hex color toward black — used for skill nodes inheriting their
-// parent category's color
-function dim(hex: string, factor = 0.62): string {
+// Dim a hex color toward black — used for skill nodes, a darker shade of
+// the category violet
+export function dim(hex: string, factor = 0.62): string {
   const n = parseInt(hex.slice(1), 16)
   const r = Math.round(((n >> 16) & 0xff) * factor)
   const g = Math.round(((n >> 8) & 0xff) * factor)
@@ -72,6 +93,10 @@ interface ProjectDef {
   links?: { live?: string; source?: string }
   tags: string[]
   status?: 'in-progress'
+  story?: ProjectStory
+  // TODO: record a 20–40s demo GIF/MP4 per shipped project, put it in
+  // public/media/ and set media: '/media/<file>' on the project below
+  media?: string
 }
 
 const projectDefs: ProjectDef[] = [
@@ -85,6 +110,11 @@ const projectDefs: ProjectDef[] = [
       source: 'https://github.com/AdityaThakare72/Research-Agent',
     },
     tags: ['LangGraph', 'LangChain', 'Gemini API', 'Tavily', 'Streamlit', 'Docker'],
+    story: {
+      problem: 'Single-pass AI research outputs tend to be shallow.',
+      decision: "LangGraph over LangChain's AgentExecutor, for native cyclic graph support, persistent typed state and deterministic control flow.",
+      outcome: "The Writer only loops back when the Critic's score falls below the threshold, which prevents both infinite loops and premature termination.",
+    },
   },
   {
     id: 'legal-agent',
@@ -96,6 +126,11 @@ const projectDefs: ProjectDef[] = [
       source: 'https://github.com/AdityaThakare72/Legal_Agent1',
     },
     tags: ['RAG', 'LangChain', 'ChromaDB', 'Gemini API', 'Streamlit', 'Nginx'],
+    story: {
+      problem: "Legal information is hard to access for people who can't afford a legal consultation.",
+      decision: 'ChromaDB over FAISS for persistent storage, so retrieval keeps its state without re-embedding.',
+      outcome: 'Deployed and publicly usable; first self-hosted on DigitalOcean, now on Streamlit Community Cloud.',
+    },
   },
   {
     id: 'equipment-maintenance',
@@ -107,6 +142,11 @@ const projectDefs: ProjectDef[] = [
       source: 'https://github.com/AdityaThakare72/Industrial_Equipment_Maintenance',
     },
     tags: ['XGBoost', 'FastAPI', 'MLflow', 'DVC', 'Docker', 'GitHub Actions', 'Render', 'Streamlit'],
+    story: {
+      problem: 'Unplanned manufacturing downtime is expensive.',
+      decision: 'XGBoost over neural alternatives for tabular sensor data in a low-data regime.',
+      outcome: '98.3% accuracy and 91.2% F1 on imbalanced sensor data, with scale_pos_weight tuning.',
+    },
   },
   {
     id: 'ceo-dashboard',
@@ -115,6 +155,11 @@ const projectDefs: ProjectDef[] = [
       'Client project, in production. LangGraph orchestration behind a FastAPI layer; DuckDB/Parquet for analytical queries, MongoDB for metadata; Pydantic structured outputs with GPT-4o-mini for schema-validated answers to financial questions.',
     // client project — no public links
     tags: ['LangGraph', 'FastAPI', 'DuckDB', 'Parquet', 'MongoDB', 'Pydantic', 'GPT-4o-mini'],
+    story: {
+      problem: 'C-suite executives needed answers to financial questions in natural language.',
+      decision: 'Pydantic structured outputs with GPT-4o-mini, so every answer is schema-validated.',
+      outcome: 'Running in production for the client.',
+    },
   },
   {
     id: 'react-from-scratch',
@@ -176,7 +221,6 @@ const CATEGORY_RADIUS = 6.5
 interface CategoryDef {
   id: string
   label: string
-  color: string
   skills: { id: string; label: string }[]
 }
 
@@ -184,7 +228,6 @@ const categoryDefs: CategoryDef[] = [
   {
     id: 'cat-languages',
     label: 'Languages',
-    color: '#38bdf8',
     skills: [
       { id: 'python', label: 'Python' },
       { id: 'sql', label: 'SQL' },
@@ -193,7 +236,6 @@ const categoryDefs: CategoryDef[] = [
   {
     id: 'cat-genai',
     label: 'Generative AI',
-    color: '#a78bfa',
     skills: [
       { id: 'rag', label: 'RAG' },
       { id: 'agentic-ai', label: 'Agentic AI' },
@@ -208,7 +250,6 @@ const categoryDefs: CategoryDef[] = [
   {
     id: 'cat-vectorstores',
     label: 'Vector Stores & Embeddings',
-    color: '#818cf8',
     skills: [
       { id: 'chromadb', label: 'ChromaDB' },
       { id: 'pinecone', label: 'Pinecone' },
@@ -220,7 +261,6 @@ const categoryDefs: CategoryDef[] = [
   {
     id: 'cat-mldl',
     label: 'ML / Deep Learning',
-    color: '#fbbf24',
     skills: [
       { id: 'sklearn', label: 'Scikit-learn' },
       { id: 'xgboost', label: 'XGBoost' },
@@ -235,7 +275,6 @@ const categoryDefs: CategoryDef[] = [
   {
     id: 'cat-backend',
     label: 'Backend & APIs',
-    color: '#34d399',
     skills: [
       { id: 'fastapi', label: 'FastAPI' },
       { id: 'rest-apis', label: 'REST APIs' },
@@ -246,7 +285,6 @@ const categoryDefs: CategoryDef[] = [
   {
     id: 'cat-mlops',
     label: 'MLOps & DevOps',
-    color: '#fb923c',
     skills: [
       { id: 'docker', label: 'Docker' },
       { id: 'nginx', label: 'Nginx' },
@@ -261,7 +299,6 @@ const categoryDefs: CategoryDef[] = [
   {
     id: 'cat-dataviz',
     label: 'Data & Visualization',
-    color: '#f472b6',
     skills: [
       { id: 'pandas', label: 'Pandas' },
       { id: 'numpy', label: 'NumPy' },
@@ -284,7 +321,7 @@ const categoryNodes: Node[] = categoryDefs.map((c, i) => {
     type: 'category',
     label: c.label,
     description: '',
-    color: c.color,
+    color: COLORS.category,
     size: 0.9,
     position: [
       CATEGORY_RADIUS * Math.sin(phi) * Math.cos(theta),
@@ -307,7 +344,7 @@ const skillNodes: Node[] = categoryDefs.flatMap((c, ci) => {
       type: 'skill',
       label: s.label,
       description: '',
-      color: dim(c.color),
+      color: dim(COLORS.category),
       size: 0.4,
       position: [
         cx + 1.8 * Math.cos(angle) + jitter(0.3),
@@ -373,7 +410,7 @@ const blogNodes: Node[] = blogDefs.map((b, i) => {
   return {
     ...b,
     type: 'blog',
-    color: '#f472b6',
+    color: COLORS.blog,
     size: 0.6,
     position: [
       BLOG_RADIUS * Math.cos(theta),
@@ -456,7 +493,7 @@ const certNodes: Node[] = certDefs.map((c, i) => {
   return {
     ...c,
     type: 'cert',
-    color: '#34d399',
+    color: COLORS.cert,
     size: 0.5,
     position: [
       CERT_RADIUS * Math.cos(theta),
@@ -476,10 +513,16 @@ const infoDefs = [
     highlights: [
       'Deep learning research support on Brahmi script recognition: compared Custom CNN, InceptionNet, ResNet-50 and XceptionNet on a 7,880-image, 56-class dataset; ResNet-50 gave the best accuracy.',
       'Research and implementation support for student progression prediction and crop disease classification.',
-      'Built end-to-end AI systems (RAG pipelines, neural networks, MLOps workflows) as primary technical SME across 10+ industry engagements and faculty development programs reaching 2,000+ professionals.',
+      `Built end-to-end AI systems (RAG pipelines, neural networks, MLOps workflows) as primary technical SME across ${teachingStats.workshops} workshops and faculty development programs, reaching 2,000+ students and faculty.`,
       'Designed a 140-session AI curriculum, Python through Generative AI and LangGraph.',
     ],
     size: 0.7,
+  },
+  {
+    id: 'teaching',
+    label: 'Teaching',
+    description: `${teachingStats.workshops} workshops and faculty development programs for students and faculty at ${teachingStats.institutions} institutions (${teachingStats.from}–${teachingStats.to}), reaching 2,000+ people.`,
+    size: 0.6,
   },
   {
     id: 'edu-cdac',
@@ -497,13 +540,13 @@ const infoDefs = [
 ]
 
 const infoNodes: Node[] = infoDefs.map((d, i) => {
-  const y = (i - 1) * 4
+  const y = (i - (infoDefs.length - 1) / 2) * 4
   const ringRadius = Math.sqrt(INFO_RADIUS ** 2 - y ** 2)
   const theta = 1 + i * ((2 * Math.PI) / infoDefs.length)
   return {
     ...d,
     type: 'info',
-    color: '#fbbf24',
+    color: COLORS.info,
     position: [
       ringRadius * Math.cos(theta),
       y + jitter(0.4),
@@ -578,6 +621,7 @@ const infoEdges: Edge[] = [
   { source: 'experience', target: 'cat-genai' },
   { source: 'experience', target: 'cat-mldl' },
   { source: 'experience', target: 'cat-mlops' },
+  { source: 'teaching', target: 'experience' },
   { source: 'edu-cdac', target: 'experience' },
   { source: 'edu-sppu', target: 'experience' },
 ]
