@@ -23,7 +23,7 @@ view updates automatically.
 ## 1. Adding a new project
 
 **File:** `src/data/portfolio.ts` — find `const projectDefs` (around
-line 77). It's a list of 7 project blocks, in display order. Copy one,
+line 102). It's a list of 7 project blocks, in display order. Copy one,
 paste it before the closing `]`, and edit:
 
 ```ts
@@ -37,8 +37,23 @@ paste it before the closing `]`, and edit:
       source: 'https://github.com/AdityaThakare72/My-Repo',
     },
     tags: ['RAG', 'FastAPI', 'Docker'],        // shown as pills in the panel
+    story: {                                   // optional — delete if not needed
+      problem: 'What problem it solves, in one sentence.',
+      decision: 'The key technical choice and why (X over Y because ...).',
+      outcome: 'The result: a real metric, or where it runs.',
+    },
+    media: '/media/my-new-project.gif',        // optional demo GIF or MP4
   },
 ```
+
+`story` shows as **Problem / Key decision / Outcome** in the panel and
+on the Overview card. Only write numbers you've actually measured.
+
+**Demo GIF/video:** record 20–40 seconds of the app, save it as a `.gif`
+or `.mp4` in `public/media/` (create the folder), and set
+`media: '/media/<file name>'`. It shows at the top of the panel.
+Streamlit demo links automatically get a "may take ~30s to wake up"
+note.
 
 For a client project with no public links, delete the whole `links: { ... },`
 block — the panel will automatically show a "Client Project" badge instead
@@ -48,7 +63,7 @@ of buttons.
 and Overview then show an "In progress" badge. Delete that one line when
 the project is done.
 
-**Connect it to skills.** Find `const projectSkillEdges` (around line 534).
+**Connect it to skills.** Find `const projectSkillEdges` (around line 577).
 Each row is `['project-id', ['skill-id', 'skill-id', ...]]`. Add a row:
 
 ```ts
@@ -59,7 +74,7 @@ The skill IDs must already exist (see section 3 for the full list of
 skill IDs — or search the file for the skill's label).
 
 **Connect it to categories.** Find `const projectCategoryEdges` (around
-line 546) and add:
+line 589) and add:
 
 ```ts
   ['my-new-project', ['cat-genai', 'cat-backend']],
@@ -71,7 +86,7 @@ Category IDs: `cat-languages`, `cat-genai`, `cat-vectorstores`,
 **Layout:** positions are computed automatically — projects spread
 evenly around a ring and the vertical spread stays centered, so another
 project just works. If the graph ever
-feels crowded, increase `const PROJECT_RADIUS = 10` (line ~66) to `11`
+feels crowded, increase `const PROJECT_RADIUS = 10` (line ~87) to `11`
 or `12`.
 
 Done. The project appears in the graph, the detail panel, and the
@@ -96,7 +111,7 @@ edge is silently skipped — but keep the file clean anyway.
 ## 3. Adding a new skill
 
 **File:** `src/data/portfolio.ts` — find `const categoryDefs` (around
-line 183). Each category has a `skills:` list. Add yours to the right
+line 227). Each category has a `skills:` list. Add yours to the right
 category:
 
 Before:
@@ -123,7 +138,7 @@ After (added Flask):
 ```
 
 That's it — the category→skill edge, the position (clustered around its
-category), the color (inherited from the category), and the Overview
+category), the color (all skills share the category violet), and the Overview
 listing all happen automatically.
 
 **If a project uses the new skill,** add its id to that project's row in
@@ -138,7 +153,7 @@ listing all happen automatically.
 ## 4. Adding a new blog post
 
 **File:** `src/data/portfolio.ts` — find `const blogDefs` (around line
-327). Copy a block, paste before the closing `]`:
+364). Copy a block, paste before the closing `]`:
 
 ```ts
   {
@@ -154,7 +169,7 @@ listing all happen automatically.
 ```
 
 Optionally connect it to a related skill in `const blogSkillEdges`
-(around line 558):
+(around line 601):
 
 ```ts
   { source: 'blog-my-topic', target: 'llm' },
@@ -165,7 +180,7 @@ Optionally connect it to a related skill in `const blogSkillEdges`
 ## 5. Adding a new certification
 
 **File:** `src/data/portfolio.ts` — find `const certDefs` (around line
-388). All certification data lives in that list. Copy a block:
+425). All certification data lives in that list. Copy a block:
 
 ```ts
   {
@@ -182,7 +197,7 @@ Optionally connect it to a related skill in `const blogSkillEdges`
 The `description` follows the pattern `Course Name — Issuer · Month Year`
 and is what shows in the panel and Overview. `credentialId` shows under
 it, and `links.live` becomes the "View" button. Optionally connect it to a
-skill in `const certSkillEdges` (around line 565):
+skill in `const certSkillEdges` (around line 608):
 
 ```ts
   { source: 'cert-aws-ml', target: 'sklearn' },
@@ -193,7 +208,7 @@ skill in `const certSkillEdges` (around line 565):
 ## 6. Updating experience / education
 
 **File:** `src/data/portfolio.ts` — find `const infoDefs` (around line
-471). Three blocks: `experience`, `edu-cdac`, `edu-sppu`. Edit the
+508). Four blocks: `experience`, `teaching`, `edu-cdac`, `edu-sppu`. Edit the
 `description` text; the experience block also has a `highlights` list,
 one string per bullet:
 
@@ -216,6 +231,22 @@ update it too: `src/components/ui/AboutOverlay.tsx`, the lines under
 
 ---
 
+## 6b. Adding a workshop / FDP
+
+**File:** `src/data/workshops.ts` — one line per workshop, oldest first.
+Add a line at the bottom of the list:
+
+```ts
+  { year: 2026, dates: '12 Jan – 14 Jan', topic: 'Generative AI', venue: 'COEP, Pune' },
+```
+
+The Teaching panel, the Overview "Teaching" section and every
+"60+ workshops / 30+ institutions" line on the site are calculated from
+this list automatically. The numbers are rounded down to the nearest
+ten with a "+", so they never overstate.
+
+---
+
 ## 7. Changing the bio / summary / stat line
 
 The intro text appears in a few places (each is plain text — edit
@@ -228,6 +259,11 @@ between the `>` and `<` or inside the quotes):
 | Bio paragraph in About modal | `src/components/ui/AboutOverlay.tsx` | `Data Scientist with 3+ years of experience...` |
 | Stat line + header in Overview page | `src/components/ui/OverviewPanel.tsx` | `3+ years experience · 4 deployed GenAI/ML systems · ...` |
 | Page title, description, social share tags | `index.html` | `<title>`, `og:*`, `twitter:*` (site URL is `https://adityathakare.app`) |
+| "Open to … roles" availability line (landing, Overview, About) | `src/data/portfolio.ts` | `export const AVAILABILITY` near the top |
+
+The "2,000+ students & faculty" figure is typed in the files above; the
+workshop and institution counts next to it come from
+`src/data/workshops.ts` (section 6b).
 
 ---
 
@@ -279,19 +315,21 @@ JPEG of the same name.
 ```ts
 export const COLORS = {
   background: '#030712',   // page + scene background
-  project: '#38bdf8',      // project node color (sky blue = accent)
-  category: '#a78bfa',     // default category color
-  skill: '#94a3b8',        // skill node gray
+  project: '#38bdf8',      // projects (sky blue = accent)
+  category: '#a78bfa',     // skill categories; skills use a darker shade
+  blog: '#f472b6',         // blog posts (pink)
+  cert: '#34d399',         // certifications (emerald)
+  info: '#fbbf24',         // experience, teaching, education (amber)
   edge: 'rgba(148,163,184,0.1)',
   text: '#f1f5f9',
   accent: '#38bdf8',
 }
 ```
 
-Individual category colors are set per-category in `categoryDefs`
-(`color: '#fbbf24'` etc.). Blog nodes are `'#f472b6'` (pink), certs
-`'#34d399'` (emerald), info `'#fbbf24'` (amber) — search for those hex
-codes in the blog/cert/info sections to change them.
+Rule: **one color per node type**, so every color means one thing. Don't
+give a category its own color — if it matches another type's color, the
+graph becomes confusing. The legend (`src/components/ui/Legend.tsx`)
+uses the same colors; update it if you change one here.
 
 Heads-up: the 2D buttons and pills use Tailwind classes like `bg-sky-400`
 spread across `src/components/ui/` — changing the whole site's accent
