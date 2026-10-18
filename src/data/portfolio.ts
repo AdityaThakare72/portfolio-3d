@@ -20,6 +20,8 @@ export interface Node {
   credentialId?: string
   // Project write-up shown in the panel: problem -> key decision -> outcome
   story?: ProjectStory
+  // Path to a demo GIF / MP4 in public/, e.g. '/media/research-agent.gif'
+  media?: string
 }
 
 export interface ProjectStory {
@@ -83,6 +85,9 @@ interface ProjectDef {
   tags: string[]
   status?: 'in-progress'
   story?: ProjectStory
+  // TODO: record a 20–40s demo GIF/MP4 per shipped project, put it in
+  // public/media/ and set media: '/media/<file>' on the project below
+  media?: string
 }
 
 const projectDefs: ProjectDef[] = [

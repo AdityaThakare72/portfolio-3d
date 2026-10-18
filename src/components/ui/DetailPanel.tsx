@@ -26,6 +26,24 @@ function ProjectContent({ node }: { node: Node }) {
         )
       )}
       <h2 className="text-2xl font-bold text-white">{node.label}</h2>
+      {node.media &&
+        (node.media.endsWith('.mp4') ? (
+          <video
+            src={node.media}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="mt-4 w-full rounded-lg border border-white/[0.08]"
+          />
+        ) : (
+          <img
+            src={node.media}
+            alt={`${node.label} demo`}
+            loading="lazy"
+            className="mt-4 w-full rounded-lg border border-white/[0.08]"
+          />
+        ))}
       <p className="mt-3 text-sm leading-relaxed text-slate-300">
         {node.description}
       </p>
@@ -89,6 +107,12 @@ function ProjectContent({ node }: { node: Node }) {
           </span>
         )}
       </div>
+      {/* Streamlit Community Cloud apps sleep when idle */}
+      {node.links?.live?.includes('streamlit.app') && (
+        <p className="mt-2 text-xs text-slate-400">
+          The demo may take ~30s to wake up on first visit.
+        </p>
+      )}
     </>
   )
 }
