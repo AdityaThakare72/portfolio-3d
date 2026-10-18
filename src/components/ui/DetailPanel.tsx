@@ -3,6 +3,7 @@ import { edges, nodeById, type Node } from '../../data/portfolio'
 import { workshops } from '../../data/workshops'
 import { useGraphStore, deselect, selectNode } from '../../hooks/useGraphStore'
 import { siblings, stepSelection } from '../../hooks/navigation'
+import { useView } from '../../hooks/useView'
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -301,7 +302,7 @@ function TeachingDetails() {
       </div>
       <button
         type="button"
-        onClick={() => useGraphStore.getState().setShowOverview(true)}
+        onClick={() => useView.getState().setView('page', 'teaching')}
         className="mt-6 inline-block cursor-pointer rounded-lg border border-slate-600 px-4 py-2 text-sm font-semibold text-slate-200 transition-colors hover:border-amber-400 hover:text-amber-300"
       >
         See all {workshops.length} workshops

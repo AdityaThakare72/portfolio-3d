@@ -25,7 +25,6 @@ interface GraphState {
   overviewPosition: Vec3
   showAbout: boolean
   showContact: boolean
-  showOverview: boolean
   // First node selection ever — used to retire the onboarding hint
   hasInteracted: boolean
   autoRotate: boolean
@@ -38,7 +37,6 @@ interface GraphState {
   setOverviewPosition: (pos: Vec3) => void
   setShowAbout: (show: boolean) => void
   setShowContact: (show: boolean) => void
-  setShowOverview: (show: boolean) => void
   setAutoRotate: (v: boolean) => void
   setFilter: (f: Filter | null) => void
   setPreviewFilter: (f: Filter | null) => void
@@ -63,7 +61,6 @@ export const useGraphStore = create<GraphState>((set, get) => ({
   overviewPosition: [0, 0, 18],
   showAbout: false,
   showContact: false,
-  showOverview: false,
   hasInteracted: false,
   autoRotate: true,
   filter: null,
@@ -82,7 +79,6 @@ export const useGraphStore = create<GraphState>((set, get) => ({
   setOverviewPosition: (pos) => set({ overviewPosition: pos }),
   setShowAbout: (show) => set({ showAbout: show }),
   setShowContact: (show) => set({ showContact: show }),
-  setShowOverview: (show) => set({ showOverview: show }),
   setAutoRotate: (v) => set({ autoRotate: v }),
   setFilter: (f) => set({ filter: f }),
   setPreviewFilter: (f) => set({ previewFilter: f }),

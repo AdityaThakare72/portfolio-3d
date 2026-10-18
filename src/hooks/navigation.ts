@@ -1,5 +1,6 @@
 import { edges, nodeById, nodes, type Node } from '../data/portfolio'
 import { selectNode, useGraphStore } from './useGraphStore'
+import { useView } from './useView'
 
 // The ordered group a node is browsed within: skills step through their
 // own category, everything else through nodes of the same type
@@ -25,4 +26,10 @@ export function stepSelection(dir: -1 | 1) {
   const i = list.findIndex((n) => n.id === node.id)
   if (i < 0 || list.length < 2) return
   selectNode(list[(i + dir + list.length) % list.length].id)
+}
+
+// Switch to the 3D graph with this node's panel already open
+export function openInGraph(id: string) {
+  useView.getState().setView('graph')
+  selectNode(id)
 }

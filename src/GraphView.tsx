@@ -9,19 +9,20 @@ import Legend from './components/ui/Legend'
 import Navbar from './components/ui/Navbar'
 import AboutOverlay from './components/ui/AboutOverlay'
 import ContactOverlay from './components/ui/ContactOverlay'
-import OverviewPanel from './components/ui/OverviewPanel'
 import ResetViewButton from './components/ui/ResetViewButton'
 import Loader from './components/ui/Loader'
 import { useGraphStore, deselect } from './hooks/useGraphStore'
 import { stepSelection } from './hooks/navigation'
 
-export default function App() {
+// The 3D experience: loaded on demand from App so the readable page
+// never downloads three.js
+export default function GraphView() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Arrow keys browse siblings while a panel is open
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
         const s = useGraphStore.getState()
-        if (s.selectedNode && !s.showAbout && !s.showContact && !s.showOverview) {
+        if (s.selectedNode && !s.showAbout && !s.showContact) {
           stepSelection(e.key === 'ArrowLeft' ? -1 : 1)
         }
         return
@@ -29,10 +30,9 @@ export default function App() {
       if (e.key !== 'Escape') return
       // Overlays close first; only then does Escape deselect the node
       const store = useGraphStore.getState()
-      if (store.showAbout || store.showContact || store.showOverview) {
+      if (store.showAbout || store.showContact) {
         store.setShowAbout(false)
         store.setShowContact(false)
-        store.setShowOverview(false)
         return
       }
       // Then the open panel, then a locked legend filter
@@ -69,7 +69,6 @@ export default function App() {
       <ResetViewButton />
       <AboutOverlay />
       <ContactOverlay />
-      <OverviewPanel />
     </div>
   )
 }

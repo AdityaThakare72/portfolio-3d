@@ -1,30 +1,29 @@
 import { useState } from 'react'
 import { useGraphStore, deselect } from '../../hooks/useGraphStore'
+import { useView } from '../../hooks/useView'
 
 export default function Navbar() {
   const flyToCluster = useGraphStore((s) => s.flyToCluster)
   const flyToOverview = useGraphStore((s) => s.flyToOverview)
   const setShowAbout = useGraphStore((s) => s.setShowAbout)
   const setShowContact = useGraphStore((s) => s.setShowContact)
-  const setShowOverview = useGraphStore((s) => s.setShowOverview)
+  const setView = useView((s) => s.setView)
   const [menuOpen, setMenuOpen] = useState(false)
 
   const closeOverlays = () => {
     setShowAbout(false)
     setShowContact(false)
-    setShowOverview(false)
   }
 
-  const openOverlay = (which: 'about' | 'contact' | 'overview') => {
+  const openOverlay = (which: 'about' | 'contact') => {
     deselect() // close the detail panel first
     closeOverlays()
     if (which === 'about') setShowAbout(true)
     if (which === 'contact') setShowContact(true)
-    if (which === 'overview') setShowOverview(true)
   }
 
   const links = [
-    { label: 'Overview', onClick: () => openOverlay('overview') },
+    { label: '← Page view', onClick: () => setView('page') },
     { label: 'Projects', onClick: () => flyToCluster('projects') },
     { label: 'Skills', onClick: () => flyToCluster('skills') },
     { label: 'Blog', onClick: () => flyToCluster('blogs') },
