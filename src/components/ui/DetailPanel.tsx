@@ -29,6 +29,24 @@ function ProjectContent({ node }: { node: Node }) {
       <p className="mt-3 text-sm leading-relaxed text-slate-300">
         {node.description}
       </p>
+      {node.story && (
+        <dl className="mt-5 space-y-3 text-sm leading-relaxed">
+          {(
+            [
+              ['Problem', node.story.problem],
+              ['Key decision', node.story.decision],
+              ['Outcome', node.story.outcome],
+            ] as const
+          ).map(([term, text]) => (
+            <div key={term}>
+              <dt className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                {term}
+              </dt>
+              <dd className="mt-0.5 text-slate-300">{text}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
       {node.tags && (
         <div className="mt-5">
           <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">

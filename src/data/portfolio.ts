@@ -18,6 +18,14 @@ export interface Node {
   highlights?: string[]
   // Certificate credential ID, shown in the cert panel
   credentialId?: string
+  // Project write-up shown in the panel: problem -> key decision -> outcome
+  story?: ProjectStory
+}
+
+export interface ProjectStory {
+  problem: string
+  decision: string
+  outcome: string
 }
 
 export interface Edge {
@@ -74,6 +82,7 @@ interface ProjectDef {
   links?: { live?: string; source?: string }
   tags: string[]
   status?: 'in-progress'
+  story?: ProjectStory
 }
 
 const projectDefs: ProjectDef[] = [
@@ -87,6 +96,11 @@ const projectDefs: ProjectDef[] = [
       source: 'https://github.com/AdityaThakare72/Research-Agent',
     },
     tags: ['LangGraph', 'LangChain', 'Gemini API', 'Tavily', 'Streamlit', 'Docker'],
+    story: {
+      problem: 'Single-pass AI research outputs tend to be shallow.',
+      decision: "LangGraph over LangChain's AgentExecutor, for native cyclic graph support, persistent typed state and deterministic control flow.",
+      outcome: "The Writer only loops back when the Critic's score falls below the threshold, which prevents both infinite loops and premature termination.",
+    },
   },
   {
     id: 'legal-agent',
@@ -98,6 +112,11 @@ const projectDefs: ProjectDef[] = [
       source: 'https://github.com/AdityaThakare72/Legal_Agent1',
     },
     tags: ['RAG', 'LangChain', 'ChromaDB', 'Gemini API', 'Streamlit', 'Nginx'],
+    story: {
+      problem: "Legal information is hard to access for people who can't afford a legal consultation.",
+      decision: 'ChromaDB over FAISS for persistent storage, so retrieval keeps its state without re-embedding.',
+      outcome: 'Deployed and publicly usable; first self-hosted on DigitalOcean, now on Streamlit Community Cloud.',
+    },
   },
   {
     id: 'equipment-maintenance',
@@ -109,6 +128,11 @@ const projectDefs: ProjectDef[] = [
       source: 'https://github.com/AdityaThakare72/Industrial_Equipment_Maintenance',
     },
     tags: ['XGBoost', 'FastAPI', 'MLflow', 'DVC', 'Docker', 'GitHub Actions', 'Render', 'Streamlit'],
+    story: {
+      problem: 'Unplanned manufacturing downtime is expensive.',
+      decision: 'XGBoost over neural alternatives for tabular sensor data in a low-data regime.',
+      outcome: '98.3% accuracy and 91.2% F1 on imbalanced sensor data, with scale_pos_weight tuning.',
+    },
   },
   {
     id: 'ceo-dashboard',
@@ -117,6 +141,11 @@ const projectDefs: ProjectDef[] = [
       'Client project, in production. LangGraph orchestration behind a FastAPI layer; DuckDB/Parquet for analytical queries, MongoDB for metadata; Pydantic structured outputs with GPT-4o-mini for schema-validated answers to financial questions.',
     // client project — no public links
     tags: ['LangGraph', 'FastAPI', 'DuckDB', 'Parquet', 'MongoDB', 'Pydantic', 'GPT-4o-mini'],
+    story: {
+      problem: 'C-suite executives needed answers to financial questions in natural language.',
+      decision: 'Pydantic structured outputs with GPT-4o-mini, so every answer is schema-validated.',
+      outcome: 'Running in production for the client.',
+    },
   },
   {
     id: 'react-from-scratch',

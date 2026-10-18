@@ -166,6 +166,14 @@ export default function OverviewPanel() {
                     <p className="mt-2 text-sm leading-relaxed text-slate-300">
                       {p.description}
                     </p>
+                    {p.story && (
+                      <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                        <span className="font-semibold text-slate-200">Key decision:</span>{' '}
+                        {p.story.decision}{' '}
+                        <span className="font-semibold text-slate-200">Outcome:</span>{' '}
+                        {p.story.outcome}
+                      </p>
+                    )}
                     {p.tags && (
                       <p className="mt-2 text-xs text-slate-400">
                         {p.tags.join(' · ')}
