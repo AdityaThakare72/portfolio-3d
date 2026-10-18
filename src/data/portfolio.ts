@@ -39,11 +39,16 @@ export interface Edge {
 export const AVAILABILITY =
   'Open to Data Scientist / AI Engineer roles · Pune, remote, or relocation'
 
+// One hue per node type, so every color has a single meaning:
+// sky = projects, violet = skills, pink = blogs, emerald = certs,
+// amber = the person (experience, teaching, education)
 export const COLORS = {
   background: '#030712',
   project: '#38bdf8',
   category: '#a78bfa',
-  skill: '#94a3b8',
+  blog: '#f472b6',
+  cert: '#34d399',
+  info: '#fbbf24',
   edge: 'rgba(148,163,184,0.1)',
   text: '#f1f5f9',
   accent: '#38bdf8',
@@ -63,9 +68,9 @@ function mulberry32(seed: number) {
 const rand = mulberry32(72)
 const jitter = (amount: number) => (rand() * 2 - 1) * amount
 
-// Dim a hex color toward black — used for skill nodes inheriting their
-// parent category's color
-function dim(hex: string, factor = 0.62): string {
+// Dim a hex color toward black — used for skill nodes, a darker shade of
+// the category violet
+export function dim(hex: string, factor = 0.62): string {
   const n = parseInt(hex.slice(1), 16)
   const r = Math.round(((n >> 16) & 0xff) * factor)
   const g = Math.round(((n >> 8) & 0xff) * factor)
@@ -216,7 +221,6 @@ const CATEGORY_RADIUS = 6.5
 interface CategoryDef {
   id: string
   label: string
-  color: string
   skills: { id: string; label: string }[]
 }
 
@@ -224,7 +228,6 @@ const categoryDefs: CategoryDef[] = [
   {
     id: 'cat-languages',
     label: 'Languages',
-    color: '#38bdf8',
     skills: [
       { id: 'python', label: 'Python' },
       { id: 'sql', label: 'SQL' },
@@ -233,7 +236,6 @@ const categoryDefs: CategoryDef[] = [
   {
     id: 'cat-genai',
     label: 'Generative AI',
-    color: '#a78bfa',
     skills: [
       { id: 'rag', label: 'RAG' },
       { id: 'agentic-ai', label: 'Agentic AI' },
@@ -248,7 +250,6 @@ const categoryDefs: CategoryDef[] = [
   {
     id: 'cat-vectorstores',
     label: 'Vector Stores & Embeddings',
-    color: '#818cf8',
     skills: [
       { id: 'chromadb', label: 'ChromaDB' },
       { id: 'pinecone', label: 'Pinecone' },
@@ -260,7 +261,6 @@ const categoryDefs: CategoryDef[] = [
   {
     id: 'cat-mldl',
     label: 'ML / Deep Learning',
-    color: '#fbbf24',
     skills: [
       { id: 'sklearn', label: 'Scikit-learn' },
       { id: 'xgboost', label: 'XGBoost' },
@@ -275,7 +275,6 @@ const categoryDefs: CategoryDef[] = [
   {
     id: 'cat-backend',
     label: 'Backend & APIs',
-    color: '#34d399',
     skills: [
       { id: 'fastapi', label: 'FastAPI' },
       { id: 'rest-apis', label: 'REST APIs' },
@@ -286,7 +285,6 @@ const categoryDefs: CategoryDef[] = [
   {
     id: 'cat-mlops',
     label: 'MLOps & DevOps',
-    color: '#fb923c',
     skills: [
       { id: 'docker', label: 'Docker' },
       { id: 'nginx', label: 'Nginx' },
@@ -301,7 +299,6 @@ const categoryDefs: CategoryDef[] = [
   {
     id: 'cat-dataviz',
     label: 'Data & Visualization',
-    color: '#f472b6',
     skills: [
       { id: 'pandas', label: 'Pandas' },
       { id: 'numpy', label: 'NumPy' },
@@ -324,7 +321,7 @@ const categoryNodes: Node[] = categoryDefs.map((c, i) => {
     type: 'category',
     label: c.label,
     description: '',
-    color: c.color,
+    color: COLORS.category,
     size: 0.9,
     position: [
       CATEGORY_RADIUS * Math.sin(phi) * Math.cos(theta),
@@ -347,7 +344,7 @@ const skillNodes: Node[] = categoryDefs.flatMap((c, ci) => {
       type: 'skill',
       label: s.label,
       description: '',
-      color: dim(c.color),
+      color: dim(COLORS.category),
       size: 0.4,
       position: [
         cx + 1.8 * Math.cos(angle) + jitter(0.3),
@@ -413,7 +410,7 @@ const blogNodes: Node[] = blogDefs.map((b, i) => {
   return {
     ...b,
     type: 'blog',
-    color: '#f472b6',
+    color: COLORS.blog,
     size: 0.6,
     position: [
       BLOG_RADIUS * Math.cos(theta),
@@ -496,7 +493,7 @@ const certNodes: Node[] = certDefs.map((c, i) => {
   return {
     ...c,
     type: 'cert',
-    color: '#34d399',
+    color: COLORS.cert,
     size: 0.5,
     position: [
       CERT_RADIUS * Math.cos(theta),
@@ -549,7 +546,7 @@ const infoNodes: Node[] = infoDefs.map((d, i) => {
   return {
     ...d,
     type: 'info',
-    color: '#fbbf24',
+    color: COLORS.info,
     position: [
       ringRadius * Math.cos(theta),
       y + jitter(0.4),

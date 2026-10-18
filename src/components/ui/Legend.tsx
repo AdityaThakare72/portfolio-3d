@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { COLORS, dim } from '../../data/portfolio'
 import { useGraphStore } from '../../hooks/useGraphStore'
 
 const rows = [
@@ -24,7 +25,10 @@ const rows = [
     label: 'Individual Skill',
     icon: (
       <span className="flex h-4 w-4 items-center justify-center">
-        <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
+        <span
+          className="h-1.5 w-1.5 rounded-full"
+          style={{ backgroundColor: dim(COLORS.category) }}
+        />
       </span>
     ),
   },
@@ -56,7 +60,7 @@ const rows = [
     ),
   },
   {
-    label: 'Experience / Education',
+    label: 'Experience · Teaching · Education',
     icon: (
       <span className="flex h-4 w-4 items-center justify-center">
         <span className="h-2.5 w-2.5 rounded-[2px] bg-amber-400" />
