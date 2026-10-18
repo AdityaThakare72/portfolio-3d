@@ -2,6 +2,10 @@
 
 How to update this portfolio without knowing React or Three.js.
 
+> New to this? Start with [EDITING_GUIDE.md](EDITING_GUIDE.md): it shows
+> how to make changes from your browser on github.com, with nothing
+> installed. This guide has the full details.
+
 Almost everything you'll ever change lives in **one file**:
 `src/data/portfolio.ts`. The readable page (what visitors see first),
 the 3D graph and its detail panels are all generated from it — edit the
@@ -48,7 +52,7 @@ paste it before the closing `]`, and edit:
       decision: 'The key technical choice and why (X over Y because ...).',
       outcome: 'The result: a real metric, or where it runs.',
     },
-    media: '/media/my-new-project.gif',        // optional demo GIF or MP4
+    media: '/my-new-project.mp4',              // optional demo MP4 or GIF
   },
 ```
 
@@ -56,8 +60,8 @@ paste it before the closing `]`, and edit:
 on the readable page's project card. Only write numbers you've actually measured.
 
 **Demo GIF/video:** record 20–40 seconds of the app, save it as a `.gif`
-or `.mp4` in `public/media/` (create the folder), and set
-`media: '/media/<file name>'`. It shows at the top of the panel.
+or `.mp4` in the `public/` folder, and set `media: '/<file name>'`.
+It shows at the top of the project card and the 3D panel.
 Streamlit demo links automatically get a "may take ~30s to wake up"
 note.
 

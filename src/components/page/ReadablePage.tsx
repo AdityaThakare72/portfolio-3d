@@ -60,7 +60,7 @@ const stats = [
   {
     value: `${projectStats.deployed}`,
     label: 'deployed AI systems',
-    note: projectStats.onGithub ? `+${projectStats.onGithub} more on GitHub` : undefined,
+    note: projectStats.onGithub ? `+${projectStats.onGithub} more projects on GitHub` : undefined,
   },
   { value: '2,000+', label: 'students & faculty trained' },
   {

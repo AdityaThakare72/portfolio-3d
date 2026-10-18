@@ -103,8 +103,8 @@ interface ProjectDef {
   tags: string[]
   status?: 'in-progress'
   story?: ProjectStory
-  // TODO: record a 20–40s demo GIF/MP4 per shipped project, put it in
-  // public/media/ and set media: '/media/<file>' on the project below
+  // TODO: record a 20–40s demo GIF/MP4 per shipped project, upload it to
+  // public/ and set media: '/<file>' on the project (see EDITING_GUIDE.md)
   media?: string
 }
 

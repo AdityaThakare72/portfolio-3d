@@ -9,8 +9,9 @@ and clicking a node flies the camera in and opens a detail panel. The 3D view
 lives at `#explore` and is only downloaded when opened.
 
 All content (projects, skills, experience, certifications, blog posts) lives in
-`src/data/` (mainly `portfolio.ts`). See [MAINTENANCE_GUIDE.md](MAINTENANCE_GUIDE.md) for
-how to update it.
+`src/data/` (mainly `portfolio.ts`). To update it from your browser, start with
+[EDITING_GUIDE.md](EDITING_GUIDE.md); deeper changes are in
+[MAINTENANCE_GUIDE.md](MAINTENANCE_GUIDE.md).
 
 ## Stack
 
