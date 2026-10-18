@@ -7,7 +7,7 @@ export interface Node {
   type: NodeType
   label: string
   // Shorter text for the 3D label when the full name is long; panels and
-  // the Overview always use the full label
+  // the readable page always use the full label
   shortLabel?: string
   description: string
   color: string
@@ -38,7 +38,12 @@ export interface Edge {
   target: string
 }
 
-// Shown on the landing page, Overview and About
+// Intro copy shared by the readable page, the 3D hero and the About modal
+export const HEADLINE = 'Data Scientist | GenAI & Agentic AI | MLOps'
+
+export const SUMMARY = `Data Scientist with 3+ years of experience (since Sep 2023) building and deploying Generative AI systems: RAG pipelines, multi-agent LangGraph orchestration and end-to-end MLOps workflows. Delivered technical training to 2,000+ students and faculty across ${teachingStats.workshops} workshops and faculty development programs at ${teachingStats.institutions} institutions.`
+
+// Shown on the readable page, the 3D hero and About
 export const AVAILABILITY =
   'Open to Data Scientist / AI Engineer roles · Pune, remote, or relocation'
 
