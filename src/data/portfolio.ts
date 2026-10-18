@@ -6,6 +6,9 @@ export interface Node {
   id: string
   type: NodeType
   label: string
+  // Shorter text for the 3D label when the full name is long; panels and
+  // the Overview always use the full label
+  shortLabel?: string
   description: string
   color: string
   size: number
@@ -89,6 +92,7 @@ const PROJECT_RADIUS = 10
 interface ProjectDef {
   id: string
   label: string
+  shortLabel?: string
   description: string
   links?: { live?: string; source?: string }
   tags: string[]
@@ -103,6 +107,7 @@ const projectDefs: ProjectDef[] = [
   {
     id: 'research-agent',
     label: 'Agentic Research System',
+    shortLabel: 'Research Agent',
     description:
       "LangGraph multi-agent research system: Researcher (Tavily + Gemini), Writer and Critic agents sharing a TypedDict state. Conditional edges loop back through the Writer until the Critic's score clears a threshold. Deployed on Streamlit.",
     links: {
@@ -119,6 +124,7 @@ const projectDefs: ProjectDef[] = [
   {
     id: 'legal-agent',
     label: 'Conversational Legal Agent',
+    shortLabel: 'Legal Agent',
     description:
       'Conversational RAG agent for Indian law. Scraping, preprocessing and semantic chunking of legal data; ChromaDB for persistent retrieval; Gemini embeddings. First self-hosted on DigitalOcean with Nginx, SSL and systemd, now deployed on Streamlit Community Cloud.',
     links: {
@@ -135,6 +141,7 @@ const projectDefs: ProjectDef[] = [
   {
     id: 'equipment-maintenance',
     label: 'Industrial Equipment Maintenance',
+    shortLabel: 'Equipment Maintenance',
     description:
       'XGBoost predictive maintenance classifier, 98.3% accuracy and 91.2% F1 on imbalanced sensor data (scale_pos_weight). DVC pipeline, MLflow tracking, FastAPI inference API in Docker on Render, Streamlit dashboard, GitHub Actions CI (ruff + pytest).',
     links: {
@@ -151,6 +158,7 @@ const projectDefs: ProjectDef[] = [
   {
     id: 'ceo-dashboard',
     label: 'CEO Financial Dashboard',
+    shortLabel: 'CEO Dashboard',
     description:
       'Client project, in production. LangGraph orchestration behind a FastAPI layer; DuckDB/Parquet for analytical queries, MongoDB for metadata; Pydantic structured outputs with GPT-4o-mini for schema-validated answers to financial questions.',
     // client project — no public links
