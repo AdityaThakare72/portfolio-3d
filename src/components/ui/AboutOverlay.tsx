@@ -1,3 +1,4 @@
+import { AVAILABILITY } from '../../data/portfolio'
 import { teachingStats } from '../../data/workshops'
 import { useGraphStore } from '../../hooks/useGraphStore'
 import Modal from './Modal'
@@ -20,6 +21,7 @@ export default function AboutOverlay() {
             Data Scientist | GenAI &amp; Agentic AI | MLOps
           </p>
           <p className="text-sm text-slate-400">Pune, Maharashtra</p>
+          <p className="mt-1 text-xs font-medium text-amber-300">{AVAILABILITY}</p>
         </div>
       </div>
 

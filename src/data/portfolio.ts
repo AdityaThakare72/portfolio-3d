@@ -35,6 +35,10 @@ export interface Edge {
   target: string
 }
 
+// Shown on the landing page, Overview and About
+export const AVAILABILITY =
+  'Open to Data Scientist / AI Engineer roles · Pune, remote, or relocation'
+
 export const COLORS = {
   background: '#030712',
   project: '#38bdf8',

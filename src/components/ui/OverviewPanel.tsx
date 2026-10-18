@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { edges, nodeById, nodes, type Node } from '../../data/portfolio'
+import { AVAILABILITY, edges, nodeById, nodes, type Node } from '../../data/portfolio'
 import { teachingStats, workshops } from '../../data/workshops'
 import { useGraphStore } from '../../hooks/useGraphStore'
 
@@ -90,6 +90,7 @@ export default function OverviewPanel() {
               students and faculty trained across {teachingStats.workshops}{' '}
               workshops at {teachingStats.institutions} institutions
             </p>
+            <p className="mt-2 text-sm font-medium text-amber-300">{AVAILABILITY}</p>
             <div className="mt-4 flex flex-wrap gap-3">
               <a
                 href="/Aditya_Thakare_Resume.pdf"
