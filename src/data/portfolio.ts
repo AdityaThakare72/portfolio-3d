@@ -138,7 +138,7 @@ const projectDefs: ProjectDef[] = [
       'Conversational RAG agent for Indian law. Scraping, preprocessing and semantic chunking of legal data; ChromaDB for persistent retrieval; Gemini embeddings. First self-hosted on DigitalOcean with Nginx, SSL and systemd, now deployed on Streamlit Community Cloud.',
     links: {
       live: 'https://legal-agent-i.streamlit.app/',
-      source: 'https://github.com/AdityaThakare72/Legal_Agent1',
+      source: 'https://github.com/AdityaThakare72/Legal-Agent-v2',
     },
     tags: ['RAG', 'LangChain', 'ChromaDB', 'Gemini API', 'Streamlit', 'Nginx'],
     media: '/demos/legal.mp4',
