@@ -10,20 +10,24 @@ export function ProjectCard({ project: p }: { project: Node }) {
         (p.media.endsWith('.mp4') ? (
           <video
             src={p.media}
+            aria-label={`${p.label} demo video`}
             autoPlay
             loop
             muted
             playsInline
-            className="mb-5 w-full rounded-xl border border-slate-200 dark:border-white/[0.08]"
+            className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08]"
           />
         ) : (
           <img
             src={p.media}
             alt={`${p.label} demo`}
             loading="lazy"
-            className="mb-5 w-full rounded-xl border border-slate-200 dark:border-white/[0.08]"
+            className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08]"
           />
         ))}
+      {p.media && (
+        <p className={`mb-5 mt-1.5 text-xs ${muted}`}>{p.mediaNote ?? ''}</p>
+      )}
       <div className="flex flex-wrap items-center gap-2">
         <h3 className={`text-lg font-semibold sm:text-xl ${strong}`}>{p.label}</h3>
         {!p.links && <Badge tone="amber">Client project · in production</Badge>}

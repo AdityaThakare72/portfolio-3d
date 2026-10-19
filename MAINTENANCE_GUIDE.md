@@ -52,7 +52,8 @@ paste it before the closing `]`, and edit:
       decision: 'The key technical choice and why (X over Y because ...).',
       outcome: 'The result: a real metric, or where it runs.',
     },
-    media: '/my-new-project.mp4',              // optional demo MP4 or GIF
+    media: '/demos/my-new-project.mp4',        // optional demo MP4 or GIF
+    mediaNote: 'Recorded from the live demo',  // optional caption
   },
 ```
 
@@ -60,7 +61,8 @@ paste it before the closing `]`, and edit:
 on the readable page's project card. Only write numbers you've actually measured.
 
 **Demo GIF/video:** record 20–40 seconds of the app, save it as a `.gif`
-or `.mp4` in the `public/` folder, and set `media: '/<file name>'`.
+or `.mp4` in the `public/demos/` folder, and set
+`media: '/demos/<file name>'`.
 It shows at the top of the project card and the 3D panel.
 Streamlit demo links automatically get a "may take ~30s to wake up"
 note.

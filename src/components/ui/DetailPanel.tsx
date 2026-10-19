@@ -64,6 +64,7 @@ function ProjectContent({ node }: { node: Node }) {
         (node.media.endsWith('.mp4') ? (
           <video
             src={node.media}
+            aria-label={`${node.label} demo video`}
             autoPlay
             loop
             muted
@@ -78,6 +79,9 @@ function ProjectContent({ node }: { node: Node }) {
             className="mt-4 w-full rounded-lg border border-white/[0.08]"
           />
         ))}
+      {node.media && node.mediaNote && (
+        <p className="mt-1.5 text-xs text-slate-400">{node.mediaNote}</p>
+      )}
       <p className="mt-3 text-sm leading-relaxed text-slate-300">
         {node.description}
       </p>

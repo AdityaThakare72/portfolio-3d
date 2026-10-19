@@ -123,22 +123,27 @@ The "In progress" badge disappears.
 
 ### Add a demo video to a project
 
-1. Keep the video short (20–40 seconds) and small (under ~10 MB). An MP4
+The three live projects already have demos, recorded from the real apps,
+in `public/demos/`. To add or replace one:
+
+1. Keep the video short (20–40 seconds) and small (under ~5 MB). An MP4
    from any screen recorder is fine. Name it simply, e.g.
-   `research-agent.mp4`.
-2. On GitHub, open the `public` folder, click **Add file → Upload
+   `harness.mp4`.
+2. On GitHub, open the `public/demos` folder, click **Add file → Upload
    files**, drop the video in, and commit it the same safe way (steps 5–9
-   above).
-3. In `portfolio.ts`, find the project and add a `media:` line next to
-   its `tags:` line:
+   above). Uploading a file with the same name replaces the old video.
+3. In `portfolio.ts`, find the project and add a `media:` line (and an
+   optional caption) next to its `tags:` line:
 
 ```ts
-    tags: ['LangGraph', 'LangChain', 'Gemini API', 'Tavily', 'Streamlit', 'Docker'],
-    media: '/research-agent.mp4',
+    tags: ['Agentic AI', 'Python', 'Gemini API'],
+    media: '/demos/harness.mp4',
+    mediaNote: 'Recorded from the live demo',
 ```
 
-The video then plays at the top of that project's card and 3D panel.
-(A `.gif` works the same way.)
+The video then plays at the top of that project's card and 3D panel,
+with the caption underneath. If you sped the recording up, say so in
+the caption. (A `.gif` works the same way.)
 
 ### Add a new project
 

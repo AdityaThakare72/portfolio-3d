@@ -23,8 +23,10 @@ export interface Node {
   credentialId?: string
   // Project write-up shown in the panel: problem -> key decision -> outcome
   story?: ProjectStory
-  // Path to a demo GIF / MP4 in public/, e.g. '/media/research-agent.gif'
+  // Path to a demo GIF / MP4 in public/, e.g. '/demos/research.mp4'
   media?: string
+  // Caption under the demo, e.g. how it was recorded
+  mediaNote?: string
 }
 
 export interface ProjectStory {
@@ -103,9 +105,9 @@ interface ProjectDef {
   tags: string[]
   status?: 'in-progress'
   story?: ProjectStory
-  // TODO: record a 20–40s demo GIF/MP4 per shipped project, upload it to
-  // public/ and set media: '/<file>' on the project (see EDITING_GUIDE.md)
+  // Demo video/GIF in public/ (see EDITING_GUIDE.md) and its caption
   media?: string
+  mediaNote?: string
 }
 
 const projectDefs: ProjectDef[] = [
@@ -120,6 +122,8 @@ const projectDefs: ProjectDef[] = [
       source: 'https://github.com/AdityaThakare72/Research-Agent',
     },
     tags: ['LangGraph', 'LangChain', 'Gemini API', 'Tavily', 'Streamlit', 'Docker'],
+    media: '/demos/research.mp4',
+    mediaNote: 'Recorded from the live demo · sped up 2.5×',
     story: {
       problem: 'Single-pass AI research outputs tend to be shallow.',
       decision: "LangGraph over LangChain's AgentExecutor, for native cyclic graph support, persistent typed state and deterministic control flow.",
@@ -137,6 +141,8 @@ const projectDefs: ProjectDef[] = [
       source: 'https://github.com/AdityaThakare72/Legal_Agent1',
     },
     tags: ['RAG', 'LangChain', 'ChromaDB', 'Gemini API', 'Streamlit', 'Nginx'],
+    media: '/demos/legal.mp4',
+    mediaNote: 'Recorded from the live demo · sped up 2.3×',
     story: {
       problem: "Legal information is hard to access for people who can't afford a legal consultation.",
       decision: 'ChromaDB over FAISS for persistent storage, so retrieval keeps its state without re-embedding.',
@@ -154,6 +160,8 @@ const projectDefs: ProjectDef[] = [
       source: 'https://github.com/AdityaThakare72/Industrial_Equipment_Maintenance',
     },
     tags: ['XGBoost', 'FastAPI', 'MLflow', 'DVC', 'Docker', 'GitHub Actions', 'Render', 'Streamlit'],
+    media: '/demos/equipment.mp4',
+    mediaNote: 'Recorded from the live demo',
     story: {
       problem: 'Unplanned manufacturing downtime is expensive.',
       decision: 'XGBoost over neural alternatives for tabular sensor data in a low-data regime.',
