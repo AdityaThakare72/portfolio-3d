@@ -5,7 +5,7 @@ import { Badge, body, card, chip, muted, primaryButton, secondaryButton, strong,
 export function ProjectCard({ project: p }: { project: Node }) {
   const isStreamlit = p.links?.live?.includes('streamlit.app')
   return (
-    <article className={card}>
+    <article id={`project-${p.id}`} className={`${card} scroll-mt-20`}>
       {p.media &&
         (p.media.endsWith('.mp4') ? (
           <video
@@ -97,7 +97,10 @@ export function ProjectCard({ project: p }: { project: Node }) {
 // Compact row for projects without a write-up yet
 export function ProjectRow({ project: p }: { project: Node }) {
   return (
-    <li className="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:gap-4">
+    <li
+      id={`project-${p.id}`}
+      className="flex scroll-mt-20 flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:gap-4"
+    >
       <div className="flex shrink-0 items-center gap-2 sm:w-56">
         <span className={`font-semibold ${strong}`}>{p.label}</span>
         {p.status === 'in-progress' && <Badge tone="amber">In progress</Badge>}
