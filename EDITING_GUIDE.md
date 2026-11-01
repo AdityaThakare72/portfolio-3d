@@ -177,6 +177,36 @@ the old one, and every Resume button keeps working.
 
 ---
 
+## Turn on the AI job-description analysis
+
+The "✨ Analyze fit with AI" button uses your Gemini API key, which is kept
+secret on Vercel's servers.
+
+1. **Add the key in Vercel:** open https://vercel.com → your project
+   **portfolio-3d** → **Settings → Environment Variables** → **Add**:
+   - Key: `GEMINI_API_KEY`
+   - Value: your key from https://aistudio.google.com/apikey
+   - Environments: tick **Production** and **Preview**
+   - Click **Save**.
+2. **Redeploy:** **Deployments** tab → the latest one → **⋯ → Redeploy**.
+   Variables only apply to new deployments.
+3. **Cap the cost (important, since your key is on a paid tier):**
+   - Open https://console.cloud.google.com → pick the project your key
+     belongs to → **APIs & Services → Enabled APIs → Generative Language
+     API → Quotas & System Limits**.
+   - Find the **requests per day** limit for your model, click
+     **Edit**, and set something like **300**. That's plenty for
+     recruiters, and it stops abuse.
+   - Optional: **Billing → Budgets & alerts → Create budget** (e.g. a
+     small monthly amount) to get an email if spending rises.
+4. **Test it:** open your site, paste a real job description, and click
+   **Analyze fit with AI**.
+
+To switch it off, delete `GEMINI_API_KEY` in Vercel and redeploy. The
+button disappears, and the keyword match keeps working.
+
+---
+
 ## If something goes wrong
 
 - **The preview shows a red ✗ / "Error":** don't merge. The change

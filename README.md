@@ -2,7 +2,8 @@
 
 Portfolio for Aditya Thakare. Visitors land on a fast, readable page (light or
 dark, following their OS) with projects, experience, teaching, skills and
-certifications, plus a job-description matcher. The same content can be
+certifications, plus a job-description matcher (instant keyword match, plus an optional
+Gemini-powered fit analysis via a Vercel serverless function in `api/`). The same content can be
 explored as an interactive 3D neural network built with React Three Fiber:
 projects, skill categories and skills are glowing nodes connected by edges,
 and clicking a node flies the camera in and opens a detail panel. The 3D view
