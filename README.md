@@ -1,6 +1,6 @@
 # portfolio-3d
 
-Portfolio for Aditya Thakare. Visitors land on a fast, readable page (light or
+Portfolio. Visitors land on a fast, readable page (light or
 dark, following their OS) with projects, experience, teaching, skills and
 certifications, plus a job-description matcher (instant keyword match, plus an optional
 Gemini-powered fit analysis via a Vercel serverless function in `api/`). The same content can be
