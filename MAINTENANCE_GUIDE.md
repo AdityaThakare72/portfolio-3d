@@ -403,6 +403,36 @@ Only add true synonyms — a match should never claim a skill you don't
 have. Broader terms for a whole category ("machine learning") go in
 `categoryAliases` in the same file.
 
+### AI analysis (Gemini)
+
+When a Gemini key is configured, an **"✨ Analyze fit with AI"** button
+appears under the job description box. It lists the job's requirements as
+matched / partial / not shown on profile, with evidence from your projects,
+plus the most relevant projects. The keyword match stays underneath and is
+the fallback if the AI is unavailable.
+
+How it works:
+
+- `api/match.ts` is a Vercel serverless function. It holds the key and
+  calls Gemini with strict JSON output.
+- The facts it may use come from `src/data/profile.ts`, which is built
+  automatically from `portfolio.ts` and `workshops.ts`. Edit your data as
+  usual and the AI uses the new version.
+- The page only shows skills/projects that exist in your data. A "match"
+  without real evidence is shown as "not shown on profile".
+
+Settings (Vercel → your project → **Settings → Environment Variables**,
+then redeploy):
+
+| Variable | Required | What it does |
+|---|---|---|
+| `GEMINI_API_KEY` | yes | Your Gemini API key. Without it the AI button is hidden. |
+| `GEMINI_MODEL` | no | Model name, default `gemini-3.1-flash-lite`. Change it if Google renames or retires the model. |
+
+To turn the AI off, delete `GEMINI_API_KEY` and redeploy. Keep a daily
+request quota on the key in Google Cloud (see EDITING_GUIDE.md) so a flood
+of visitors can't run up costs.
+
 ---
 
 ## 11. Updating the OG image (social share card)
