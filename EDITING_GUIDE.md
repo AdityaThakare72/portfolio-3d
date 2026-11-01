@@ -10,7 +10,7 @@ You only need your GitHub account. For deeper changes, see
 
 - Your website's files live on GitHub, in the `main` branch.
 - **Whenever `main` changes, Vercel rebuilds the site automatically.**
-  About 2 minutes later, https://adityathakare.app shows the change.
+  About 2 minutes later, https://adityathakare.vercel.app shows the change.
 - Almost all the text (projects, skills, certificates, experience) lives in
   one file: **`src/data/portfolio.ts`**. Workshops live in
   **`src/data/workshops.ts`**.
@@ -44,7 +44,7 @@ This gives you a **preview website** to check before anything goes live.
 9. If the preview looks right: on the pull request page, check it says
    *"wants to merge … into **main**"*, then click **Merge pull request**
    → **Confirm merge**.
-10. About 2 minutes later, open https://adityathakare.app and press
+10. About 2 minutes later, open https://adityathakare.vercel.app and press
     **Ctrl + Shift + R** (Mac: Cmd + Shift + R) to see the new version.
 
 > **Golden rules when editing**
