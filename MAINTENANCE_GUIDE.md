@@ -11,9 +11,9 @@ Almost everything you'll ever change lives in **one file**:
 the 3D graph and its detail panels are all generated from it — edit the
 data once and every view updates automatically.
 
-**Two views:** `https://adityathakare.app` opens the readable page
+**Two views:** `https://adityathakare.vercel.app` opens the readable page
 (`src/components/page/`). The 3D neural-network graph opens from its
-"Explore in 3D" buttons, or directly at `https://adityathakare.app/#explore`.
+"Explore in 3D" buttons, or directly at `https://adityathakare.vercel.app/#explore`.
 The 3D code only downloads when someone opens it, so the page loads fast.
 
 **Golden rules:**
@@ -277,7 +277,7 @@ between the `>` and `<` or inside the quotes):
 | "Open to … roles" availability line (everywhere) | `src/data/portfolio.ts` | `export const AVAILABILITY` |
 | Stat tiles on the readable page | `src/components/page/ReadablePage.tsx` | `const stats = [` |
 | Stat line on the 3D landing | `src/components/ui/HeroOverlay.tsx` | `3+ years · … deployed AI systems · ...` |
-| Page title, description, social share tags | `index.html` | `<title>`, `og:*`, `twitter:*` (site URL is `https://adityathakare.app`) |
+| Page title, description, social share tags | `index.html` | `<title>`, `og:*`, `twitter:*` (site URL is `https://adityathakare.vercel.app`) |
 
 The "deployed AI systems" number counts itself from `projectDefs`: a
 project counts once it has a `live` demo link, or is a client project
