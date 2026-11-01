@@ -196,15 +196,22 @@ const projectDefs: ProjectDef[] = [
   },
   {
     id: 'typed-decision-models',
-    label: 'typed-decision-models',
+    label: 'Typed Decision Models: Agent Router Benchmark',
+    shortLabel: 'Typed Decision Models',
     description:
-      'Comparing typed decision models (Laya, Jev) with a fine-tuned BERT baseline on accuracy and latency.',
+      'Benchmark of Laya, a typed decision model from Hugging Face, as the router of an agent workflow: route, priority and needs-human decisions from support-ticket text plus tabular metadata, against Random Forest, XGBoost, a fine-tuned BERT and a Gemini LLM router inside a LangGraph workflow.',
     links: {
       source: 'https://github.com/AdityaThakare72/typed-decision-models',
     },
-    status: 'in-progress',
-    // TODO: confirm tags against the repo once its README is written
-    tags: ['NLP', 'BERT'],
+    story: {
+      problem:
+        'Agent workflows need a fast, reliable router step that turns a request into a few structured fields, which LLM routers make slow and costly.',
+      decision:
+        'Put every model behind one DecisionModel interface with the same metrics and p50/p95 latency, and fine-tuned Laya on the task instead of relying on zero-shot.',
+      outcome:
+        'On a synthetic benchmark, fine-tuned Laya beat the Gemini router by 25 points on exact match (0.76 vs 0.51), ~21x faster and ~80x cheaper; XGBoost matched it (0.736 vs 0.720) at ~300x smaller.',
+    },
+    tags: ['Hugging Face', 'LangGraph', 'BERT', 'XGBoost', 'Gemini API', 'Python'],
   },
   {
     id: 'agent-harness-demo',
@@ -613,7 +620,7 @@ const projectSkillEdges: Edge[] = [
   ['equipment-maintenance', ['xgboost', 'fastapi', 'mlflow', 'dvc', 'docker', 'github-actions', 'cicd', 'streamlit']],
   ['ceo-dashboard', ['langgraph', 'agentic-ai', 'fastapi', 'pydantic', 'openai-api']],
   ['react-from-scratch', ['python', 'agentic-ai', 'llm']],
-  ['typed-decision-models', ['nlp']],
+  ['typed-decision-models', ['huggingface', 'langgraph', 'agentic-ai', 'llm', 'gemini-api', 'xgboost', 'sklearn', 'nlp', 'transfer-learning', 'python']],
   ['agent-harness-demo', ['agentic-ai', 'python', 'gemini-api']],
 ].flatMap(([source, targets]) =>
   (targets as string[]).map((target) => ({ source: source as string, target })),
@@ -625,7 +632,7 @@ const projectCategoryEdges: Edge[] = [
   ['equipment-maintenance', ['cat-mldl', 'cat-backend', 'cat-mlops']],
   ['ceo-dashboard', ['cat-genai', 'cat-backend']],
   ['react-from-scratch', ['cat-genai', 'cat-languages']],
-  ['typed-decision-models', ['cat-mldl']],
+  ['typed-decision-models', ['cat-mldl', 'cat-genai', 'cat-vectorstores', 'cat-languages']],
   ['agent-harness-demo', ['cat-genai', 'cat-languages']],
 ].flatMap(([source, targets]) =>
   (targets as string[]).map((target) => ({ source: source as string, target })),
