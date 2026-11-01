@@ -19,7 +19,9 @@ const SYSTEM_PROMPT = `You assess how well a candidate matches a job description
 
 Rules:
 - Use ONLY facts stated in PROFILE. Never assume or infer skills, years, tools or domains that PROFILE does not state.
-- First extract 5 to 12 concrete requirements from the job description (skills, tools, responsibilities, experience). Skip benefits, company boilerplate and legal text.
+- First extract 5 to 14 concrete requirements from the job description (skills, tools, responsibilities, experience). Skip benefits, company boilerplate and legal text.
+- Always include communication, teaching or stakeholder requirements when the job description mentions them; they are real requirements, not filler.
+- Include "nice to have" / "preferred" items too, but start their requirement text with "Nice to have: ".
 - For each requirement set status:
   "match": PROFILE directly shows it (a project, experience item, skill or certification).
   "partial": PROFILE shows closely related or adjacent evidence; say what is related.
@@ -166,7 +168,7 @@ export async function POST(request: Request) {
       model: MODEL,
       summary: clip(parsed.summary, 800),
       requirements: (Array.isArray(parsed.requirements) ? parsed.requirements : [])
-        .slice(0, 12)
+        .slice(0, 14)
         .map((r) => ({
           requirement: clip(r.requirement, 160),
           status: r.status === 'match' || r.status === 'partial' ? r.status : 'gap',
