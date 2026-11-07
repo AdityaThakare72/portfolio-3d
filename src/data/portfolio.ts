@@ -707,6 +707,20 @@ export const edges: Edge[] = [
   ...infoEdges,
 ]
 
+// Work the job matcher can cite as evidence: projects, jobs and open source
+export const isWork = (n?: Node) =>
+  n?.type === 'project' || n?.kind === 'experience' || n?.kind === 'oss'
+
+// Where a node lives on the readable page
+export const pageAnchor = (n: Node) =>
+  n.type === 'project'
+    ? `#project-${n.id}`
+    : n.kind === 'oss'
+      ? '#open-source'
+      : n.kind
+        ? `#${n.kind}`
+        : undefined
+
 // Adjacency map for hover neighborhood highlighting
 export const neighbors = new Map<string, Set<string>>()
 for (const e of edges) {

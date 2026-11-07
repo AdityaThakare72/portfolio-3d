@@ -1,4 +1,4 @@
-import { edges, nodeById, nodes, type Node } from '../data/portfolio'
+import { edges, isWork, nodeById, nodes, type Node } from '../data/portfolio'
 import { categoryAliases, skillAliases } from '../data/skillAliases'
 
 // Plain keyword matching of a pasted job description against the skills on
@@ -21,7 +21,7 @@ const categoryMatchers = categories.map((c) => ({ node: c, res: matchers(c, cate
 export interface JobMatch {
   skills: Node[]
   categories: Node[]
-  // Projects using at least one matched skill, most matches first
+  // Projects, jobs and open source using a matched skill, most matches first
   evidence: { project: Node; skills: Node[] }[]
 }
 
@@ -33,7 +33,7 @@ export function matchJob(text: string): JobMatch {
   const byProject = new Map<string, Node[]>()
   for (const e of edges) {
     const src = nodeById.get(e.source)
-    if (src?.type === 'project' && ids.has(e.target)) {
+    if (src && isWork(src) && ids.has(e.target)) {
       byProject.set(src.id, [...(byProject.get(src.id) ?? []), nodeById.get(e.target)!])
     }
   }

@@ -1,4 +1,4 @@
-import { nodeById, type Node } from '../data/portfolio'
+import { isWork, nodeById, type Node } from '../data/portfolio'
 import { profile, profileIds } from '../data/profile'
 
 export type Status = 'match' | 'partial' | 'gap'
@@ -59,7 +59,7 @@ export async function fetchAiMatch(jd: string): Promise<AiMatch> {
   })
   const topProjects = (data.topProjects ?? [])
     .map((p) => ({ project: nodeById.get(p.id), reason: p.reason }))
-    .filter((p): p is { project: Node; reason: string } => p.project?.type === 'project')
+    .filter((p): p is { project: Node; reason: string } => isWork(p.project))
 
   if (!data.summary || requirements.length === 0) {
     throw new Error('The AI returned an empty answer. Please try again.')
