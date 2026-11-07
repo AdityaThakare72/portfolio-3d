@@ -120,7 +120,7 @@ Three deletions, all in `src/data/portfolio.ts`:
 2. Delete its row from `projectSkillEdges`.
 3. Delete its row from `projectCategoryEdges`.
 
-Search the file for the project's id (e.g. `ceo-dashboard`) to make
+Search the file for the project's id (e.g. `agent-harness-demo`) to make
 sure nothing is left. If anything still references a deleted id, that
 edge is silently skipped — but keep the file clean anyway.
 
@@ -223,29 +223,42 @@ skill in `const certSkillEdges` (around line 608):
 
 ---
 
-## 6. Updating experience / education
+## 6. Updating experience / open source / education
 
-**File:** `src/data/portfolio.ts` — find `const infoDefs` (around line
-508). Four blocks: `experience`, `teaching`, `edu-cdac`, `edu-sppu`. Edit the
-`description` text; the experience block also has a `highlights` list,
-one string per bullet:
+**File:** `src/data/portfolio.ts` — find `const infoDefs`. Each block has
+a `kind`, which decides where it shows up on the readable page, in the
+3D panel and the About modal:
+
+| `kind` | Blocks today | Shown in |
+|---|---|---|
+| `'experience'` | `neon-ai`, `experience` (MITU) | Experience (in list order) |
+| `'oss'` | `oss-caura-fleet` | Open source |
+| `'teaching'` | `teaching` | Teaching |
+| `'education'` | `edu-cdac`, `edu-sppu` | Education |
+
+A job has a `role`, its dates in `description`, and a `highlights` list
+(one string per bullet):
 
 ```ts
   {
-    id: 'experience',
-    label: 'MITU Skillologies',
-    description: 'Data Scientist · Pune · Sep 2023 – Present',
+    id: 'neon-ai',
+    kind: 'experience',
+    label: 'Neon AI',
+    role: 'AI Consultant & Developer (Contract)',
+    description: 'May 2026 – Jul 2026',
     highlights: [
       'One bullet point.',
       'Another bullet point.',
     ],
+    tags: ['LangGraph', 'FastAPI'],
+    inProduction: true, // counts in "deployed AI systems"; only if true
     size: 0.7,
   },
 ```
 
-Note: the **About modal** has its own copy of experience/education —
-update it too: `src/components/ui/AboutOverlay.tsx`, the lines under
-"Experience" and "Education" (plain text, safe to edit).
+To link a job or contribution to skills in the 3D graph (and in the
+keyword job match), add edges in `const infoEdges` near the bottom of
+the file, like the `neon-ai` ones.
 
 ---
 
@@ -272,16 +285,17 @@ between the `>` and `<` or inside the quotes):
 
 | What | File | What to look for |
 |---|---|---|
-| Headline (everywhere) | `src/data/portfolio.ts` | `export const HEADLINE` near the top |
+| Headline and the line under it (everywhere on the site; the resume has its own) | `src/data/portfolio.ts` | `export const HEADLINE` and `export const TAGLINE` near the top |
 | Summary paragraph (readable page + About modal) | `src/data/portfolio.ts` | `export const SUMMARY` |
 | "Open to … roles" availability line (everywhere) | `src/data/portfolio.ts` | `export const AVAILABILITY` |
 | Stat tiles on the readable page | `src/components/page/ReadablePage.tsx` | `const stats = [` |
 | Stat line on the 3D landing | `src/components/ui/HeroOverlay.tsx` | `3+ years · … deployed AI systems · ...` |
 | Page title, description, social share tags | `index.html` | `<title>`, `og:*`, `twitter:*` (site URL is `https://adityathakare.vercel.app`) |
 
-The "deployed AI systems" number counts itself from `projectDefs`: a
-project counts once it has a `live` demo link, or is a client project
-(no links). Projects marked `status: 'in-progress'` never count. Add a
+The "deployed AI systems" number counts itself: a project in
+`projectDefs` counts once it has a `live` demo link, or is a client
+project (no links); a job in `infoDefs` counts when it has
+`inProduction: true`. Projects marked `status: 'in-progress'` never count. Add a
 live link to a new project and the number goes up everywhere.
 
 The "2,000+ students & faculty" figure is typed in the files above; the
