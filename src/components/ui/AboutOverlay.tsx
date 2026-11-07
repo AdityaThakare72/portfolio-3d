@@ -1,4 +1,6 @@
-import { AVAILABILITY, HEADLINE, SUMMARY } from '../../data/portfolio'
+import { AVAILABILITY, HEADLINE, TAGLINE, SUMMARY, nodes } from '../../data/portfolio'
+
+const about = nodes.filter((n) => n.type === 'info')
 import { useGraphStore } from '../../hooks/useGraphStore'
 import Modal from './Modal'
 
@@ -17,7 +19,7 @@ export default function AboutOverlay() {
         <div>
           <h2 className="text-2xl font-bold text-white">Aditya Thakare</h2>
           <p className="text-sm text-sky-400">
-            {HEADLINE}
+            {HEADLINE} · {TAGLINE}
           </p>
           <p className="text-sm text-slate-400">Pune, Maharashtra</p>
           <p className="mt-1 text-xs font-medium text-amber-300">{AVAILABILITY}</p>
@@ -35,23 +37,27 @@ export default function AboutOverlay() {
       <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
         Experience
       </h3>
-      <p className="mt-2 text-sm text-slate-200">
-        Data Scientist — MITU Skillologies, Pune{' '}
-        <span className="text-slate-400">(Sep 2023 – Present)</span>
-      </p>
+      <ul className="mt-2 space-y-1 text-sm text-slate-200">
+        {about
+          .filter((n) => n.kind === 'experience')
+          .map((n) => (
+            <li key={n.id}>
+              {n.role} — {n.label} <span className="text-slate-400">({n.description})</span>
+            </li>
+          ))}
+      </ul>
 
       <h3 className="mt-6 text-xs font-semibold uppercase tracking-wider text-slate-400">
         Education
       </h3>
       <ul className="mt-2 space-y-1 text-sm text-slate-200">
-        <li>
-          PG Diploma in Artificial Intelligence — CDAC ACTS, Pune{' '}
-          <span className="text-slate-400">(2023)</span>
-        </li>
-        <li>
-          B.Tech, Civil Engineering — Savitribai Phule Pune University, CGPA
-          7.78 <span className="text-slate-400">(2021)</span>
-        </li>
+        {about
+          .filter((n) => n.kind === 'education')
+          .map((n) => (
+            <li key={n.id}>
+              {n.label}: {n.description}
+            </li>
+          ))}
       </ul>
     </Modal>
   )

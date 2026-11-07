@@ -1,7 +1,7 @@
 # portfolio-3d
 
 Portfolio. Visitors land on a fast, readable page (light or
-dark, following their OS) with projects, experience, teaching, skills and
+dark, following their OS) with experience, open source, projects, teaching, skills and
 certifications, plus a job-description matcher (instant keyword match, plus an optional
 Gemini-powered fit analysis via a Vercel serverless function in `api/`). The same content can be
 explored as an interactive 3D neural network built with React Three Fiber:

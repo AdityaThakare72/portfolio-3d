@@ -64,21 +64,21 @@ itself from the projects in `portfolio.ts`, so you never edit the number:
 | Your project… | Counted as |
 |---|---|
 | has a `live:` link (a demo anyone can open) | **deployed** |
-| has no links at all (a client project running in production, like the CEO dashboard) | **deployed** |
+| has no links at all (a client project running in production) | **deployed** |
+| is a job under Experience with `inProduction: true,` (like the Neon AI contract) | **deployed** |
 | only has a `source:` GitHub link | one of the **"+N more projects on GitHub"** |
 | has `status: 'in-progress',` | never counted as deployed |
 
 Today that's 4 deployed (Research Agent, Legal Agent, Equipment
-Maintenance, CEO Dashboard) and 3 on GitHub (react-from-scratch,
-typed-decision-models, agent-harness-demo).
+Maintenance, and the Neon AI production system) and 3 on GitHub
+(react-from-scratch, typed-decision-models, agent-harness-demo).
 
 **What counts as an "AI project" here?** Only the projects listed on your
-site. Client work can be listed (with no links) and counts as deployed.
-A small personal project counts once you add it to the list. An
-**open-source contribution** (e.g. your code merged into someone else's
-repository) is a different thing. It would get its own section rather
-than inflate the project count. Ask for that section to be added when
-you have one.
+site, plus client work marked `inProduction`. A small personal project
+counts once you add it to the list. An **open-source contribution**
+(your code merged into someone else's repository) goes in the
+**Open source** section instead, and never changes the project count
+(see the recipe below).
 
 ---
 
@@ -163,6 +163,23 @@ copying the line above it:
 ```
 
 The "60+ workshops at 30+ institutions" numbers update by themselves.
+
+### Add a job (Experience) or an open-source contribution
+
+File: `src/data/portfolio.ts`. Search for `const infoDefs`. Copy the
+`neon-ai` block (a job) or the `oss-caura-fleet` block (an open-source
+PR), paste it right below, and change the values. Give it a new `id`
+(lowercase, dashes, e.g. `oss-langgraph-docs`).
+
+- A job needs `kind: 'experience',`, a `role:`, dates in `description:`
+  and its bullet points in `highlights:`. Add `inProduction: true,` only
+  if the system you built is really running in production.
+- An open-source contribution needs `kind: 'oss',`, the project name in
+  `label:`, one honest sentence in `description:`, and the merged PR's
+  address in `links: { source: '…' },`.
+
+Jobs appear in the order they're listed (newest first), and the AI job
+matcher can cite them automatically.
 
 ### Change the "Open to … roles" line
 

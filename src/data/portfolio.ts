@@ -19,6 +19,11 @@ export interface Node {
   status?: 'in-progress'
   // Bullet points for experience nodes
   highlights?: string[]
+  // About-me nodes: which section they belong to, and the job title
+  kind?: 'experience' | 'teaching' | 'education' | 'oss'
+  role?: string
+  // Client work running in production; counted as a deployed AI system
+  inProduction?: boolean
   // Certificate credential ID, shown in the cert panel
   credentialId?: string
   // Project write-up shown in the panel: problem -> key decision -> outcome
@@ -41,9 +46,12 @@ export interface Edge {
 }
 
 // Intro copy shared by the readable page, the 3D hero and the About modal
-export const HEADLINE = 'Data Scientist | GenAI & Agentic AI | MLOps'
+// The resume keeps 'Data Scientist | GenAI & Agentic AI | MLOps'; the site
+// title is the broader version of the same role
+export const HEADLINE = 'Data Scientist & AI Engineer'
+export const TAGLINE = 'Agentic systems, applied ML & MLOps'
 
-export const SUMMARY = `Data Scientist with 3+ years of experience (since Sep 2023) building and deploying Generative AI systems: RAG pipelines, multi-agent LangGraph orchestration and end-to-end MLOps workflows. Delivered technical training to 2,000+ students and faculty across ${teachingStats.workshops} workshops and faculty development programs at ${teachingStats.institutions} institutions.`
+export const SUMMARY = `Data Scientist with 3+ years of experience (since Sep 2023) building and deploying Generative AI systems: multi-agent LangGraph workflows, RAG pipelines and end-to-end MLOps. Most recently built a production LangGraph + FastAPI analytics agent for Neon AI on contract, and has a merged open-source contribution to caura-ai agent infrastructure. Has taught 2,000+ students and faculty across ${teachingStats.workshops} workshops and faculty development programs at ${teachingStats.institutions} institutions.`
 
 // Shown on the readable page, the 3D hero and About
 export const AVAILABILITY =
@@ -131,6 +139,25 @@ const projectDefs: ProjectDef[] = [
     },
   },
   {
+    id: 'typed-decision-models',
+    label: 'Typed Decision Models: Agent Router Benchmark',
+    shortLabel: 'Typed Decision Models',
+    description:
+      'Benchmark of Laya, a typed decision model from Hugging Face, as the router of an agent workflow: route, priority and needs-human decisions from support-ticket text plus tabular metadata, against Random Forest, XGBoost, a fine-tuned BERT and a Gemini LLM router inside a LangGraph workflow.',
+    links: {
+      source: 'https://github.com/AdityaThakare72/typed-decision-models',
+    },
+    story: {
+      problem:
+        'Agent workflows need a fast, reliable router step that turns a request into a few structured fields, which LLM routers make slow and costly.',
+      decision:
+        'Put every model behind one DecisionModel interface with the same metrics and p50/p95 latency, and fine-tuned Laya on the task instead of relying on zero-shot.',
+      outcome:
+        'On a synthetic benchmark, fine-tuned Laya beat the Gemini router by 25 points on exact match (0.76 vs 0.51), ~21x faster and ~80x cheaper; XGBoost matched it (0.736 vs 0.720) at ~300x smaller.',
+    },
+    tags: ['Hugging Face', 'LangGraph', 'BERT', 'XGBoost', 'Gemini API', 'Python'],
+  },
+  {
     id: 'legal-agent',
     label: 'Conversational Legal Agent',
     shortLabel: 'Legal Agent',
@@ -169,20 +196,6 @@ const projectDefs: ProjectDef[] = [
     },
   },
   {
-    id: 'ceo-dashboard',
-    label: 'CEO Financial Dashboard',
-    shortLabel: 'CEO Dashboard',
-    description:
-      'Client project, in production. LangGraph orchestration behind a FastAPI layer; DuckDB/Parquet for analytical queries, MongoDB for metadata; Pydantic structured outputs with GPT-4o-mini for schema-validated answers to financial questions.',
-    // client project — no public links
-    tags: ['LangGraph', 'FastAPI', 'DuckDB', 'Parquet', 'MongoDB', 'Pydantic', 'GPT-4o-mini'],
-    story: {
-      problem: 'C-suite executives needed answers to financial questions in natural language.',
-      decision: 'Pydantic structured outputs with GPT-4o-mini, so every answer is schema-validated.',
-      outcome: 'Running in production for the client.',
-    },
-  },
-  {
     id: 'react-from-scratch',
     label: 'react-from-scratch',
     description:
@@ -193,25 +206,6 @@ const projectDefs: ProjectDef[] = [
     status: 'in-progress',
     // TODO: confirm tags against the repo once its README is written
     tags: ['Python', 'Agentic AI', 'LLMs'],
-  },
-  {
-    id: 'typed-decision-models',
-    label: 'Typed Decision Models: Agent Router Benchmark',
-    shortLabel: 'Typed Decision Models',
-    description:
-      'Benchmark of Laya, a typed decision model from Hugging Face, as the router of an agent workflow: route, priority and needs-human decisions from support-ticket text plus tabular metadata, against Random Forest, XGBoost, a fine-tuned BERT and a Gemini LLM router inside a LangGraph workflow.',
-    links: {
-      source: 'https://github.com/AdityaThakare72/typed-decision-models',
-    },
-    story: {
-      problem:
-        'Agent workflows need a fast, reliable router step that turns a request into a few structured fields, which LLM routers make slow and costly.',
-      decision:
-        'Put every model behind one DecisionModel interface with the same metrics and p50/p95 latency, and fine-tuned Laya on the task instead of relying on zero-shot.',
-      outcome:
-        'On a synthetic benchmark, fine-tuned Laya beat the Gemini router by 25 points on exact match (0.76 vs 0.51), ~21x faster and ~80x cheaper; XGBoost matched it (0.736 vs 0.720) at ~300x smaller.',
-    },
-    tags: ['Hugging Face', 'LangGraph', 'BERT', 'XGBoost', 'Gemini API', 'Python'],
   },
   {
     id: 'agent-harness-demo',
@@ -239,18 +233,6 @@ const projectNodes: Node[] = projectDefs.map((p, i) => {
     ],
   }
 })
-
-// Counted from the data, so the stat grows as projects ship: a project is
-// deployed when it has a live demo, or is a client project (no public links)
-// running in production. In-progress work never counts.
-const isDeployed = (p: ProjectDef) =>
-  p.status !== 'in-progress' && (!!p.links?.live || !p.links)
-
-export const projectStats = {
-  deployed: projectDefs.filter(isDeployed).length,
-  // Other projects with public code, built or still in progress
-  onGithub: projectDefs.filter((p) => !isDeployed(p) && p.links?.source).length,
-}
 
 // ---------------------------------------------------------------------------
 // Tier 2 — categories on a fibonacci sphere of radius 5
@@ -545,33 +527,65 @@ const certNodes: Node[] = certDefs.map((c, i) => {
 
 const INFO_RADIUS = 11
 
-const infoDefs = [
+// Typed loosely so each entry only sets the fields it needs
+const infoDefs: Omit<Node, 'type' | 'color' | 'position'>[] = [
+  {
+    id: 'neon-ai',
+    kind: 'experience',
+    label: 'Neon AI',
+    role: 'AI Consultant & Developer (Contract)',
+    description: 'May 2026 – Jul 2026',
+    highlights: [
+      'Built the agentic AI backend of a financial analytics dashboard for C-suite executives, now running in production: LangGraph orchestration behind an async FastAPI serving layer.',
+      'DuckDB over Parquet for fast analytical queries, MongoDB for metadata.',
+      'Pydantic structured outputs with GPT-4o-mini, so every natural-language answer to a financial question is schema-validated.',
+    ],
+    tags: ['LangGraph', 'FastAPI', 'DuckDB', 'Parquet', 'MongoDB', 'Pydantic', 'GPT-4o-mini'],
+    inProduction: true,
+    size: 0.7,
+  },
   {
     id: 'experience',
+    kind: 'experience',
     label: 'MITU Skillologies',
-    description: 'Data Scientist · Pune · Sep 2023 – Present',
+    role: 'Data Scientist',
+    description: 'Pune · Sep 2023 – Present',
     highlights: [
+      'Designed and built end-to-end AI systems: LangChain RAG pipelines, neural network architectures and MLOps workflows.',
       'Deep learning research support on Brahmi script recognition: compared Custom CNN, InceptionNet, ResNet-50 and XceptionNet on a 7,880-image, 56-class dataset; ResNet-50 gave the best accuracy.',
       'Research and implementation support for student progression prediction and crop disease classification.',
-      `Built end-to-end AI systems (RAG pipelines, neural networks, MLOps workflows) as primary technical SME across ${teachingStats.workshops} workshops and faculty development programs, reaching 2,000+ students and faculty.`,
-      'Designed a 140-session AI curriculum, Python through Generative AI and LangGraph.',
+      `Primary technical SME across ${teachingStats.workshops} workshops and faculty development programs, reaching 2,000+ students and faculty; designed a 140-session AI curriculum, Python through Generative AI and LangGraph.`,
     ],
     size: 0.7,
   },
   {
+    id: 'oss-caura-fleet',
+    kind: 'oss',
+    label: 'caura-long-run-fleet',
+    role: 'Open-source contributor · caura-ai',
+    description:
+      'Fleet orchestration and memory infrastructure for long-running AI agents. Added a configurable --agent-timeout flag for agent subprocess runs in the fleet simulator (fixes issue #36). Merged Oct 2026.',
+    links: { source: 'https://github.com/caura-ai/caura-long-run-fleet/pull/43' },
+    tags: ['Python', 'Agentic AI', 'Open source'],
+    size: 0.5,
+  },
+  {
     id: 'teaching',
+    kind: 'teaching',
     label: 'Teaching',
     description: `${teachingStats.workshops} workshops and faculty development programs for students and faculty at ${teachingStats.institutions} institutions (${teachingStats.from}–${teachingStats.to}), reaching 2,000+ people.`,
     size: 0.6,
   },
   {
     id: 'edu-cdac',
+    kind: 'education',
     label: 'CDAC ACTS, Pune',
     description: 'PG Diploma in Artificial Intelligence (2023)',
     size: 0.5,
   },
   {
     id: 'edu-sppu',
+    kind: 'education',
     label: 'SPPU',
     description:
       'B.Tech, Civil Engineering — Savitribai Phule Pune University · CGPA 7.78 (2021)',
@@ -580,7 +594,7 @@ const infoDefs = [
 ]
 
 const infoNodes: Node[] = infoDefs.map((d, i) => {
-  const y = (i - (infoDefs.length - 1) / 2) * 4
+  const y = (i - (infoDefs.length - 1) / 2) * 3
   const ringRadius = Math.sqrt(INFO_RADIUS ** 2 - y ** 2)
   const theta = 1 + i * ((2 * Math.PI) / infoDefs.length)
   return {
@@ -594,6 +608,20 @@ const infoNodes: Node[] = infoDefs.map((d, i) => {
     ],
   }
 })
+
+// Counted from the data, so the stat grows as projects ship: a project is
+// deployed when it has a live demo or is a client project (no public links).
+// Client work listed under experience counts when it has inProduction.
+// In-progress work never counts.
+const isDeployed = (p: ProjectDef) =>
+  p.status !== 'in-progress' && (!!p.links?.live || !p.links)
+
+export const projectStats = {
+  deployed:
+    projectDefs.filter(isDeployed).length + infoDefs.filter((d) => d.inProduction).length,
+  // Other projects with public code, built or still in progress
+  onGithub: projectDefs.filter((p) => !isDeployed(p) && p.links?.source).length,
+}
 
 export const nodes: Node[] = [
   ...projectNodes,
@@ -618,7 +646,6 @@ const projectSkillEdges: Edge[] = [
   ['research-agent', ['agentic-ai', 'langgraph', 'langchain', 'gemini-api', 'streamlit', 'docker']],
   ['legal-agent', ['rag', 'langchain', 'chromadb', 'gemini-api', 'gemini-embed', 'semantic-chunk', 'streamlit', 'nginx', 'systemd', 'ssl-https']],
   ['equipment-maintenance', ['xgboost', 'fastapi', 'mlflow', 'dvc', 'docker', 'github-actions', 'cicd', 'streamlit']],
-  ['ceo-dashboard', ['langgraph', 'agentic-ai', 'fastapi', 'pydantic', 'openai-api']],
   ['react-from-scratch', ['python', 'agentic-ai', 'llm']],
   ['typed-decision-models', ['huggingface', 'langgraph', 'agentic-ai', 'llm', 'gemini-api', 'xgboost', 'sklearn', 'nlp', 'transfer-learning', 'python']],
   ['agent-harness-demo', ['agentic-ai', 'python', 'gemini-api']],
@@ -630,7 +657,6 @@ const projectCategoryEdges: Edge[] = [
   ['research-agent', ['cat-genai', 'cat-backend', 'cat-mlops']],
   ['legal-agent', ['cat-genai', 'cat-vectorstores', 'cat-backend', 'cat-mlops']],
   ['equipment-maintenance', ['cat-mldl', 'cat-backend', 'cat-mlops']],
-  ['ceo-dashboard', ['cat-genai', 'cat-backend']],
   ['react-from-scratch', ['cat-genai', 'cat-languages']],
   ['typed-decision-models', ['cat-mldl', 'cat-genai', 'cat-vectorstores', 'cat-languages']],
   ['agent-harness-demo', ['cat-genai', 'cat-languages']],
@@ -658,6 +684,12 @@ const certSkillEdges: Edge[] = [
 ]
 
 const infoEdges: Edge[] = [
+  ...['langgraph', 'agentic-ai', 'fastapi', 'pydantic', 'openai-api', 'cat-genai', 'cat-backend'].map(
+    (target) => ({ source: 'neon-ai', target }),
+  ),
+  { source: 'neon-ai', target: 'experience' },
+  { source: 'oss-caura-fleet', target: 'agentic-ai' },
+  { source: 'oss-caura-fleet', target: 'python' },
   { source: 'experience', target: 'cat-genai' },
   { source: 'experience', target: 'cat-mldl' },
   { source: 'experience', target: 'cat-mlops' },
@@ -674,6 +706,20 @@ export const edges: Edge[] = [
   ...certSkillEdges,
   ...infoEdges,
 ]
+
+// Work the job matcher can cite as evidence: projects, jobs and open source
+export const isWork = (n?: Node) =>
+  n?.type === 'project' || n?.kind === 'experience' || n?.kind === 'oss'
+
+// Where a node lives on the readable page
+export const pageAnchor = (n: Node) =>
+  n.type === 'project'
+    ? `#project-${n.id}`
+    : n.kind === 'oss'
+      ? '#open-source'
+      : n.kind
+        ? `#${n.kind}`
+        : undefined
 
 // Adjacency map for hover neighborhood highlighting
 export const neighbors = new Map<string, Set<string>>()

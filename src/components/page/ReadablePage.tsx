@@ -3,6 +3,7 @@ import {
   AVAILABILITY,
   HEADLINE,
   SUMMARY,
+  TAGLINE,
   edges,
   nodeById,
   projectStats,
@@ -32,10 +33,10 @@ const featured = projects.filter((p) => p.story)
 const others = projects.filter((p) => !p.story)
 const certs = nodes.filter((n) => n.type === 'cert')
 const blogs = nodes.filter((n) => n.type === 'blog')
-const experience = nodeById.get('experience')
-const education = [nodeById.get('edu-cdac'), nodeById.get('edu-sppu')].filter(
-  (n): n is Node => !!n,
-)
+const about = nodes.filter((n) => n.type === 'info')
+const experience = about.filter((n) => n.kind === 'experience')
+const openSource = about.filter((n) => n.kind === 'oss')
+const education = about.filter((n) => n.kind === 'education')
 const skillGroups = nodes
   .filter((n) => n.type === 'category')
   .map((c) => ({
@@ -76,8 +77,9 @@ const socials = [
 ]
 
 const sections = [
-  { id: 'projects', label: 'Projects' },
   { id: 'experience', label: 'Experience' },
+  { id: 'open-source', label: 'Open source' },
+  { id: 'projects', label: 'Projects' },
   { id: 'teaching', label: 'Teaching' },
   { id: 'skills', label: 'Skills' },
   { id: 'certifications', label: 'Certifications' },
@@ -210,6 +212,7 @@ function Hero() {
           </h1>
           <p className="mt-2 text-base font-medium text-sky-700 sm:text-lg dark:text-sky-400">
             {HEADLINE}
+            <span className={`block text-sm font-normal sm:text-base ${muted}`}>{TAGLINE}</span>
           </p>
           <p className="mt-3 inline-block rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-900 dark:bg-amber-400/10 dark:text-amber-300">
             {AVAILABILITY}
@@ -255,12 +258,76 @@ function Hero() {
   )
 }
 
+function ExperienceCard({ item }: { item: Node }) {
+  return (
+    <div className={card}>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <h3 className={`text-lg font-semibold ${strong}`}>
+          {item.role} · {item.label}
+        </h3>
+        {item.inProduction && (
+          <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-300">
+            In production
+          </span>
+        )}
+      </div>
+      <p className={`mt-1 text-sm ${muted}`}>{item.description}</p>
+      {item.highlights && (
+        <ul className={`mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed ${body}`}>
+          {item.highlights.map((h) => (
+            <li key={h}>{h}</li>
+          ))}
+        </ul>
+      )}
+      {item.tags && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {item.tags.map((t) => (
+            <span key={t} className={chip}>
+              {t}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function ReadablePage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#030712] dark:text-slate-100">
       <Header />
       <main className="mx-auto max-w-5xl px-4 sm:px-6">
         <Hero />
+
+        <Section id="experience" title="Experience">
+          <div className="space-y-6">
+            {experience.map((e) => (
+              <ExperienceCard key={e.id} item={e} />
+            ))}
+          </div>
+        </Section>
+
+        {openSource.length > 0 && (
+          <Section id="open-source" title="Open source">
+            <ul className="space-y-3">
+              {openSource.map((o) => (
+                <li key={o.id} className={card}>
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                    <h3 className={`font-semibold ${strong}`}>
+                      {o.label} <span className={`text-sm font-normal ${muted}`}>· {o.role}</span>
+                    </h3>
+                    {o.links?.source && (
+                      <a href={o.links.source} target="_blank" rel="noreferrer" className={`shrink-0 text-sm ${textLink}`}>
+                        View merged PR →
+                      </a>
+                    )}
+                  </div>
+                  <p className={`mt-2 text-sm leading-relaxed ${body}`}>{o.description}</p>
+                </li>
+              ))}
+            </ul>
+          </Section>
+        )}
 
         <Section id="projects" title="Projects">
           <div className="space-y-6">
@@ -279,24 +346,6 @@ export default function ReadablePage() {
             </div>
           )}
         </Section>
-
-        {experience && (
-          <Section id="experience" title="Experience">
-            <div className={card}>
-              <h3 className={`text-lg font-semibold ${strong}`}>
-                Data Scientist · {experience.label}
-              </h3>
-              <p className={`mt-1 text-sm ${muted}`}>{experience.description}</p>
-              {experience.highlights && (
-                <ul className={`mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed ${body}`}>
-                  {experience.highlights.map((h) => (
-                    <li key={h}>{h}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </Section>
-        )}
 
         <Section
           id="teaching"

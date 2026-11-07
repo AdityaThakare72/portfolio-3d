@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { pageAnchor } from '../../data/portfolio'
 import { aiMatchEnabled, fetchAiMatch, type AiMatch, type Status } from '../../hooks/aiMatch'
 import { matchJob } from '../../hooks/jobMatch'
 import { useGraphStore } from '../../hooks/useGraphStore'
@@ -57,10 +58,10 @@ function AiResult({ ai }: { ai: AiMatch }) {
               {r.refs.length > 0 && (
                 <span className="mt-1 flex flex-wrap gap-1.5">
                   {r.refs.map((n) =>
-                    n.type === 'project' ? (
+                    pageAnchor(n) ? (
                       <a
                         key={n.id}
-                        href={`#project-${n.id}`}
+                        href={pageAnchor(n)}
                         className="rounded-full border border-sky-500/40 px-2 py-0.5 text-[11px] text-sky-700 hover:bg-sky-50 dark:text-sky-300 dark:hover:bg-sky-400/10"
                       >
                         {n.label}
@@ -83,12 +84,12 @@ function AiResult({ ai }: { ai: AiMatch }) {
       {ai.topProjects.length > 0 && (
         <>
           <h4 className={`mt-4 text-xs font-semibold uppercase tracking-wider ${muted}`}>
-            Most relevant projects
+            Most relevant work
           </h4>
           <ul className={`mt-2 space-y-1.5 text-sm ${body}`}>
             {ai.topProjects.map(({ project, reason }) => (
               <li key={project.id}>
-                <a href={`#project-${project.id}`} className={`font-semibold ${textLink}`}>
+                <a href={pageAnchor(project)} className={`font-semibold ${textLink}`}>
                   {project.label}
                 </a>
                 <span className={muted}> — {reason}</span>
