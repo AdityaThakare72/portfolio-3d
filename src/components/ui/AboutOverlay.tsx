@@ -1,4 +1,4 @@
-import { AVAILABILITY, HEADLINE, SUMMARY } from '../../data/portfolio'
+import { AVAILABILITY, HEADLINE, TAGLINE, SUMMARY } from '../../data/portfolio'
 import { useGraphStore } from '../../hooks/useGraphStore'
 import Modal from './Modal'
 
@@ -17,7 +17,7 @@ export default function AboutOverlay() {
         <div>
           <h2 className="text-2xl font-bold text-white">Aditya Thakare</h2>
           <p className="text-sm text-sky-400">
-            {HEADLINE}
+            {HEADLINE} · {TAGLINE}
           </p>
           <p className="text-sm text-slate-400">Pune, Maharashtra</p>
           <p className="mt-1 text-xs font-medium text-amber-300">{AVAILABILITY}</p>

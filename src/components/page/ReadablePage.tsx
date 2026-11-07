@@ -3,6 +3,7 @@ import {
   AVAILABILITY,
   HEADLINE,
   SUMMARY,
+  TAGLINE,
   edges,
   nodeById,
   projectStats,
@@ -210,6 +211,7 @@ function Hero() {
           </h1>
           <p className="mt-2 text-base font-medium text-sky-700 sm:text-lg dark:text-sky-400">
             {HEADLINE}
+            <span className={`block text-sm font-normal sm:text-base ${muted}`}>{TAGLINE}</span>
           </p>
           <p className="mt-3 inline-block rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-900 dark:bg-amber-400/10 dark:text-amber-300">
             {AVAILABILITY}

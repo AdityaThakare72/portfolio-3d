@@ -46,9 +46,12 @@ export interface Edge {
 }
 
 // Intro copy shared by the readable page, the 3D hero and the About modal
-export const HEADLINE = 'Data Scientist | GenAI & Agentic AI | MLOps'
+// The resume keeps 'Data Scientist | GenAI & Agentic AI | MLOps'; the site
+// title is the broader version of the same role
+export const HEADLINE = 'Data Scientist & AI Engineer'
+export const TAGLINE = 'Agentic systems, applied ML & MLOps'
 
-export const SUMMARY = `Data Scientist with 3+ years of experience (since Sep 2023) building and deploying Generative AI systems: RAG pipelines, multi-agent LangGraph orchestration and end-to-end MLOps workflows. Delivered technical training to 2,000+ students and faculty across ${teachingStats.workshops} workshops and faculty development programs at ${teachingStats.institutions} institutions.`
+export const SUMMARY = `Data Scientist with 3+ years of experience (since Sep 2023) building and deploying Generative AI systems: multi-agent LangGraph workflows, RAG pipelines and end-to-end MLOps. Most recently built a production LangGraph + FastAPI analytics agent for Neon AI on contract, and has a merged open-source contribution to caura-ai agent infrastructure. Has taught 2,000+ students and faculty across ${teachingStats.workshops} workshops and faculty development programs at ${teachingStats.institutions} institutions.`
 
 // Shown on the readable page, the 3D hero and About
 export const AVAILABILITY =

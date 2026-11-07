@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { AVAILABILITY, HEADLINE, projectStats } from '../../data/portfolio'
+import { AVAILABILITY, HEADLINE, TAGLINE, projectStats } from '../../data/portfolio'
 import { useGraphStore } from '../../hooks/useGraphStore'
 
 const socials = [
@@ -27,7 +27,7 @@ export default function HeroOverlay() {
           Aditya Thakare
         </h1>
         <p className="mt-2 text-base tracking-wider text-sky-400 md:text-lg">
-          {HEADLINE}
+          {HEADLINE} · {TAGLINE}
         </p>
         <p className="mt-3 px-4 text-sm tracking-wide text-slate-400">
           3+ years · {projectStats.deployed} deployed AI systems · 2,000+ students &amp;
