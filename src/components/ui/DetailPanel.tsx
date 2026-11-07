@@ -339,14 +339,19 @@ function PanelNav({ node }: { node: Node }) {
 }
 
 function InfoContent({ node }: { node: Node }) {
-  const badge =
-    node.id === 'experience' ? 'Experience' : node.id === 'teaching' ? 'Teaching' : 'Education'
+  const badge = {
+    experience: 'Experience',
+    oss: 'Open source',
+    teaching: 'Teaching',
+    education: 'Education',
+  }[node.kind ?? 'education']
   return (
     <>
       <span className="mb-3 inline-block text-xs font-semibold uppercase tracking-wider text-amber-400">
         {badge}
       </span>
       <h2 className="text-2xl font-bold text-white">{node.label}</h2>
+      {node.role && <p className="mt-1 text-sm font-medium text-sky-400">{node.role}</p>}
       <p className="mt-3 text-sm leading-relaxed text-slate-300">
         {node.description}
       </p>
@@ -356,6 +361,23 @@ function InfoContent({ node }: { node: Node }) {
             <li key={h}>{h}</li>
           ))}
         </ul>
+      )}
+      {node.tags && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {node.tags.map((t) => (
+            <Pill key={t}>{t}</Pill>
+          ))}
+        </div>
+      )}
+      {node.links?.source && (
+        <a
+          href={node.links.source}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-6 inline-block rounded-lg border border-slate-600 px-4 py-2 text-sm font-semibold text-slate-200 transition-colors hover:border-amber-400 hover:text-amber-300"
+        >
+          View merged PR →
+        </a>
       )}
       {node.id === 'teaching' && <TeachingDetails />}
     </>
