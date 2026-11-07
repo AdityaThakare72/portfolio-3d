@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { edges, nodeById, type Node } from '../../data/portfolio'
-import { workshops } from '../../data/workshops'
+import { highlightedWorkshops, workshops } from '../../data/workshops'
 import { useGraphStore, deselect, selectNode } from '../../hooks/useGraphStore'
 import { siblings, stepSelection } from '../../hooks/navigation'
 import { useView } from '../../hooks/useView'
@@ -266,42 +266,19 @@ function CertContent({ node }: { node: Node }) {
   )
 }
 
-// Most frequent workshop topics, for the Teaching panel
-const topTopics = [
-  ...workshops
-    .reduce((m, w) => m.set(w.topic, (m.get(w.topic) ?? 0) + 1), new Map<string, number>())
-    .entries(),
-]
-  .sort((a, b) => b[1] - a[1])
-  .slice(0, 6)
-  .map(([topic]) => topic)
-
 function TeachingDetails() {
   return (
     <>
       <div className="mt-5">
         <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
-          Most taught
-        </h3>
-        <div className="flex flex-wrap gap-2">
-          {topTopics.map((t) => (
-            <Pill key={t}>{t}</Pill>
-          ))}
-        </div>
-      </div>
-      <div className="mt-5">
-        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
-          Most recent
+          Highlights
         </h3>
         <ul className="space-y-1.5 text-sm text-slate-300">
-          {workshops
-            .slice(-5)
-            .reverse()
-            .map((w) => (
-              <li key={`${w.year}-${w.dates}-${w.venue}`}>
-                {w.topic} <span className="text-slate-500">· {w.venue} · {w.dates} {w.year}</span>
-              </li>
-            ))}
+          {highlightedWorkshops.map((w) => (
+            <li key={`${w.year}-${w.dates}-${w.venue}`}>
+              {w.topic} <span className="text-slate-500">· {w.venue} · {w.year}</span>
+            </li>
+          ))}
         </ul>
       </div>
       <button
