@@ -83,7 +83,7 @@ const rows: Row[] = [
     ),
   },
   {
-    label: 'Experience · Teaching · Education',
+    label: 'Experience · Open source · Teaching · Education',
     types: ['info'],
     cluster: 'info',
     count: count(['info']),
