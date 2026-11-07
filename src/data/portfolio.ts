@@ -162,18 +162,18 @@ const projectDefs: ProjectDef[] = [
     label: 'Conversational Legal Agent',
     shortLabel: 'Legal Agent',
     description:
-      'Conversational RAG agent for Indian law. Scraping, preprocessing and semantic chunking of legal data; ChromaDB for persistent retrieval; Gemini embeddings. First self-hosted on DigitalOcean with Nginx, SSL and systemd, now deployed on Streamlit Community Cloud.',
+      'Conversational RAG agent for Indian law that answers with cited sources. Knowledge base of about 70K chunks across 1,000+ Indian acts, including the 2023 criminal codes (BNS, BNSS, BSA). Hybrid retrieval (BM25 plus vector search, merged with Reciprocal Rank Fusion), category filtering, a classifier and a reranker, with streaming answers. Gemini embeddings, ChromaDB; deployed on Streamlit Community Cloud.',
     links: {
       live: 'https://legal-agent-i.streamlit.app/',
       source: 'https://github.com/AdityaThakare72/Legal-Agent-v2',
     },
-    tags: ['RAG', 'LangChain', 'ChromaDB', 'Gemini API', 'Streamlit', 'Nginx'],
+    tags: ['RAG', 'Hybrid Search', 'BM25', 'ChromaDB', 'Gemini API', 'Streamlit'],
     media: '/demos/legal.mp4',
     mediaNote: 'Recorded from the live demo · sped up 2.3×',
     story: {
       problem: "Legal information is hard to access for people who can't afford a legal consultation.",
-      decision: 'ChromaDB over FAISS for persistent storage, so retrieval keeps its state without re-embedding.',
-      outcome: 'Deployed and publicly usable; first self-hosted on DigitalOcean, now on Streamlit Community Cloud.',
+      decision: 'Hybrid BM25 + vector retrieval fused with Reciprocal Rank Fusion, because legal questions mix exact section numbers (keyword search) with plain-language meaning (vector search).',
+      outcome: 'Grew the knowledge base from ~4K to ~70K chunks; deployed and publicly usable with source citations on every answer.',
     },
   },
   {

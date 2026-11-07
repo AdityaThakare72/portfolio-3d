@@ -10,7 +10,7 @@ import {
   nodes,
   type Node,
 } from '../../data/portfolio'
-import { teachingStats, workshops } from '../../data/workshops'
+import { highlightedWorkshops, teachingStats, workshops } from '../../data/workshops'
 import { useTheme } from '../../hooks/useTheme'
 import { useView } from '../../hooks/useView'
 import JobMatch from './JobMatch'
@@ -47,14 +47,6 @@ const skillGroups = nodes
       .filter((n): n is Node => n?.type === 'skill'),
   }))
 const workshopYears = [...new Set(workshops.map((w) => w.year))].sort((a, b) => b - a)
-const topTopics = [
-  ...workshops
-    .reduce((m, w) => m.set(w.topic, (m.get(w.topic) ?? 0) + 1), new Map<string, number>())
-    .entries(),
-]
-  .sort((a, b) => b[1] - a[1])
-  .slice(0, 8)
-  .map(([topic]) => topic)
 
 const stats = [
   { value: '3+ years', label: 'as a Data Scientist' },
@@ -354,37 +346,45 @@ export default function ReadablePage() {
         >
           <div className={card}>
             <h3 className={`text-xs font-semibold uppercase tracking-wider ${muted}`}>
-              Most taught
+              Highlights
             </h3>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {topTopics.map((t) => (
-                <span key={t} className={chip}>
-                  {t}
-                </span>
+            <ul className={`mt-2 space-y-1 text-sm ${body}`}>
+              {highlightedWorkshops.map((w) => (
+                <li key={`${w.year}-${w.dates}-${w.venue}`}>
+                  {w.topic}{' '}
+                  <span className={muted}>
+                    · {w.venue} · {w.year}
+                  </span>
+                </li>
               ))}
-            </div>
-            <div className="mt-5 space-y-2">
-              {workshopYears.map((year) => {
-                const rows = workshops.filter((w) => w.year === year)
-                return (
-                  <details key={year} className="group text-sm">
-                    <summary className={`cursor-pointer font-semibold ${strong} hover:text-sky-700 dark:hover:text-sky-400`}>
-                      {year} · {rows.length} workshops
-                    </summary>
-                    <ul className={`mt-2 space-y-1 pl-4 ${body}`}>
-                      {rows.map((w) => (
-                        <li key={`${w.dates}-${w.venue}`}>
-                          {w.topic}{' '}
-                          <span className={muted}>
-                            · {w.venue} · {w.dates}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </details>
-                )
-              })}
-            </div>
+            </ul>
+            <details className="mt-5 text-sm">
+              <summary className={`cursor-pointer font-semibold ${strong} hover:text-sky-700 dark:hover:text-sky-400`}>
+                Show all {workshops.length} workshops
+              </summary>
+              <div className="mt-3 space-y-2 pl-2">
+                {workshopYears.map((year) => {
+                  const rows = workshops.filter((w) => w.year === year)
+                  return (
+                    <details key={year} className="group text-sm">
+                      <summary className={`cursor-pointer font-semibold ${strong} hover:text-sky-700 dark:hover:text-sky-400`}>
+                        {year} · {rows.length} workshops
+                      </summary>
+                      <ul className={`mt-2 space-y-1 pl-4 ${body}`}>
+                        {rows.map((w) => (
+                          <li key={`${w.dates}-${w.venue}`}>
+                            {w.topic}{' '}
+                            <span className={muted}>
+                              · {w.venue} · {w.dates}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  )
+                })}
+              </div>
+            </details>
           </div>
         </Section>
 

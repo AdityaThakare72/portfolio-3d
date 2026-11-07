@@ -7,6 +7,8 @@ export interface Workshop {
   dates: string
   topic: string
   venue: string
+  // shown in the short highlights list on the page
+  highlight?: boolean
 }
 
 export const workshops: Workshop[] = [
@@ -23,14 +25,14 @@ export const workshops: Workshop[] = [
   { year: 2024, dates: '19 Feb – 24 Feb', topic: 'Python and Data Science', venue: 'Sandeep Foundation, Nasik' },
   { year: 2024, dates: '26 Feb – 28 Feb', topic: 'Data Science and Machine Learning', venue: 'PICT, Pune' },
   { year: 2024, dates: '29 Feb – 1 Mar', topic: 'Data Science and Machine Learning', venue: 'PCCOER, Pune' },
-  { year: 2024, dates: '14 Mar – 15 Mar', topic: 'Prompt Engineering', venue: 'SSGMCE, Shegaon' },
+  { year: 2024, dates: '14 Mar – 15 Mar', topic: 'Prompt Engineering', venue: 'SSGMCE, Shegaon', highlight: true },
   { year: 2024, dates: '4 Apr – 5 Apr', topic: 'Deep Learning', venue: 'AISSMS (IOIT), Pune' },
   { year: 2024, dates: '10 Apr – 14 Apr', topic: 'Data Science', venue: 'AIT, Pune' },
   { year: 2024, dates: '16 Apr', topic: 'Data Visualization', venue: 'Keystone School of Engineering, Pune' },
   { year: 2024, dates: '17 Apr – 21 Apr', topic: 'Data Science', venue: 'AIT, Pune' },
   { year: 2024, dates: '23 Apr', topic: 'Machine Learning', venue: 'Keystone School of Engineering, Pune' },
   { year: 2024, dates: '16 May – 17 May', topic: 'Data Analytics', venue: 'MGM, Nanded' },
-  { year: 2024, dates: '3 Jul – 5 Jul', topic: 'Deep Learning (ANN, CNN, RNN)', venue: 'MIT, Sambhaji Nagar' },
+  { year: 2024, dates: '3 Jul – 5 Jul', topic: 'Deep Learning (ANN, CNN, RNN)', venue: 'MIT, Sambhaji Nagar', highlight: true },
   { year: 2024, dates: '22 Jul – 30 Jul', topic: 'Machine Learning', venue: 'MET, Nashik' },
   { year: 2024, dates: '12 Aug – 14 Aug', topic: 'Deep Learning', venue: 'DVVP, Ahmednagar' },
   { year: 2024, dates: '19 Aug – 20 Aug', topic: 'Data Science', venue: 'AIT, Dighi' },
@@ -42,7 +44,7 @@ export const workshops: Workshop[] = [
   { year: 2024, dates: '23 Sep – 27 Sep', topic: 'Python for AI/ML', venue: 'DYPIEMR, Ravet' },
   { year: 2024, dates: '9 Oct – 11 Oct', topic: 'Applications of AI Tools', venue: 'Sinhgad Academy of Engineering, Kondhwa' },
   { year: 2024, dates: '19 Nov', topic: 'Python and MongoDB', venue: 'IIMS' },
-  { year: 2024, dates: '16 Dec – 27 Dec', topic: 'MLOps Essentials: From Models to Deployment', venue: 'MITADT, Loni' },
+  { year: 2024, dates: '16 Dec – 27 Dec', topic: 'MLOps Essentials: From Models to Deployment', venue: 'MITADT, Loni', highlight: true },
   { year: 2024, dates: '19 Dec – 20 Dec', topic: 'Applications of Clustering Models', venue: 'JSPM' },
   { year: 2025, dates: '13 Jan – 15 Jan', topic: 'Data Viz Tools', venue: 'MITWPU' },
   { year: 2025, dates: '20 Jan – 30 Jan', topic: 'Data Science', venue: 'Ajeenkya DYPU' },
@@ -51,13 +53,13 @@ export const workshops: Workshop[] = [
   { year: 2025, dates: '24 Feb – 2 Mar', topic: 'Power BI and Tableau', venue: 'IMCC' },
   { year: 2025, dates: '8 Apr – 11 Apr', topic: 'Data Analysis and ML', venue: 'MGM, Nanded' },
   { year: 2025, dates: '17 Apr – 21 Apr', topic: 'Data Science', venue: 'AIT, Dighi' },
-  { year: 2025, dates: '16 Jun – 20 Jun', topic: 'Generative AI', venue: 'DKTE, Ichalkaranji' },
+  { year: 2025, dates: '16 Jun – 20 Jun', topic: 'Generative AI', venue: 'DKTE, Ichalkaranji', highlight: true },
   { year: 2025, dates: '7 Jul – 10 Jul', topic: 'Python, Statistics and Data Analysis', venue: 'MITADT, Loni' },
   { year: 2025, dates: '21 Jul – 26 Jul', topic: 'AI/ML', venue: 'PCP' },
   { year: 2025, dates: '28 Jul', topic: 'ML', venue: 'GHR Raisoni' },
   { year: 2025, dates: '4 Aug – 6 Aug', topic: 'Campus Enhancement', venue: 'I2IT' },
   { year: 2025, dates: '7 Aug – 9 Aug', topic: 'Power BI', venue: 'PCP IT' },
-  { year: 2025, dates: '11 Aug – 12 Aug', topic: 'LLM', venue: 'PCCOE' },
+  { year: 2025, dates: '11 Aug – 12 Aug', topic: 'LLM', venue: 'PCCOE', highlight: true },
   { year: 2025, dates: '18 Aug – 20 Aug', topic: 'Power BI', venue: 'PCP IT' },
   { year: 2025, dates: '22 Aug – 23 Aug', topic: 'Python Programming', venue: 'DKTE, Ichalkaranji' },
   { year: 2025, dates: '28 Aug – 30 Aug', topic: 'Tableau', venue: 'SSBF, Lavale' },
@@ -67,7 +69,7 @@ export const workshops: Workshop[] = [
   { year: 2025, dates: '15 Sep – 20 Sep', topic: 'Power BI', venue: 'SVKM, DKTE' },
   { year: 2025, dates: '23 Sep – 27 Sep', topic: 'AI/ML', venue: 'PCP' },
   { year: 2025, dates: '6 Oct – 7 Oct', topic: 'Data Analysis', venue: 'Samarth, Belhe' },
-  { year: 2025, dates: '8 Oct – 9 Oct', topic: 'Generative AI', venue: 'AISSMS IOIT' },
+  { year: 2025, dates: '8 Oct – 9 Oct', topic: 'Generative AI', venue: 'AISSMS IOIT', highlight: true },
   { year: 2025, dates: '10 Oct', topic: 'Power BI', venue: 'AIT, Dighi' },
   { year: 2025, dates: '3 Nov – 4 Nov', topic: 'Python Programming', venue: 'DKTE, Ichalkaranji' },
   { year: 2025, dates: '8 Dec – 12 Dec', topic: 'Databases and SQL', venue: 'SAKEC, Mumbai' },
@@ -82,6 +84,9 @@ const years = workshops.map((w) => w.year)
 
 // Rounded down to the nearest ten so the "+" stays honest as rows are added
 const roundDown = (n: number) => `${Math.floor(n / 10) * 10}+`
+
+// the few workshops worth showing up front, newest first
+export const highlightedWorkshops = workshops.filter((w) => w.highlight).reverse()
 
 export const teachingStats = {
   workshops: roundDown(workshops.length),
