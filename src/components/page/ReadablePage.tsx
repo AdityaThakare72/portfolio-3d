@@ -10,7 +10,6 @@ import {
   nodes,
   type Node,
 } from '../../data/portfolio'
-import { highlightedWorkshops, workshops } from '../../data/workshops'
 import { useTheme } from '../../hooks/useTheme'
 import { useView } from '../../hooks/useView'
 import JobMatch from './JobMatch'
@@ -46,7 +45,6 @@ const skillGroups = nodes
       .map((e) => nodeById.get(e.target))
       .filter((n): n is Node => n?.type === 'skill'),
   }))
-const workshopYears = [...new Set(workshops.map((w) => w.year))].sort((a, b) => b - a)
 
 const stats = [
   { value: '3+ years', label: 'in applied AI' },
@@ -70,7 +68,6 @@ const sections = [
   { id: 'experience', label: 'Experience' },
   { id: 'open-source', label: 'Open source' },
   { id: 'projects', label: 'Projects' },
-  { id: 'teaching', label: 'Teaching' },
   { id: 'skills', label: 'Skills' },
   { id: 'certifications', label: 'Certifications' },
 ]
@@ -346,55 +343,6 @@ export default function ReadablePage() {
               </ul>
             </div>
           )}
-        </Section>
-
-        <Section
-          id="teaching"
-          title="Teaching"
-          intro={nodeById.get('teaching')?.description}
-        >
-          <div className={card}>
-            <h3 className={`text-xs font-semibold uppercase tracking-wider ${muted}`}>
-              Highlights
-            </h3>
-            <ul className={`mt-2 space-y-1 text-sm ${body}`}>
-              {highlightedWorkshops.map((w) => (
-                <li key={`${w.year}-${w.dates}-${w.venue}`}>
-                  {w.topic}{' '}
-                  <span className={muted}>
-                    · {w.venue} · {w.year}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            <details className="mt-5 text-sm">
-              <summary className={`cursor-pointer font-semibold ${strong} hover:text-sky-700 dark:hover:text-sky-400`}>
-                Show all {workshops.length} workshops
-              </summary>
-              <div className="mt-3 space-y-2 pl-2">
-                {workshopYears.map((year) => {
-                  const rows = workshops.filter((w) => w.year === year)
-                  return (
-                    <details key={year} className="group text-sm">
-                      <summary className={`cursor-pointer font-semibold ${strong} hover:text-sky-700 dark:hover:text-sky-400`}>
-                        {year} · {rows.length} workshops
-                      </summary>
-                      <ul className={`mt-2 space-y-1 pl-4 ${body}`}>
-                        {rows.map((w) => (
-                          <li key={`${w.dates}-${w.venue}`}>
-                            {w.topic}{' '}
-                            <span className={muted}>
-                              · {w.venue} · {w.dates}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </details>
-                  )
-                })}
-              </div>
-            </details>
-          </div>
         </Section>
 
         <Section id="skills" title="Skills">
