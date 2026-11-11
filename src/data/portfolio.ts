@@ -382,36 +382,6 @@ const blogDefs = [
     },
     tags: ['GraphRAG', 'RAG'],
   },
-  {
-    id: 'blog-cbow',
-    label: 'CBOW in Word2Vec',
-    description:
-      "An educational look at Word2Vec's CBOW architecture and how it generates vector representations of words based on context.",
-    links: {
-      live: 'https://medium.com/@adityathakare72/understanding-cbow-in-word2vec-the-power-of-contextualized-word-embeddings-61e7446d061d',
-    },
-    tags: ['NLP', 'Deep Learning'],
-  },
-  {
-    id: 'blog-rnn',
-    label: 'Parameter Sharing in RNN',
-    description:
-      'An exploration of Recurrent Neural Networks and the architectural reasons for sharing weights across time steps.',
-    links: {
-      live: 'https://medium.com/@adityathakare72/why-parameter-sharing-in-standard-rnn-03e72679d59b',
-    },
-    tags: ['RNN', 'Deep Learning'],
-  },
-  {
-    id: 'blog-prompts',
-    label: 'Power of Prompts',
-    description:
-      'A foundational guide explaining prompts, how they guide LLMs, and their importance in making AI accessible.',
-    links: {
-      live: 'https://medium.com/@adityathakare72/title-understanding-the-power-of-prompts-in-language-models-cf7323fb2ad9',
-    },
-    tags: ['Prompt Engineering', 'GenAI'],
-  },
 ]
 
 // Offset the blog ring 45° from the project ring so they don't stack
@@ -424,7 +394,7 @@ const blogNodes: Node[] = blogDefs.map((b, i) => {
     size: 0.6,
     position: [
       BLOG_RADIUS * Math.cos(theta),
-      (i - 1.5) * 2.5 + jitter(0.4),
+      (i - (blogDefs.length - 1) / 2) * 2.5 + jitter(0.4),
       BLOG_RADIUS * Math.sin(theta),
     ],
   }
@@ -443,14 +413,6 @@ const certDefs = [
     },
   },
   {
-    id: 'cert-genai-rag',
-    label: 'GenAI, LLM & RAG',
-    description: 'Generative AI, LLM & RAG - Skill Up — GeeksforGeeks · Dec 2025',
-    links: {
-      live: 'https://media.geeksforgeeks.org/courses/certificates/bffbd6be892280341b8a5f0609072099.pdf',
-    },
-  },
-  {
     id: 'cert-ml-stanford',
     label: 'ML: Regression & Classification',
     description:
@@ -459,41 +421,6 @@ const certDefs = [
     links: {
       live: 'https://www.coursera.org/account/accomplishments/records/8BDBW0E8L3LC',
     },
-  },
-  {
-    id: 'cert-prompt-eng',
-    label: 'Prompt Engineering',
-    description: 'Prompt Engineering for ChatGPT — Vanderbilt University · Mar 2024',
-    credentialId: 'RPYCF9X32AE6',
-    links: {
-      live: 'https://www.coursera.org/account/accomplishments/records/RPYCF9X32AE6',
-    },
-  },
-  {
-    id: 'cert-python',
-    label: 'Python Skill Up',
-    description: 'Python Skill Up — GeeksforGeeks · Dec 2025',
-    links: {
-      live: 'https://media.geeksforgeeks.org/courses/certificates/9e43a4eff794f8bdcc292fe22aec3966.pdf',
-    },
-  },
-  {
-    id: 'cert-sql',
-    label: 'SQL for Data Science',
-    description:
-      'Databases and SQL for Data Science with Python — Coursera · May 2023',
-    credentialId: 'KY99XLFNJFWS',
-    links: {
-      live: 'https://www.coursera.org/account/accomplishments/certificate/KY99XLFNJFWS',
-    },
-  },
-  {
-    id: 'cert-docker',
-    label: 'Docker Training',
-    description:
-      'Docker Training Course for the Absolute Beginner — KodeKloud · Mar 2023',
-    // no public link — credential ID only
-    credentialId: '2D064B1166E9-2D06450CDFED-2D063F735021',
   },
 ]
 
@@ -687,25 +614,15 @@ const projectCategoryEdges: Edge[] = [
 
 const blogSkillEdges: Edge[] = [
   { source: 'blog-graph-rag', target: 'rag' },
-  { source: 'blog-cbow', target: 'nlp' },
-  { source: 'blog-rnn', target: 'nlp' },
-  { source: 'blog-prompts', target: 'llm' },
 ]
 
 const certSkillEdges: Edge[] = [
   { source: 'cert-iimb-genai', target: 'llm' },
-  { source: 'cert-genai-rag', target: 'rag' },
-  { source: 'cert-genai-rag', target: 'llm' },
-  { source: 'cert-genai-rag', target: 'langchain' },
   { source: 'cert-ml-stanford', target: 'sklearn' },
-  { source: 'cert-prompt-eng', target: 'llm' },
-  { source: 'cert-python', target: 'python' },
-  { source: 'cert-sql', target: 'sql' },
-  { source: 'cert-docker', target: 'docker' },
 ]
 
 const infoEdges: Edge[] = [
-  ...['langgraph', 'agentic-ai', 'fastapi', 'pydantic', 'asyncio', 'duckdb', 'mongodb', 'openai-api', 'cat-genai', 'cat-backend'].map(
+  ...['langgraph', 'agentic-ai', 'fastapi', 'pydantic', 'asyncio', 'duckdb', 'sql', 'mongodb', 'openai-api', 'cat-genai', 'cat-backend'].map(
     (target) => ({ source: 'neon-ai', target }),
   ),
   { source: 'neon-ai', target: 'experience' },
