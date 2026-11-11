@@ -44,7 +44,12 @@ export const profile = {
     })),
   openSource: of('info')
     .filter((n) => n.kind === 'oss')
-    .map((n) => ({ id: n.id, name: `${n.label} (${n.role})`, details: n.description })),
+    .map((n) => ({
+      id: n.id,
+      name: `${n.label} (${n.role})`,
+      // Tell the matcher when a PR is not merged yet
+      details: n.prStatus === 'open' ? `${n.description} Status: open, awaiting review.` : n.description,
+    })),
   teaching: `${teachingStats.workshops} workshops at ${teachingStats.institutions} institutions, ${teachingStats.from}–${teachingStats.to}`,
   certifications: of('cert').map((c) => ({ id: c.id, name: c.description })),
   education: of('info')

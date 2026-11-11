@@ -24,6 +24,8 @@ export interface Node {
   role?: string
   // Client work running in production; counted as a deployed AI system
   inProduction?: boolean
+  // Open-source PRs: shown as a badge so an open PR never reads as merged
+  prStatus?: 'merged' | 'open'
   // Certificate credential ID, shown in the cert panel
   credentialId?: string
   // Project write-up shown in the panel: problem -> key decision -> outcome
@@ -574,11 +576,38 @@ const infoDefs: Omit<Node, 'type' | 'color' | 'position'>[] = [
     id: 'oss-caura-fleet',
     kind: 'oss',
     label: 'caura-long-run-fleet',
-    role: 'Open-source contributor · caura-ai',
+    role: 'caura-ai',
+    prStatus: 'merged',
     description:
-      'Fleet orchestration and memory infrastructure for long-running AI agents. Added a configurable --agent-timeout flag for agent subprocess runs in the fleet simulator (fixes issue #36). Merged Oct 2026.',
+      'Platform for long-running AI agents. Added a configurable per-agent subprocess timeout to the fleet simulator, with input validation and docs (fixes issue #36). Reviewed and merged Oct 2026.',
     links: { source: 'https://github.com/caura-ai/caura-long-run-fleet/pull/43' },
     tags: ['Python', 'Agentic AI', 'Open source'],
+    size: 0.5,
+  },
+  {
+    id: 'oss-langchain-mongodb-487',
+    kind: 'oss',
+    label: 'langchain-mongodb',
+    shortLabel: 'langchain-mongodb #487',
+    role: 'langchain-ai',
+    prStatus: 'open',
+    description:
+      "Fix for LangGraph's MongoDBStore: suffix wildcards in list_namespaces matched at the wrong positions, and limit counted documents instead of unique namespaces. Includes offline tests that check behaviour against InMemoryStore (fixes issue #480).",
+    links: { source: 'https://github.com/langchain-ai/langchain-mongodb/pull/487' },
+    tags: ['Python', 'LangGraph', 'MongoDB', 'Open source'],
+    size: 0.5,
+  },
+  {
+    id: 'oss-langchain-mongodb-486',
+    kind: 'oss',
+    label: 'langchain-mongodb',
+    shortLabel: 'langchain-mongodb #486',
+    role: 'langchain-ai',
+    prStatus: 'open',
+    description:
+      "Fix for LangGraph's MongoDBStore: put and batch lost track of which text belonged to which item when some items were stored without indexing (fixes issue #479).",
+    links: { source: 'https://github.com/langchain-ai/langchain-mongodb/pull/486' },
+    tags: ['Python', 'LangGraph', 'MongoDB', 'Open source'],
     size: 0.5,
   },
   {
@@ -702,6 +731,10 @@ const infoEdges: Edge[] = [
   { source: 'neon-ai', target: 'experience' },
   { source: 'oss-caura-fleet', target: 'agentic-ai' },
   { source: 'oss-caura-fleet', target: 'python' },
+  ...['oss-langchain-mongodb-487', 'oss-langchain-mongodb-486'].flatMap((source) => [
+    { source, target: 'langgraph' },
+    { source, target: 'python' },
+  ]),
   { source: 'experience', target: 'cat-genai' },
   { source: 'experience', target: 'cat-mldl' },
   { source: 'experience', target: 'cat-mlops' },
