@@ -46,16 +46,15 @@ export interface Edge {
 }
 
 // Intro copy shared by the readable page, the 3D hero and the About modal
-// The resume keeps 'Data Scientist | GenAI & Agentic AI | MLOps'; the site
-// title is the broader version of the same role
-export const HEADLINE = 'Data Scientist & AI Engineer'
-export const TAGLINE = 'Agentic systems, applied ML & MLOps'
+// Keep HEADLINE in step with the resume headline and the GitHub bio
+export const HEADLINE = 'AI Engineer'
+export const TAGLINE = 'Agent backends, RAG and MLOps'
 
-export const SUMMARY = `Data Scientist with 3+ years of experience (since Sep 2023) building and deploying Generative AI systems: multi-agent LangGraph workflows, RAG pipelines and end-to-end MLOps. Most recently built a production LangGraph + FastAPI analytics agent for Neon AI on contract, and has a merged open-source contribution to caura-ai agent infrastructure. Has taught 2,000+ students and faculty across ${teachingStats.workshops} workshops and faculty development programs at ${teachingStats.institutions} institutions.`
+export const SUMMARY =
+  "I build agent backends that run in production. On contract for Neon AI, I took over a legacy LangGraph codebase and shipped the agentic backend of an executive finance dashboard: async FastAPI, DuckDB over Parquet, MongoDB, and Pydantic-validated output on every model call. In open source, I have a merged PR in caura-ai's platform for long-running agents and two bug-fix PRs open on langchain-ai/langchain-mongodb. I also measure before I build: in my router benchmark, a 5 MB XGBoost model matched a 1.6 GB fine-tuned transformer and both beat an LLM router."
 
 // Shown on the readable page, the 3D hero and About
-export const AVAILABILITY =
-  'Open to Data Scientist / AI Engineer roles · Pune, remote, or relocation'
+export const AVAILABILITY = 'Open to AI Engineer roles · Pune, remote, or relocation'
 
 // One hue per node type, so every color has a single meaning:
 // sky = projects, violet = skills, pink = blogs, emerald = certs,
