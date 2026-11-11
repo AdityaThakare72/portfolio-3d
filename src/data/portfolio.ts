@@ -265,44 +265,45 @@ const categoryDefs: CategoryDef[] = [
       { id: 'llm', label: 'LLMs' },
       { id: 'langgraph', label: 'LangGraph' },
       { id: 'langchain', label: 'LangChain' },
+      { id: 'mcp', label: 'MCP' },
       { id: 'gemini-api', label: 'Gemini API' },
-      { id: 'openai-api', label: 'OpenAI API' },
-      { id: 'prompt-eng', label: 'Prompt Engineering' },
+      { id: 'openai-api', label: 'OpenAI API (incl. Azure OpenAI)' },
     ],
   },
   {
     id: 'cat-vectorstores',
-    label: 'Vector Stores & Embeddings',
+    label: 'Retrieval & Embeddings',
     skills: [
       { id: 'chromadb', label: 'ChromaDB' },
-      { id: 'pinecone', label: 'Pinecone' },
-      { id: 'huggingface', label: 'Hugging Face' },
+      { id: 'hybrid-search', label: 'Hybrid Search (BM25 + RRF)' },
       { id: 'gemini-embed', label: 'Gemini Embeddings' },
       { id: 'semantic-chunk', label: 'Semantic Chunking' },
+      { id: 'huggingface', label: 'Hugging Face' },
     ],
   },
   {
     id: 'cat-mldl',
     label: 'ML / Deep Learning',
     skills: [
-      { id: 'sklearn', label: 'Scikit-learn' },
       { id: 'xgboost', label: 'XGBoost' },
+      { id: 'sklearn', label: 'Scikit-learn' },
       { id: 'pytorch', label: 'PyTorch' },
-      { id: 'tensorflow', label: 'TensorFlow' },
-      { id: 'keras', label: 'Keras' },
+      { id: 'tf-keras', label: 'TensorFlow / Keras' },
+      { id: 'transfer-learning', label: 'Fine-tuning' },
       { id: 'cnn', label: 'CNNs' },
       { id: 'nlp', label: 'NLP' },
-      { id: 'transfer-learning', label: 'Transfer Learning' },
     ],
   },
   {
     id: 'cat-backend',
-    label: 'Backend & APIs',
+    label: 'Backend & Data',
     skills: [
       { id: 'fastapi', label: 'FastAPI' },
-      { id: 'rest-apis', label: 'REST APIs' },
-      { id: 'streamlit', label: 'Streamlit' },
       { id: 'pydantic', label: 'Pydantic' },
+      { id: 'asyncio', label: 'asyncio' },
+      { id: 'duckdb', label: 'DuckDB' },
+      { id: 'mongodb', label: 'MongoDB' },
+      { id: 'streamlit', label: 'Streamlit' },
     ],
   },
   {
@@ -310,25 +311,11 @@ const categoryDefs: CategoryDef[] = [
     label: 'MLOps & DevOps',
     skills: [
       { id: 'docker', label: 'Docker' },
-      { id: 'nginx', label: 'Nginx' },
-      { id: 'github-actions', label: 'GitHub Actions' },
-      { id: 'cicd', label: 'CI/CD' },
+      { id: 'github-actions', label: 'GitHub Actions (CI/CD)' },
       { id: 'mlflow', label: 'MLflow' },
       { id: 'dvc', label: 'DVC' },
-      { id: 'systemd', label: 'systemd' },
-      { id: 'ssl-https', label: 'SSL/HTTPS' },
-    ],
-  },
-  {
-    id: 'cat-dataviz',
-    label: 'Data & Visualization',
-    skills: [
-      { id: 'pandas', label: 'Pandas' },
-      { id: 'numpy', label: 'NumPy' },
-      { id: 'matplotlib', label: 'Matplotlib' },
-      { id: 'seaborn', label: 'Seaborn' },
-      { id: 'powerbi', label: 'Power BI' },
-      { id: 'tableau', label: 'Tableau' },
+      { id: 'pytest', label: 'pytest' },
+      { id: 'nginx', label: 'Nginx' },
     ],
   },
 ]
@@ -678,10 +665,10 @@ const categorySkillEdges: Edge[] = categoryDefs.flatMap((c) =>
 
 const projectSkillEdges: Edge[] = [
   ['research-agent', ['agentic-ai', 'langgraph', 'langchain', 'gemini-api', 'streamlit', 'docker']],
-  ['legal-agent', ['rag', 'langchain', 'chromadb', 'gemini-api', 'gemini-embed', 'semantic-chunk', 'streamlit', 'nginx', 'systemd', 'ssl-https']],
-  ['equipment-maintenance', ['xgboost', 'fastapi', 'mlflow', 'dvc', 'docker', 'github-actions', 'cicd', 'streamlit']],
+  ['legal-agent', ['rag', 'langchain', 'chromadb', 'gemini-api', 'gemini-embed', 'semantic-chunk', 'hybrid-search', 'streamlit', 'nginx']],
+  ['equipment-maintenance', ['xgboost', 'fastapi', 'mlflow', 'dvc', 'docker', 'github-actions', 'pytest', 'streamlit']],
   ['react-from-scratch', ['python', 'agentic-ai', 'llm']],
-  ['typed-decision-models', ['huggingface', 'langgraph', 'agentic-ai', 'llm', 'gemini-api', 'xgboost', 'sklearn', 'nlp', 'transfer-learning', 'python']],
+  ['typed-decision-models', ['huggingface', 'langgraph', 'agentic-ai', 'llm', 'gemini-api', 'xgboost', 'sklearn', 'pytorch', 'nlp', 'transfer-learning', 'pytest', 'python']],
   ['agent-harness-demo', ['agentic-ai', 'python', 'gemini-api']],
 ].flatMap(([source, targets]) =>
   (targets as string[]).map((target) => ({ source: source as string, target })),
@@ -702,7 +689,7 @@ const blogSkillEdges: Edge[] = [
   { source: 'blog-graph-rag', target: 'rag' },
   { source: 'blog-cbow', target: 'nlp' },
   { source: 'blog-rnn', target: 'nlp' },
-  { source: 'blog-prompts', target: 'prompt-eng' },
+  { source: 'blog-prompts', target: 'llm' },
 ]
 
 const certSkillEdges: Edge[] = [
@@ -711,14 +698,14 @@ const certSkillEdges: Edge[] = [
   { source: 'cert-genai-rag', target: 'llm' },
   { source: 'cert-genai-rag', target: 'langchain' },
   { source: 'cert-ml-stanford', target: 'sklearn' },
-  { source: 'cert-prompt-eng', target: 'prompt-eng' },
+  { source: 'cert-prompt-eng', target: 'llm' },
   { source: 'cert-python', target: 'python' },
   { source: 'cert-sql', target: 'sql' },
   { source: 'cert-docker', target: 'docker' },
 ]
 
 const infoEdges: Edge[] = [
-  ...['langgraph', 'agentic-ai', 'fastapi', 'pydantic', 'openai-api', 'cat-genai', 'cat-backend'].map(
+  ...['langgraph', 'agentic-ai', 'fastapi', 'pydantic', 'asyncio', 'duckdb', 'mongodb', 'openai-api', 'cat-genai', 'cat-backend'].map(
     (target) => ({ source: 'neon-ai', target }),
   ),
   { source: 'neon-ai', target: 'experience' },
@@ -726,11 +713,13 @@ const infoEdges: Edge[] = [
   { source: 'oss-caura-fleet', target: 'python' },
   ...['oss-langchain-mongodb-487', 'oss-langchain-mongodb-486'].flatMap((source) => [
     { source, target: 'langgraph' },
+    { source, target: 'mongodb' },
     { source, target: 'python' },
   ]),
   { source: 'experience', target: 'cat-genai' },
   { source: 'experience', target: 'cat-mldl' },
   { source: 'experience', target: 'cat-mlops' },
+  ...['mcp', 'tf-keras', 'cnn'].map((target) => ({ source: 'experience', target })),
   { source: 'edu-cdac', target: 'experience' },
   { source: 'edu-sppu', target: 'experience' },
 ]
