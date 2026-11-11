@@ -20,7 +20,7 @@ export interface Node {
   // Bullet points for experience nodes
   highlights?: string[]
   // About-me nodes: which section they belong to, and the job title
-  kind?: 'experience' | 'teaching' | 'education' | 'oss'
+  kind?: 'experience' | 'education' | 'oss'
   role?: string
   // Client work running in production; counted as a deployed AI system
   inProduction?: boolean
@@ -60,7 +60,7 @@ export const AVAILABILITY = 'Open to AI Engineer roles · Pune, remote, or reloc
 
 // One hue per node type, so every color has a single meaning:
 // sky = projects, violet = skills, pink = blogs, emerald = certs,
-// amber = the person (experience, teaching, education)
+// amber = the person (experience, open source, education)
 export const COLORS = {
   background: '#030712',
   project: '#38bdf8',
@@ -611,13 +611,6 @@ const infoDefs: Omit<Node, 'type' | 'color' | 'position'>[] = [
     size: 0.5,
   },
   {
-    id: 'teaching',
-    kind: 'teaching',
-    label: 'Teaching',
-    description: `${teachingStats.workshops} workshops and faculty development programs for students and faculty at ${teachingStats.institutions} institutions (${teachingStats.from}–${teachingStats.to}), reaching 2,000+ people.`,
-    size: 0.6,
-  },
-  {
     id: 'edu-cdac',
     kind: 'education',
     label: 'CDAC ACTS, Pune',
@@ -738,7 +731,6 @@ const infoEdges: Edge[] = [
   { source: 'experience', target: 'cat-genai' },
   { source: 'experience', target: 'cat-mldl' },
   { source: 'experience', target: 'cat-mlops' },
-  { source: 'teaching', target: 'experience' },
   { source: 'edu-cdac', target: 'experience' },
   { source: 'edu-sppu', target: 'experience' },
 ]

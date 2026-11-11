@@ -31,7 +31,7 @@ export const profile = {
     tech: p.tags ?? [],
   })),
   experience: of('info')
-    .filter((n) => n.kind === 'experience' || n.kind === 'teaching')
+    .filter((n) => n.kind === 'experience')
     .map((n) => ({
       id: n.id,
       title: n.role ? `${n.role}, ${n.label}` : n.label,
@@ -50,6 +50,8 @@ export const profile = {
       // Tell the matcher when a PR is not merged yet
       details: n.prStatus === 'open' ? `${n.description} Status: open, awaiting review.` : n.description,
     })),
+  // Not shown on the site; kept so the matcher can answer JDs that ask for
+  // mentoring or training experience
   teaching: `${teachingStats.workshops} workshops at ${teachingStats.institutions} institutions, ${teachingStats.from}–${teachingStats.to}`,
   certifications: of('cert').map((c) => ({ id: c.id, name: c.description })),
   education: of('info')

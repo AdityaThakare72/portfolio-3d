@@ -1,9 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { edges, nodeById, type Node } from '../../data/portfolio'
-import { highlightedWorkshops, workshops } from '../../data/workshops'
 import { useGraphStore, deselect, selectNode } from '../../hooks/useGraphStore'
 import { siblings, stepSelection } from '../../hooks/navigation'
-import { useView } from '../../hooks/useView'
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -266,32 +264,6 @@ function CertContent({ node }: { node: Node }) {
   )
 }
 
-function TeachingDetails() {
-  return (
-    <>
-      <div className="mt-5">
-        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
-          Highlights
-        </h3>
-        <ul className="space-y-1.5 text-sm text-slate-300">
-          {highlightedWorkshops.map((w) => (
-            <li key={`${w.year}-${w.dates}-${w.venue}`}>
-              {w.topic} <span className="text-slate-500">· {w.venue} · {w.year}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <button
-        type="button"
-        onClick={() => useView.getState().setView('page', 'teaching')}
-        className="mt-6 inline-block cursor-pointer rounded-lg border border-slate-600 px-4 py-2 text-sm font-semibold text-slate-200 transition-colors hover:border-amber-400 hover:text-amber-300"
-      >
-        See all {workshops.length} workshops
-      </button>
-    </>
-  )
-}
-
 function PanelNav({ node }: { node: Node }) {
   const list = siblings(node)
   if (list.length < 2) return null
@@ -319,7 +291,6 @@ function InfoContent({ node }: { node: Node }) {
   const badge = {
     experience: 'Experience',
     oss: 'Open source',
-    teaching: 'Teaching',
     education: 'Education',
   }[node.kind ?? 'education']
   return (
@@ -361,7 +332,6 @@ function InfoContent({ node }: { node: Node }) {
           View PR #{node.links.source.split('/').pop()} →
         </a>
       )}
-      {node.id === 'teaching' && <TeachingDetails />}
     </>
   )
 }
