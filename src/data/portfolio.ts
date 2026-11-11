@@ -298,9 +298,7 @@ const categoryDefs: CategoryDef[] = [
       { id: 'xgboost', label: 'XGBoost' },
       { id: 'sklearn', label: 'Scikit-learn' },
       { id: 'pytorch', label: 'PyTorch' },
-      { id: 'tf-keras', label: 'TensorFlow / Keras' },
       { id: 'transfer-learning', label: 'Fine-tuning' },
-      { id: 'cnn', label: 'CNNs' },
       { id: 'nlp', label: 'NLP' },
     ],
   },
@@ -491,7 +489,7 @@ const infoDefs: Omit<Node, 'type' | 'color' | 'position'>[] = [
     description: 'Pune · Sep 2023 – Present',
     highlights: [
       "Built the reference GenAI systems behind the company's programmes: LangChain and LangGraph RAG and agent pipelines, fine-tuning workflows, and MLOps setups with Docker, MLflow, DVC and CI.",
-      'Benchmarked four CNN architectures (custom CNN, InceptionNet, ResNet-50, XceptionNet) for Brahmi script recognition on a 7,880-image, 56-class dataset; ResNet-50 gave the best accuracy. Supported applied ML work on student progression prediction and crop disease classification.',
+      'Supported applied ML projects on student progression prediction and crop disease classification, running comparative experiments across model architectures.',
       `Primary technical SME for the GenAI and agentic AI programmes (LangGraph, RAG, MCP), delivered to 2,000+ engineering students and faculty across ${teachingStats.institutions} institutions.`,
     ],
     size: 0.7,
@@ -648,7 +646,7 @@ const infoEdges: Edge[] = [
   { source: 'experience', target: 'cat-genai' },
   { source: 'experience', target: 'cat-mldl' },
   { source: 'experience', target: 'cat-mlops' },
-  ...['mcp', 'tf-keras', 'cnn'].map((target) => ({ source: 'experience', target })),
+  { source: 'experience', target: 'mcp' },
   { source: 'edu-cdac', target: 'experience' },
   { source: 'edu-sppu', target: 'experience' },
 ]
