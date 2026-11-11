@@ -10,7 +10,7 @@ import {
   nodes,
   type Node,
 } from '../../data/portfolio'
-import { highlightedWorkshops, teachingStats, workshops } from '../../data/workshops'
+import { highlightedWorkshops, workshops } from '../../data/workshops'
 import { useTheme } from '../../hooks/useTheme'
 import { useView } from '../../hooks/useView'
 import JobMatch from './JobMatch'
@@ -49,17 +49,15 @@ const skillGroups = nodes
 const workshopYears = [...new Set(workshops.map((w) => w.year))].sort((a, b) => b - a)
 
 const stats = [
-  { value: '3+ years', label: 'as a Data Scientist' },
+  { value: '3+ years', label: 'in applied AI' },
   {
     value: `${projectStats.deployed}`,
-    label: 'deployed AI systems',
+    label: 'deployed AI systems, 1 in client production',
     note: projectStats.onGithub ? `+${projectStats.onGithub} more projects on GitHub` : undefined,
   },
-  { value: '2,000+', label: 'students & faculty trained' },
-  {
-    value: teachingStats.workshops,
-    label: `workshops at ${teachingStats.institutions} institutions`,
-  },
+  // Update by hand when a PR is merged or a new one is opened
+  { value: '3', label: 'upstream PRs (1 merged, 2 open)' },
+  { value: '70K', label: 'chunks from 1,000+ acts in the legal RAG index' },
 ]
 
 const socials = [

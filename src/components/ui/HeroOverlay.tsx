@@ -30,8 +30,7 @@ export default function HeroOverlay() {
           {HEADLINE} · {TAGLINE}
         </p>
         <p className="mt-3 px-4 text-sm tracking-wide text-slate-400">
-          3+ years · {projectStats.deployed} deployed AI systems · 2,000+ students &amp;
-          faculty trained
+          3+ years in applied AI · {projectStats.deployed} deployed AI systems · 3 upstream PRs
         </p>
         <p className="mt-2 px-4 text-sm font-medium tracking-wide text-amber-300">
           {AVAILABILITY}
