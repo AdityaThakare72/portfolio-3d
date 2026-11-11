@@ -564,10 +564,9 @@ const infoDefs: Omit<Node, 'type' | 'color' | 'position'>[] = [
     role: 'Data Scientist',
     description: 'Pune · Sep 2023 – Present',
     highlights: [
-      'Designed and built end-to-end AI systems: LangChain RAG pipelines, neural network architectures and MLOps workflows.',
-      'Deep learning research support on Brahmi script recognition: compared Custom CNN, InceptionNet, ResNet-50 and XceptionNet on a 7,880-image, 56-class dataset; ResNet-50 gave the best accuracy.',
-      'Research and implementation support for student progression prediction and crop disease classification.',
-      `Primary technical SME across ${teachingStats.workshops} workshops and faculty development programs, reaching 2,000+ students and faculty; designed a 140-session AI curriculum, Python through Generative AI and LangGraph.`,
+      "Built the reference GenAI systems behind the company's programmes: LangChain and LangGraph RAG and agent pipelines, fine-tuning workflows, and MLOps setups with Docker, MLflow, DVC and CI.",
+      'Benchmarked four CNN architectures (custom CNN, InceptionNet, ResNet-50, XceptionNet) for Brahmi script recognition on a 7,880-image, 56-class dataset; ResNet-50 gave the best accuracy. Supported applied ML work on student progression prediction and crop disease classification.',
+      `Primary technical SME for the GenAI and agentic AI programmes (LangGraph, RAG, MCP), delivered to 2,000+ engineering students and faculty across ${teachingStats.institutions} institutions.`,
     ],
     size: 0.7,
   },
