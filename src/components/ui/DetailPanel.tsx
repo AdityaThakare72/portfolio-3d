@@ -328,7 +328,12 @@ function InfoContent({ node }: { node: Node }) {
         {badge}
       </span>
       <h2 className="text-2xl font-bold text-white">{node.label}</h2>
-      {node.role && <p className="mt-1 text-sm font-medium text-sky-400">{node.role}</p>}
+      {node.role && (
+        <p className="mt-1 text-sm font-medium text-sky-400">
+          {node.role}
+          {node.prStatus && ` · ${node.prStatus === 'merged' ? 'Merged' : 'Open, awaiting review'}`}
+        </p>
+      )}
       <p className="mt-3 text-sm leading-relaxed text-slate-300">
         {node.description}
       </p>
@@ -353,7 +358,7 @@ function InfoContent({ node }: { node: Node }) {
           rel="noreferrer"
           className="mt-6 inline-block rounded-lg border border-slate-600 px-4 py-2 text-sm font-semibold text-slate-200 transition-colors hover:border-amber-400 hover:text-amber-300"
         >
-          View merged PR →
+          View PR #{node.links.source.split('/').pop()} →
         </a>
       )}
       {node.id === 'teaching' && <TeachingDetails />}

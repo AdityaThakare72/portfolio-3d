@@ -305,10 +305,21 @@ export default function ReadablePage() {
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
                     <h3 className={`font-semibold ${strong}`}>
                       {o.label} <span className={`text-sm font-normal ${muted}`}>· {o.role}</span>
+                      {o.prStatus && (
+                        <span
+                          className={`ml-2 rounded-full px-2 py-0.5 align-middle text-xs font-medium ${
+                            o.prStatus === 'merged'
+                              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-300'
+                              : 'bg-amber-100 text-amber-900 dark:bg-amber-400/10 dark:text-amber-300'
+                          }`}
+                        >
+                          {o.prStatus === 'merged' ? 'Merged' : 'Open, awaiting review'}
+                        </span>
+                      )}
                     </h3>
                     {o.links?.source && (
                       <a href={o.links.source} target="_blank" rel="noreferrer" className={`shrink-0 text-sm ${textLink}`}>
-                        View merged PR →
+                        View PR #{o.links.source.split('/').pop()} →
                       </a>
                     )}
                   </div>
