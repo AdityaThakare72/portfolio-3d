@@ -334,7 +334,7 @@ export default function ReadablePage() {
           </div>
           {others.length > 0 && (
             <div className={`${card} mt-6`}>
-              <h3 className={`text-sm font-semibold ${strong}`}>Also building</h3>
+              <h3 className={`text-sm font-semibold ${strong}`}>More projects</h3>
               <ul className="mt-1 divide-y divide-slate-200 dark:divide-white/[0.06]">
                 {others.map((p) => (
                   <ProjectRow key={p.id} project={p} />

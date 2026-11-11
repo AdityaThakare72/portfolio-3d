@@ -218,6 +218,16 @@ const projectDefs: ProjectDef[] = [
     },
     tags: ['Agentic AI', 'Python', 'Gemini API'],
   },
+  {
+    id: 'report-generation-agent',
+    label: 'Report-Generation-Agent',
+    description:
+      'LangGraph pipeline that turns raw transaction data into a Suspicious Activity Report PDF for financial compliance (RBI/SEBI context): Pydantic validation, missing-data imputation with an audit log, Pandas aggregation, a Gemini-drafted narrative and WeasyPrint rendering.',
+    links: {
+      source: 'https://github.com/AdityaThakare72/Report-Generation-Agent',
+    },
+    tags: ['LangGraph', 'Pydantic', 'Gemini API', 'Pandas', 'Python'],
+  },
 ]
 
 const projectNodes: Node[] = projectDefs.map((p, i) => {
@@ -597,6 +607,7 @@ const projectSkillEdges: Edge[] = [
   ['react-from-scratch', ['python', 'agentic-ai', 'llm']],
   ['typed-decision-models', ['huggingface', 'langgraph', 'agentic-ai', 'llm', 'gemini-api', 'xgboost', 'sklearn', 'pytorch', 'nlp', 'transfer-learning', 'pytest', 'python']],
   ['agent-harness-demo', ['agentic-ai', 'python', 'gemini-api']],
+  ['report-generation-agent', ['langgraph', 'pydantic', 'gemini-api', 'python']],
 ].flatMap(([source, targets]) =>
   (targets as string[]).map((target) => ({ source: source as string, target })),
 )
@@ -608,6 +619,7 @@ const projectCategoryEdges: Edge[] = [
   ['react-from-scratch', ['cat-genai', 'cat-languages']],
   ['typed-decision-models', ['cat-mldl', 'cat-genai', 'cat-vectorstores', 'cat-languages']],
   ['agent-harness-demo', ['cat-genai', 'cat-languages']],
+  ['report-generation-agent', ['cat-genai', 'cat-backend']],
 ].flatMap(([source, targets]) =>
   (targets as string[]).map((target) => ({ source: source as string, target })),
 )
