@@ -69,7 +69,6 @@ const sections = [
   { id: 'open-source', label: 'Open source' },
   { id: 'projects', label: 'Projects' },
   { id: 'skills', label: 'Skills' },
-  { id: 'certifications', label: 'Certifications' },
 ]
 
 function ThemeToggle() {
@@ -365,28 +364,6 @@ export default function ReadablePage() {
           </div>
         </Section>
 
-        <Section id="certifications" title="Certifications">
-          <ul className={`${card} divide-y divide-slate-200 !py-2 dark:divide-white/[0.06]`}>
-            {certs.map((c) => (
-              <li key={c.id} className="flex flex-col gap-1 py-3 text-sm sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                <div>
-                  <span className={body}>{c.description}</span>
-                  {c.credentialId && (
-                    <span className={`block break-all text-xs ${muted}`}>
-                      Credential ID {c.credentialId}
-                    </span>
-                  )}
-                </div>
-                {c.links?.live && (
-                  <a href={c.links.live} target="_blank" rel="noreferrer" className={`shrink-0 ${textLink}`}>
-                    View
-                  </a>
-                )}
-              </li>
-            ))}
-          </ul>
-        </Section>
-
         <Section id="writing" title="Writing">
           <ul className="grid gap-3 sm:grid-cols-2">
             {blogs.map((b) => (
@@ -411,6 +388,28 @@ export default function ReadablePage() {
             {education.map((e) => (
               <li key={e.id} className={body}>
                 <span className={`font-semibold ${strong}`}>{e.label}</span> — {e.description}
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        <Section id="certifications" title="Certifications">
+          <ul className={`${card} divide-y divide-slate-200 !py-2 dark:divide-white/[0.06]`}>
+            {certs.map((c) => (
+              <li key={c.id} className="flex flex-col gap-1 py-3 text-sm sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                <div>
+                  <span className={body}>{c.description}</span>
+                  {c.credentialId && (
+                    <span className={`block break-all text-xs ${muted}`}>
+                      Credential ID {c.credentialId}
+                    </span>
+                  )}
+                </div>
+                {c.links?.live && (
+                  <a href={c.links.live} target="_blank" rel="noreferrer" className={`shrink-0 ${textLink}`}>
+                    View
+                  </a>
+                )}
               </li>
             ))}
           </ul>
