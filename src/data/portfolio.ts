@@ -163,12 +163,12 @@ const projectDefs: ProjectDef[] = [
     label: 'Conversational Legal Agent',
     shortLabel: 'Legal Agent',
     description:
-      'Conversational RAG agent for Indian law that answers with cited sources. Knowledge base of about 70K chunks across 1,000+ Indian acts, including the 2023 criminal codes (BNS, BNSS, BSA). Hybrid retrieval (BM25 plus vector search, merged with Reciprocal Rank Fusion), category filtering, a classifier and a reranker, with streaming answers. Gemini embeddings, ChromaDB; deployed on Streamlit Community Cloud.',
+      'Conversational RAG agent for Indian law that answers with cited sources. Knowledge base of about 70K chunks across 1,000+ Indian acts, including the 2023 criminal codes (BNS, BNSS, BSA). Hybrid retrieval (BM25 plus vector search, merged with Reciprocal Rank Fusion), category filtering, a classifier and a reranker, with streaming answers. Gemini embeddings, ChromaDB; deployed on Streamlit Community Cloud. The same retriever is also exposed as an MCP server.',
     links: {
       live: 'https://legal-agent-i.streamlit.app/',
       source: 'https://github.com/AdityaThakare72/Legal-Agent-v2',
     },
-    tags: ['RAG', 'Hybrid Search', 'BM25', 'ChromaDB', 'Gemini API', 'Streamlit'],
+    tags: ['RAG', 'Hybrid Search', 'BM25', 'ChromaDB', 'MCP', 'Gemini API', 'Streamlit'],
     media: '/demos/legal.mp4',
     mediaNote: 'Recorded from the live demo · sped up 2.3×',
     story: {
@@ -600,7 +600,7 @@ const categorySkillEdges: Edge[] = categoryDefs.flatMap((c) =>
 
 const projectSkillEdges: Edge[] = [
   ['research-agent', ['agentic-ai', 'langgraph', 'langchain', 'gemini-api', 'streamlit', 'docker']],
-  ['legal-agent', ['rag', 'langchain', 'chromadb', 'gemini-api', 'gemini-embed', 'semantic-chunk', 'hybrid-search', 'streamlit', 'nginx']],
+  ['legal-agent', ['rag', 'langchain', 'chromadb', 'gemini-api', 'gemini-embed', 'semantic-chunk', 'hybrid-search', 'mcp', 'streamlit', 'nginx']],
   ['equipment-maintenance', ['xgboost', 'fastapi', 'mlflow', 'dvc', 'docker', 'github-actions', 'pytest', 'streamlit']],
   ['react-from-scratch', ['python', 'agentic-ai', 'llm']],
   ['typed-decision-models', ['huggingface', 'langgraph', 'agentic-ai', 'llm', 'gemini-api', 'xgboost', 'sklearn', 'pytorch', 'nlp', 'transfer-learning', 'pytest', 'python']],
